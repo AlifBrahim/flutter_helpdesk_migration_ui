@@ -66,8 +66,8 @@ class _MyTicketMainScreenState extends ConsumerState with SingleTickerProviderSt
                 size: getProportionateScreenWidth(18),
               ),
               onTap: () {
-                final CurvedNavigationBarState navState = getNavState();
-                navState.setPage(0);
+                final CurvedNavigationBarState? navState = getNavState();
+                navState?.setPage(0);
               },
             ),
             centerTitle: true,
@@ -88,20 +88,19 @@ class _MyTicketMainScreenState extends ConsumerState with SingleTickerProviderSt
               ],
             ),
           ),
-          
-          body: TabBarView( 
-            controller: _controller,  
-            children: [
-              MyTicketScreen(),
-              CheckInTab(key: UniqueKey()),
-              CheckOutTab(key: UniqueKey(),),
-              //SubmitJobDetailsTab(),
-              SubmitFormTab(),
-              //MyCheckInScreen(),
-              //Icon(Icons.flight, size: 350),
-              //Icon(Icons.flight, size: 350)
-            ]
-          ),     
+
+          body: TabBarView(
+              controller: _controller,
+              children: [
+                MyTicketScreen(),
+                CheckInTab(key: UniqueKey()),
+                CheckOutTab(key: UniqueKey(),),
+                SubmitFormTab(),
+                // Add another widget here for the fifth tab
+                Icon(Icons.flight, size: 350), // This is just an example. Replace it with the actual widget you want to display for the fifth tab.
+              ]
+          ),
+
 
         ),         
       ),  

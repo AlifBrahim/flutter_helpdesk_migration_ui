@@ -134,8 +134,13 @@ void launchUrl(String url) async {
   }
 }
 
-CurvedNavigationBarState getNavState(){
-  return NavbarKey.getKey().currentState as CurvedNavigationBarState;
+CurvedNavigationBarState? getNavState(){
+  if (NavbarKey.getKey().currentState != null) {
+    return NavbarKey.getKey().currentState as CurvedNavigationBarState;
+  } else {
+    // Handle the case when currentState is null
+    return null;
+  }
 }
 
 

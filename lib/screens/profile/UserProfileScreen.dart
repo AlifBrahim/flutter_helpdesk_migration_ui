@@ -93,8 +93,8 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                     color: Colors.white,
                   ),
                   onTap: () {
-                    final CurvedNavigationBarState navState = getNavState();
-                    navState.setPage(0);
+                    final CurvedNavigationBarState? navState = getNavState();
+                    navState?.setPage(0);
                   },
                 ),
               ),

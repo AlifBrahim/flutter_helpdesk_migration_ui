@@ -65,7 +65,7 @@ class _HomeScreenState extends State<HomeScreen>
     if (currentBottomBarIndex != 0)
       setState(
         () {
-          navState = getNavState();
+          navState = getNavState()!;
           navState.setPage(0);
         },
       );
@@ -114,7 +114,13 @@ class _HomeScreenState extends State<HomeScreen>
 
   @override
   Widget build(BuildContext context) {
-    navState = getNavState();
+    var navStateTemp = getNavState();
+    if (navStateTemp != null) {
+      navState = navStateTemp;
+    } else {
+      // Handle the case when getNavState() returns null
+    }
+
     return WillPopScope(
       onWillPop: onWillPop,
       child: Scaffold(
@@ -122,7 +128,7 @@ class _HomeScreenState extends State<HomeScreen>
             ? darkBackgroundColor
             : Theme.of(context).backgroundColor,
         appBar: AppBar(
-          leading: Container(),
+        leading: Container(),
           backgroundColor: isDarkMode(context)
               ? primaryColor.withOpacity(0.4)
               : primaryColor,
@@ -419,7 +425,7 @@ class _HomeScreenState extends State<HomeScreen>
                 onTap: () {
                   setState(
                     () {
-                      navState = getNavState();
+                      navState = getNavState()!;
                       navState.setPage(1);
                     },
                   );

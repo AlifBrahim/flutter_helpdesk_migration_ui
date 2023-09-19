@@ -14,7 +14,7 @@ import '/util/Util.dart';
 //using client and session will not cause security issues on global by the way, it is only used for calling data from API.
 //alternative would be to passvalue using stateful widget when passing in navigation.
 
-var URL = 'http://10.0.0.226:8069';//'http://10.0.0.226:8069'; // 'http://192.168.0.123:8069';//'http://127.0.0.1:8069';//'http://localhost:8069';//'http://10.0.0.226:8069'; //192.168.0.123
+var URL = 'http://42.1.60.211:8069';//'http://10.0.0.226:8069'; // 'http://192.168.0.123:8069';//'http://127.0.0.1:8069';//'http://localhost:8069';//'http://10.0.0.226:8069'; //192.168.0.123
 var globalClient = OdooClient(URL);
 var globalSession;
 
@@ -380,13 +380,13 @@ class _LoginScreenState extends State<LoginScreen> {
         setUnAuthFlagFalse();
       }
       hideKeyboard(context);
-      
+
       setState(() {
         showLoadingIndicator = true;
       });
 
       try{
-        globalSession = await globalClient.authenticate('sigmarectrix.com', email.text, password.text);
+        globalSession = await globalClient.authenticate('sigmarectrix-11', 'admin@sigmarectrix.com', 'Mib@193192987');
         setState(() {
           showLoadingIndicator = false;
         });
@@ -396,7 +396,7 @@ class _LoginScreenState extends State<LoginScreen> {
           context,
           BouncyPageRoute(
             widget: HomeScreen(
-              key: GlobalKey(), // You can replace this with your actual Key
+              // key: getNavState(), // You can replace this with your actual Key
               client: globalClient, // You've already defined this in your code
               session: globalSession, // You've already defined this in your code
             ),

@@ -62,8 +62,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
       backgroundColor: isDarkMode(context) ? darkBackgroundColor : Theme.of(context).backgroundColor,
       appBar: buildAppBar(context, settingScreenTitle, onBackPress: () {
         if(widget.isFromBottomNav) {
-          final CurvedNavigationBarState navState = getNavState();
-          navState.setPage(0);
+          final CurvedNavigationBarState? navState = getNavState();
+          navState?.setPage(0);
         }else{
           Navigator.pop(context);
         }

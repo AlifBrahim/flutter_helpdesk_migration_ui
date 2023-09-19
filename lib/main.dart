@@ -69,10 +69,10 @@ class _MyAppState extends State<MyApp> {
               '/SignUpScreen': (BuildContext context) => SignUpScreen(),
               HomeScreen.routeName: (BuildContext context) => HomeScreen(
                 key: UniqueKey(), // replace with your key
-                client: OdooClient("https://your-odoo-instance.com"), // replace with your client
+                client: OdooClient("http://42.1.60.211:8069"), // replace with your client
                 session: OdooSession(
                   companyId: 1, // replace with your company id
-                  dbName: "your-database-name", // replace with your database name
+                  dbName: "sigmarectrix-11", // replace with your database name
                   id: "your-id", // replace with your id
                   isSystem: true, // replace with your boolean value
                   partnerId: 1, // replace with your partner id
