@@ -1,10 +1,11 @@
 import 'dart:io';
 
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
-import 'package:shopping_app_ui/colors/Colors.dart';
-import 'package:shopping_app_ui/global_keys/navbar_key.dart';
-import 'package:shopping_app_ui/util/toast_utils.dart';
+import '/colors/Colors.dart';
+import '/global_keys/navbar_key.dart';
+import '/util/toast_utils.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 bool isAnimate = false;
@@ -44,7 +45,7 @@ void navigateToScreenFromDrawer(BuildContext context, Widget screenWidget) {
 
 class BouncyPageRoute extends PageRouteBuilder{
   final Widget widget;
- BouncyPageRoute({this.widget})
+ BouncyPageRoute({required this.widget})
       :super(
             transitionDuration:Duration(seconds:1),
             transitionsBuilder:(BuildContext context,
@@ -71,7 +72,7 @@ class OpenUpwardsPageRoute extends PageRouteBuilder{
   final AxisDirection direction;
 
   OpenUpwardsPageRoute({
-    this.child, this.direction})
+    required this.child, required this.direction})
 
       :super(
             transitionDuration:Duration(milliseconds:300),
@@ -133,9 +134,10 @@ void launchUrl(String url) async {
   }
 }
 
-State<StatefulWidget> getNavState(){
-  return NavbarKey.getKey().currentState;
+CurvedNavigationBarState getNavState(){
+  return NavbarKey.getKey().currentState as CurvedNavigationBarState;
 }
+
 
 List<CropAspectRatioPreset> setAspectRatios() {
   return Platform.isAndroid

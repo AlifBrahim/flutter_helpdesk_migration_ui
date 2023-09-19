@@ -3,7 +3,7 @@ class ResPartner {
   final num partner_longitude;
   
   const ResPartner({
-    this.partner_latitude, this.partner_longitude
+    required this.partner_latitude, required this.partner_longitude
   });
   static ResPartner fromJson(Map<String, dynamic> json) => ResPartner(
 

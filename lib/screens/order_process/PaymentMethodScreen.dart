@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:shopping_app_ui/colors/Colors.dart';
-import 'package:shopping_app_ui/constant/Constants.dart';
-import 'package:shopping_app_ui/widgets/Styles.dart';
-import 'package:shopping_app_ui/screens/order_process/AddNewCardScreen.dart';
-import 'package:shopping_app_ui/screens/order_process/OrderSuccessfulScreen.dart';
-import 'package:shopping_app_ui/util/Util.dart';
+import '/colors/Colors.dart';
+import '/constant/Constants.dart';
+import '/widgets/Styles.dart';
+import '/screens/order_process/AddNewCardScreen.dart';
+import '/screens/order_process/OrderSuccessfulScreen.dart';
+import '/util/Util.dart';
 
 class PaymentMethodScreen extends StatefulWidget {
   final bool shouldDisplayContinueButton;
 
-  const PaymentMethodScreen({Key key, this.shouldDisplayContinueButton})
+  const PaymentMethodScreen({required Key key, required this.shouldDisplayContinueButton})
       : super(key: key);
 
   @override
@@ -21,13 +21,13 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: isDarkMode(context) ? darkBackgroundColor : Theme.of(context).backgroundColor,
-      appBar: buildAppBar(
-        context,
-        paymentMethodLabel,
-        onBackPress: () {
-          Navigator.pop(context);
-        },
-      ),
+      // appBar: buildAppBar(
+      //   context,
+      //   paymentMethodLabel,
+      //   onBackPress: () {
+      //     Navigator.pop(context);
+      //   },
+      // ),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
@@ -37,8 +37,8 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
               children: [
                 Text(
                   creditDebitLabel,
-                  style: Theme.of(context).textTheme.subtitle1.copyWith(
-                      fontWeight: Theme.of(context).textTheme.subtitle2.fontWeight),
+                  style: Theme.of(context).textTheme.subtitle1?.copyWith(
+                      fontWeight: Theme.of(context).textTheme.subtitle2?.fontWeight),
                 ),
                 SizedBox(
                   height: 10,
@@ -53,8 +53,8 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
                 ),
                 Text(
                   walletLabel,
-                  style: Theme.of(context).textTheme.subtitle1.copyWith(
-                      fontWeight: Theme.of(context).textTheme.subtitle2.fontWeight),
+                  style: Theme.of(context).textTheme.subtitle1?.copyWith(
+                      fontWeight: Theme.of(context).textTheme.subtitle2?.fontWeight),
                 ),
                 SizedBox(
                   height: 10,
@@ -64,8 +64,8 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
                   height: 10,
                 ),
                 Text(netBankingLabel,
-                  style: Theme.of(context).textTheme.subtitle1.copyWith(
-                      fontWeight: Theme.of(context).textTheme.subtitle2.fontWeight),
+                  style: Theme.of(context).textTheme.subtitle1?.copyWith(
+                      fontWeight: Theme.of(context).textTheme.subtitle2?.fontWeight),
                 ),
                 SizedBox(
                   height: 10,
@@ -199,7 +199,7 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
                 style: TextStyle(
                   fontFamily: poppinsFont,
                   color: isDarkMode(context) ? Colors.white70 : primaryColor,
-                  fontSize: Theme.of(context).textTheme.button.fontSize,
+                  fontSize: Theme.of(context).textTheme.button?.fontSize,
                 ),
               ),
             ],

@@ -2,36 +2,36 @@ import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:shopping_app_ui/colors/Colors.dart';
-import 'package:shopping_app_ui/notifier/dark_theme_provider.dart';
-import 'package:shopping_app_ui/screens/order_process/MyOrdersScreen.dart';
-import 'package:shopping_app_ui/screens/order_process/PaymentMethodScreen.dart';
-import 'package:shopping_app_ui/sharedPreference/PreferenceKeys.dart';
-import 'package:shopping_app_ui/util/size_config.dart';
-import 'package:shopping_app_ui/widgets/Styles.dart';
-import 'package:shopping_app_ui/screens/order_process/DeliveryAddressScreen.dart';
-import 'package:shopping_app_ui/util/Util.dart';
-import 'package:shopping_app_ui/constant/Constants.dart';
+import '/colors/Colors.dart';
+import '/notifier/dark_theme_provider.dart';
+import '/screens/order_process/MyOrdersScreen.dart';
+import '/screens/order_process/PaymentMethodScreen.dart';
+import '/sharedPreference/PreferenceKeys.dart';
+import '/util/size_config.dart';
+import '/widgets/Styles.dart';
+import '/screens/order_process/DeliveryAddressScreen.dart';
+import '/util/Util.dart';
+import '/constant/Constants.dart';
 
 import '../../widgets/NotificationsPrefBottomSheet.dart';
 
 class SettingsScreen extends StatefulWidget {
   final isFromBottomNav;
 
-  const SettingsScreen({Key key, @required this.isFromBottomNav}) : super(key: key);
+  const SettingsScreen({required Key key, @required this.isFromBottomNav}) : super(key: key);
   @override
   _SettingsScreenState createState() => _SettingsScreenState();
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
   bool isDarkTheme = false;
-  SharedPreferences sharedPreferences;
+  late SharedPreferences sharedPreferences;
 
   addBoolInSharedPref(String key, bool value) async {
     sharedPreferences.setBool(key, value);
   }
 
-  Future<bool> getPrefBool(String key) async {
+  Future<bool?> getPrefBool(String key) async {
     sharedPreferences = await SharedPreferences.getInstance();
     return sharedPreferences.getBool(key);
   }
@@ -41,13 +41,22 @@ class _SettingsScreenState extends State<SettingsScreen> {
     super.initState();
     getPrefBool(PREF_IS_DARK_THEME).then((value) {
       setState(() {
-        isDarkTheme = value;
+        isDarkTheme = value!;
       });
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    PreferredSize buildAppBar(BuildContext context, String title, {VoidCallback? onBackPress}) {
+      return PreferredSize(
+        preferredSize: Size.fromHeight(kToolbarHeight), // Set the height as needed
+        child: AppBar(
+          // Your AppBar code here
+        ),
+      );
+    }
+
     final themeChange = Provider.of<DarkThemeProvider>(context);
     return Scaffold(
       backgroundColor: isDarkMode(context) ? darkBackgroundColor : Theme.of(context).backgroundColor,
@@ -181,7 +190,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               navigateToScreen(
                 context,
                 DeliveryAddressScreen(
-                  shouldDisplayPaymentButton: false,
+                  shouldDisplayPaymentButton: false, key: UniqueKey(),
                 ),
               );
             },
@@ -193,7 +202,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               navigateToScreen(
                 context,
                 PaymentMethodScreen(
-                  shouldDisplayContinueButton: false,
+                  shouldDisplayContinueButton: false, key: UniqueKey(),
                 ),
               );
             },
@@ -211,7 +220,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
-  Widget buildSettingsItem({@required String label, @required Function onTap}) {
+  Widget buildSettingsItem({required String label, required Function onTap}) {
     return InkWell(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -243,7 +252,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   Widget buildPrefRow(IconData icon, String title, bool enabled,
-      {@required Function onChange}) {
+      {required Function onChange}) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 8),
       child: Row(
@@ -282,16 +291,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
             Column(
               children: [
                 BuildNotificationPreference(
-                    title: productAddedLabel, initialValue: true),
+                    title: productAddedLabel, initialValue: true, key: UniqueKey(),),
                 Divider(),
                 BuildNotificationPreference(
-                    title: productSellLabel, initialValue: true),
+                    title: productSellLabel, initialValue: true, key: UniqueKey(),),
                 Divider(),
                 BuildNotificationPreference(
-                    title: orderShippedLabel, initialValue: true),
+                    title: orderShippedLabel, initialValue: true, key: UniqueKey(),),
                 Divider(),
                 BuildNotificationPreference(
-                    title: orderDeliveredLabel, initialValue: true),
+                    title: orderDeliveredLabel, initialValue: true, key: UniqueKey(),),
                 Divider(),
               ],
             ),

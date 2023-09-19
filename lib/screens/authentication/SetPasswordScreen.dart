@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:shopping_app_ui/colors/Colors.dart';
-import 'package:shopping_app_ui/constant/Constants.dart';
-import 'package:shopping_app_ui/widgets/Styles.dart';
-import 'package:shopping_app_ui/screens/authentication/VerifyAccountScreen.dart';
-import 'package:shopping_app_ui/util/Util.dart';
+import '/colors/Colors.dart';
+import '/constant/Constants.dart';
+import '/widgets/Styles.dart';
+import '/screens/authentication/VerifyAccountScreen.dart';
+import '/util/Util.dart';
 
 class SetPasswordScreen extends StatefulWidget {
   @override
@@ -105,7 +105,7 @@ class _SetPasswordScreenState extends State<SetPasswordScreen> {
               context,
               errorMessage,
               '',
-              isDarkMode(context) ? Colors.red[900] : pinkishColor,
+              isDarkMode(context) ? Colors.red[900]! : pinkishColor,
               true,
               onOptionTap: () {},
             ),

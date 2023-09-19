@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:shopping_app_ui/colors/Colors.dart';
-import 'package:shopping_app_ui/constant/Constants.dart';
-import 'package:shopping_app_ui/util/size_config.dart';
-import 'package:shopping_app_ui/widgets/Styles.dart';
-import 'package:shopping_app_ui/util/Util.dart';
+import '/colors/Colors.dart';
+import '/constant/Constants.dart';
+import '/util/size_config.dart';
+import '/widgets/Styles.dart';
+import '/util/Util.dart';
 
 import 'ForgotPasswordScreen.dart';
 
@@ -68,6 +68,14 @@ class _EditPasswordScreenState extends State<EditPasswordScreen> {
 
   @override
   Widget build(BuildContext context) {
+    PreferredSize buildAppBar(BuildContext context, String title, {VoidCallback? onBackPress}) {
+      return PreferredSize(
+        preferredSize: Size.fromHeight(kToolbarHeight), // Set the height as needed
+        child: AppBar(
+          // Your AppBar code here
+        ),
+      );
+    }
     return Scaffold(
       backgroundColor: isDarkMode(context) ? darkBackgroundColor : Theme.of(context).backgroundColor,
       appBar: buildAppBar(
@@ -125,7 +133,7 @@ class _EditPasswordScreenState extends State<EditPasswordScreen> {
               context,
               errorMessage,
               forgetPasswordLabel,
-              isDarkMode(context) ? Colors.red[900] : pinkishColor,
+              isDarkMode(context) ? Colors.red[900]! : pinkishColor,
               true,
               focusNode: focusNodeErrorNotification,
               onOptionTap: () {

@@ -1,4 +1,4 @@
-import 'package:shopping_app_ui/model/produtct_reviews.dart';
+import '/model/produtct_reviews.dart';
 
 var reviewData = [
   ProductReview('Avinash Kumar', 5.0, '25/06/2021',

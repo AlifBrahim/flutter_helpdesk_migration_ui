@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:shopping_app_ui/Data/ProductData.dart';
-import 'package:shopping_app_ui/colors/Colors.dart';
-import 'package:shopping_app_ui/constant/Constants.dart';
-import 'package:shopping_app_ui/model/Product.dart';
-import 'package:shopping_app_ui/model/ProductInCart.dart';
-import 'package:shopping_app_ui/screens/launch/HomeScreen.dart';
-import 'package:shopping_app_ui/util/size_config.dart';
-import 'package:shopping_app_ui/widgets/Styles.dart';
-import 'package:shopping_app_ui/screens/products/ProductDetailScreen.dart';
-import 'package:shopping_app_ui/util/Util.dart';
+import '/Data/ProductData.dart';
+import '/colors/Colors.dart';
+import '/constant/Constants.dart';
+import '/model/Product.dart';
+import '/model/ProductInCart.dart';
+import '/screens/launch/HomeScreen.dart';
+import '/util/size_config.dart';
+import '/widgets/Styles.dart';
+import '/screens/products/ProductDetailScreen.dart';
+import '/util/Util.dart';
 
 import 'FilterProductScreen.dart';
 import 'ProductNotFoundScreen.dart';
@@ -18,7 +18,7 @@ class AllProductScreen extends StatefulWidget {
   final List<Product> productList;
 
   const AllProductScreen(
-      {Key key, this.categoryTitle, @required this.productList})
+      {required Key key, required this.categoryTitle, required this.productList})
       : super(key: key);
 
   @override
@@ -73,7 +73,7 @@ class _AllProductScreenState extends State<AllProductScreen>
                           context,
                           ProductDetailScreen(
                             product: widget.productList[index],
-                            heroTagPrefix: tagAllProducts,
+                            heroTagPrefix: tagAllProducts, key: UniqueKey(),
                           ),
                         );
                       },
@@ -127,9 +127,9 @@ class _AllProductScreenState extends State<AllProductScreen>
                         widget.categoryTitle,
                         style: TextStyle(
                           fontSize:
-                              Theme.of(context).textTheme.subtitle1.fontSize,
+                              Theme.of(context).textTheme.titleMedium?.fontSize,
                           fontFamily:
-                              Theme.of(context).textTheme.subtitle1.fontFamily,
+                              Theme.of(context).textTheme.titleMedium?.fontFamily,
                           color: Colors.white,
                         ),
                       ),

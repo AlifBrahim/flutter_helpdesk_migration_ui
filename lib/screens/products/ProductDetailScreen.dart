@@ -3,15 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:like_button/like_button.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
-import 'package:shopping_app_ui/Data/ProductData.dart';
-import 'package:shopping_app_ui/Data/ReviewData.dart';
-import 'package:shopping_app_ui/colors/Colors.dart';
-import 'package:shopping_app_ui/constant/Constants.dart';
-import 'package:shopping_app_ui/model/Product.dart';
-import 'package:shopping_app_ui/screens/launch/HomeScreen.dart';
-import 'package:shopping_app_ui/util/size_config.dart';
-import 'package:shopping_app_ui/widgets/Styles.dart';
-import 'package:shopping_app_ui/util/Util.dart';
+import '/Data/ProductData.dart';
+import '/Data/ReviewData.dart';
+import '/colors/Colors.dart';
+import '/constant/Constants.dart';
+import '/model/Product.dart';
+import '/screens/launch/HomeScreen.dart';
+import '/util/size_config.dart';
+import '/widgets/Styles.dart';
+import '/util/Util.dart';
 import 'package:package_info/package_info.dart';
 import 'package:share/share.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -22,7 +22,7 @@ class ProductDetailScreen extends StatefulWidget {
   final Product product;
   final String heroTagPrefix;
 
-  const ProductDetailScreen({Key key, this.product, this.heroTagPrefix})
+  const ProductDetailScreen({required Key key, required this.product, required this.heroTagPrefix})
       : super(key: key);
 
   @override
@@ -34,7 +34,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
   double rowLineHeight = 8.0;
 
   bool isFullScreenImageDisplaying = false;
-  PackageInfo packageInfo;
+  late PackageInfo packageInfo;
   bool enableScrollPhysics = true;
   ScrollController scrollController = new ScrollController();
   String addToCartLabel = 'Add to Cart';
@@ -287,18 +287,18 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                     children: [
                       Text(
                         '\$6',
-                        style: Theme.of(context).textTheme.subtitle1.copyWith(
+                        style: Theme.of(context).textTheme.subtitle1?.copyWith(
                             fontWeight: Theme.of(context)
                                 .textTheme
                                 .subtitle2
-                                .fontWeight),
+                                ?.fontWeight),
                       ),
                       SizedBox(
                         width: 10,
                       ),
                       Text(
                         '\$11',
-                        style: Theme.of(context).textTheme.caption.copyWith(
+                        style: Theme.of(context).textTheme.caption?.copyWith(
                               decoration: TextDecoration.lineThrough,
                             ),
                       ),
@@ -363,7 +363,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                         Expanded(
                           flex: 2,
                           child: Text(
-                            e['key'],
+                            e['key']!,
                             style: Theme.of(context).textTheme.bodyText2,
                             softWrap: true,
                           ),
@@ -372,13 +372,13 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                           flex: 3,
                           child: e['key'] != colorLabel
                               ? Text(
-                                  e['value'],
+                                  e['value']!,
                                   style: Theme.of(context).textTheme.subtitle2,
                                 )
                               : Row(
                                   children: [
                                     Text(
-                                      e['value'],
+                                      e['value']!,
                                       style:
                                           Theme.of(context).textTheme.subtitle2,
                                     ),
@@ -544,15 +544,15 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                 true,
                 widget.product.isAddedInCart
                     ? isDarkMode(context)
-                        ? Colors.grey[700]
-                        : Colors.blueGrey[100]
+                        ? Colors.grey[700]!
+                        : Colors.blueGrey[100]!
                     : isDarkMode(context)
                         ? primaryColorDark
                         : primaryColor,
                 widget.product.isAddedInCart
                     ? isDarkMode(context)
                         ? Colors.black87
-                        : Colors.blueGrey[800]
+                        : Colors.blueGrey[800]!
                     : isDarkMode(context)
                         ? Colors.white.withOpacity(0.8)
                         : Colors.white,
@@ -601,7 +601,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                   context,
                   AllProductScreen(
                     categoryTitle: 'Shopping App',
-                    productList: mixProducts,
+                    productList: mixProducts, key: UniqueKey(),
                   ),
                 ),
               )
@@ -626,7 +626,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                 MaterialPageRoute(
                   builder: (context) => ProductDetailScreen(
                     product: similarProductData[i],
-                    heroTagPrefix: tagSimilarProducts + '_$i',
+                    heroTagPrefix: tagSimilarProducts + '_$i', key: UniqueKey(),
                   ),
                 ),
               );
@@ -702,7 +702,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                     value: event == null
                         ? 0
                         : event.cumulativeBytesLoaded /
-                            event.expectedTotalBytes,
+                        (event.expectedTotalBytes!),
                   ),
                 ),
               ),

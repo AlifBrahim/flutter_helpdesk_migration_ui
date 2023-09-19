@@ -1,4 +1,4 @@
-import 'package:shopping_app_ui/model/Product.dart';
+import '/model/Product.dart';
 
 class ProductInCart {
   Product product;

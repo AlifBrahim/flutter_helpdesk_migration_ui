@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shopping_app_ui/OdooApiCall_DataMapping/ToCheckIn_ToCheckOut_SupportTicket.dart';
+import '/OdooApiCall_DataMapping/ToCheckIn_ToCheckOut_SupportTicket.dart';
 import 'package:riverpod_infinite_scroll/riverpod_infinite_scroll.dart';    
-import 'package:shopping_app_ui/OdooApiCall/ToCheckInTicketsApi.dart';
+import '/OdooApiCall/ToCheckInTicketsApi.dart';
 
     
 
@@ -42,7 +42,6 @@ import 'package:shopping_app_ui/OdooApiCall/ToCheckInTicketsApi.dart';
 	  //  return (lastItems.length == null || lastItems.length < limit) ? null :lastItems[lastItems.length - 1].ha); 
     //};
 
-    NextPageKeyBuilder<int, dynamic> mysqlPagination = (List<dynamic> lastItems, int  offset, int  limit) {
-	    return (lastItems.length == null || lastItems.length < limit )  ? null : (offset+limit);
-      
-    };
+NextPageKeyBuilder<int, dynamic> mysqlPagination = (List<dynamic>? lastItems, int offset, int limit) {
+  return (lastItems == null || lastItems.length < limit) ? null : (offset + limit);
+};

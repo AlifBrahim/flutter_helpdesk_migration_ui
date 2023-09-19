@@ -16,10 +16,10 @@ class SupportTicket{
   
   const SupportTicket({
   
-    this.ticket_number, this.ticket_id, this.assigned_user, 
-    this.check_in, this.check_out, this.check_in_address, this.check_out_address,
-    this.subject, this.created_date, this.rating, this.partner_name, this.partner_id,
-    this.equipment_location, 
+    required this.ticket_number, required this.ticket_id, required this.assigned_user,
+    required this.check_in, required this.check_out, required this.check_in_address, required this.check_out_address,
+    required this.subject, required this.created_date, required this.rating, required this.partner_name, required this.partner_id,
+    required this.equipment_location,
 
   });
   static SupportTicket fromJson(Map<String, dynamic> json) => SupportTicket(
@@ -36,8 +36,9 @@ class SupportTicket{
     created_date: json['create_date'] == false ? json['create_date'] = '' : json['create_date'].toString(),
     subject: json['subject'] == false ? json['subject'] = '' : json['subject'].toString(),
     rating: json['rating'] == null ? json['rating'] = '0' : json['rating'].toString(),
-    partner_id: json['partner_id'] == false  ? json['partner_id'] = null : json['partner_id'][0].toString(),
-    partner_name: json['partner_id'] == false ? json['partner_id'] = null : json['partner_id'][1].toString(),    
+    partner_id: json['partner_id'] == false || json['partner_id'] == null  ? '' : json['partner_id'][0].toString(),
+    partner_name: json['partner_id'] == false || json['partner_id'] == null ? '' : json['partner_id'][1].toString(),
+
     equipment_location: json['equipment_location'] == null ? json['equipment_location'] = 'Not Defined' : json['equipment_location'].toString(),
 
   );

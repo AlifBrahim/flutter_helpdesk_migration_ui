@@ -2,13 +2,13 @@ import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:shopping_app_ui/Data/CategoryData.dart';
-import 'package:shopping_app_ui/Data/ProductData.dart';
-import 'package:shopping_app_ui/colors/Colors.dart';
-import 'package:shopping_app_ui/constant/Constants.dart';
-import 'package:shopping_app_ui/util/size_config.dart';
-import 'package:shopping_app_ui/widgets/Styles.dart';
-import 'package:shopping_app_ui/util/Util.dart';
+import '/Data/CategoryData.dart';
+import '/Data/ProductData.dart';
+import '/colors/Colors.dart';
+import '/constant/Constants.dart';
+import '/util/size_config.dart';
+import '/widgets/Styles.dart';
+import '/util/Util.dart';
 
 import 'AllProductScreen.dart';
 
@@ -27,14 +27,14 @@ class _AllCategoriesScreenState extends State<AllCategoriesScreen> {
       backgroundColor: isDarkMode(context)
           ? darkBackgroundColor
           : Theme.of(context).backgroundColor,
-      appBar: buildAppBar(
-        context,
-        allCategories,
-        onBackPress: () {
-          final CurvedNavigationBarState navState = getNavState();
-          navState.setPage(0);
-        },
-      ),
+      // appBar: buildAppBar(
+      //   context,
+      //   allCategories,
+      //   onBackPress: () {
+      //     final CurvedNavigationBarState navState = getNavState();
+      //     navState.setPage(0);
+      //   },
+      // ),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
@@ -55,7 +55,7 @@ class _AllCategoriesScreenState extends State<AllCategoriesScreen> {
                     (index) {
                       return Card(
                         elevation: 0,
-                        shape: const RoundedRectangleBorder(
+                        shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.all(
                             Radius.circular(6),
                           ),
@@ -85,11 +85,11 @@ class _AllCategoriesScreenState extends State<AllCategoriesScreen> {
                                   style: Theme.of(context)
                                       .textTheme
                                       .bodyText1
-                                      .copyWith(
+                                      ?.copyWith(
                                           fontSize: Theme.of(context)
                                               .textTheme
                                               .caption
-                                              .fontSize),
+                                              ?.fontSize),
                                 )
                               ],
                             ),
@@ -102,7 +102,7 @@ class _AllCategoriesScreenState extends State<AllCategoriesScreen> {
                               context,
                               AllProductScreen(
                                 categoryTitle: '${categoryTitles[index]}',
-                                productList: getCategoryProducts(index),
+                                productList: getCategoryProducts(index), key: UniqueKey(),
                               ),
                             );
                           },

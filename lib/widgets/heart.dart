@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:shopping_app_ui/util/Util.dart';
+import '/util/Util.dart';
 
 class Heart extends StatefulWidget {
   @override
@@ -8,10 +8,10 @@ class Heart extends StatefulWidget {
 
 class _HeartState extends State<Heart> with SingleTickerProviderStateMixin {
   bool isFav = false;
-  AnimationController _controller;
-  Animation<Color> _colorAnimation;
-  Animation<double> _sizeAnimation;
-  Animation _curve;
+  late AnimationController _controller;
+  late Animation<Color?> _colorAnimation;
+  late Animation<double> _sizeAnimation;
+  late Animation<double> _curve;
 
   @override
   void initState() {

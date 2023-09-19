@@ -1,11 +1,11 @@
 import 'dart:ui';
-import 'package:shopping_app_ui/Api/PdfApi.dart';
+import '/Api/PdfApi.dart';
 import 'package:open_file/open_file.dart';
 import 'package:flutter/material.dart';
-import 'package:shopping_app_ui/OdooApiCall_DataMapping/ToCheckIn_ToCheckOut_SupportTicket.dart';
-import 'package:shopping_app_ui/util/Util.dart';
-import 'package:shopping_app_ui/util/size_config.dart';
-import 'package:shopping_app_ui/widgets/Styles.dart';
+import '/OdooApiCall_DataMapping/ToCheckIn_ToCheckOut_SupportTicket.dart';
+import '/util/Util.dart';
+import '/util/size_config.dart';
+import '/widgets/Styles.dart';
 import 'package:syncfusion_flutter_signaturepad/signaturepad.dart';
 import '../../colors/Colors.dart';
 import '../../constant/Constants.dart';
@@ -13,7 +13,7 @@ import '../../constant/Constants.dart';
 class MySignatureScreen extends StatefulWidget {
   final ToCheckInOutSupportTicket supportticket;
 
-  const MySignatureScreen({Key key, this.supportticket}) : super(key: key);
+  const MySignatureScreen({required Key key, required this.supportticket}) : super(key: key);
 
   @override
   State<MySignatureScreen> createState() => _SignatureScreenState();
@@ -29,9 +29,9 @@ class _SignatureScreenState extends State<MySignatureScreen> {
   final screensize = MediaQuery.of(context).size;
   //setting up submit cmform button function
   return Scaffold(
-          appBar: buildAppBar(context, "Get Signature", onBackPress: () {
-          Navigator.pop(context);
-        }),      
+        //   appBar: buildAppBar(context, "Get Signature", onBackPress: () {
+        //   Navigator.pop(context);
+        // }),
         body: Column(
           children: [
             SfSignaturePad(
@@ -49,7 +49,7 @@ class _SignatureScreenState extends State<MySignatureScreen> {
                     child: ElevatedButton(
                     child: Text("Clear"),
                     onPressed: () async {
-                      final image = keySignaturePad.currentState.clear();
+                      final image = keySignaturePad.currentState?.clear();
                     }),
                   ),
 
@@ -82,20 +82,24 @@ class _SignatureScreenState extends State<MySignatureScreen> {
           
   );
   
-  } 
+  }
   Future onSubmit() async {
     showDialog(
-      barrierDismissible: false,
-      context: context, 
-      builder: (context)=> Center(child: CircularProgressIndicator())
-    ); 
+        barrierDismissible: false,
+        context: context,
+        builder: (context)=> Center(child: CircularProgressIndicator())
+    );
     final image = await keySignaturePad.currentState?.toImage();
-    final imageSignature = await image.toByteData(format: ImageByteFormat.png);
-    final file = await PdfApi.generatePDF(
-    imageSignature: imageSignature, supportticket: widget.supportticket );
-    Navigator.of(context).pop();
-    await OpenFile.open(file.path);
+    final imageSignature = await image?.toByteData(format: ImageByteFormat.png);
+
+    if (imageSignature != null) {
+      final file = await PdfApi.generatePDF(
+          imageSignature: imageSignature, supportticket: widget.supportticket );
+      Navigator.of(context).pop();
+      await OpenFile.open(file.path);
+    }
   }
+
 
   Widget buildDetailScreen() {
 
@@ -503,7 +507,7 @@ class _SignatureScreenState extends State<MySignatureScreen> {
                   left: getProportionateScreenWidth(12)),
               child: Text(
                 detailsLabel,
-                style: Theme.of(context).textTheme.subtitle1.copyWith(
+                style: Theme.of(context).textTheme.subtitle1?.copyWith(
                   fontWeight: FontWeight.bold
                 ),
               ),
@@ -588,7 +592,7 @@ class _SignatureScreenState extends State<MySignatureScreen> {
                   left: getProportionateScreenWidth(12)),
               child: Text(
                 "Ticket's Job Details",
-                style: Theme.of(context).textTheme.subtitle1.copyWith(
+                style: Theme.of(context).textTheme.subtitle1?.copyWith(
                   fontWeight: FontWeight.bold
                 ),
               ),

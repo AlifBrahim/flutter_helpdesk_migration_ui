@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:shopping_app_ui/Data/filter_products.dart';
-import 'package:shopping_app_ui/colors/Colors.dart';
-import 'package:shopping_app_ui/constant/Constants.dart';
-import 'package:shopping_app_ui/util/Util.dart';
-import 'package:shopping_app_ui/util/size_config.dart';
-import 'package:shopping_app_ui/widgets/Styles.dart';
+import '/Data/filter_products.dart';
+import '/colors/Colors.dart';
+import '/constant/Constants.dart';
+import '/util/Util.dart';
+import '/util/size_config.dart';
+import '/widgets/Styles.dart';
 
 class FilterProductScreen extends StatefulWidget {
   @override
@@ -26,9 +26,9 @@ class _FilterProductScreenState extends State<FilterProductScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: isDarkMode(context) ? darkBackgroundColor : Theme.of(context).backgroundColor,
-      appBar: buildAppBar(context, filter, onBackPress: () {
-        Navigator.pop(context);
-      }),
+      // appBar: buildAppBar(context, filter, onBackPress: () {
+      //   Navigator.pop(context);
+      // }),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: EdgeInsets.only(left: 16),
@@ -44,8 +44,8 @@ class _FilterProductScreenState extends State<FilterProductScreen> {
                     children: [
                       Text(
                         sortByLabel,
-                        style: Theme.of(context).textTheme.subtitle1.copyWith(
-                            fontWeight: Theme.of(context).textTheme.subtitle2.fontWeight),
+                        style: Theme.of(context).textTheme.subtitle1?.copyWith(
+                            fontWeight: Theme.of(context).textTheme.subtitle2?.fontWeight),
                       ),
                     ],
                   ),
@@ -65,8 +65,8 @@ class _FilterProductScreenState extends State<FilterProductScreen> {
                     children: [
                       Text(
                         categoryLabel,
-                        style: Theme.of(context).textTheme.subtitle1.copyWith(
-                            fontWeight: Theme.of(context).textTheme.subtitle2.fontWeight),
+                        style: Theme.of(context).textTheme.subtitle1?.copyWith(
+                            fontWeight: Theme.of(context).textTheme.subtitle2?.fontWeight),
                       ),
                     ],
                   ),
@@ -119,13 +119,13 @@ class _FilterProductScreenState extends State<FilterProductScreen> {
         style: Theme.of(context).textTheme.bodyText1,
         icon: Icon(
           Icons.arrow_drop_down,
-          color: isDarkMode(context) ? Colors.white70 :Theme.of(context).textTheme.bodyText1.color,
+          color: isDarkMode(context) ? Colors.white70 :Theme.of(context).textTheme.bodyText1?.color,
         ),
         underline: Container(),
         onChanged: (value) {
           setState(
             () {
-              dropdownValue = value;
+              dropdownValue = value.toString();
             },
           );
         },

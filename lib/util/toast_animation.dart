@@ -11,27 +11,27 @@ class SlideInToastMessageAnimation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final tween = MultiTween<AnimationType>()
-      ..add(
-        AnimationType.opacity,
+    final movieTween = MovieTween()
+      ..tween(
+        'opacity',
         Tween(begin: 0.0, end: 1.0),
-        Duration(milliseconds: 500),
+        duration: Duration(milliseconds: 500),
       )
-      ..add(
-        AnimationType.translateX,
+      ..tween(
+        'translateX',
         Tween(begin: 0.0, end: 0.0),
-        Duration(milliseconds: 250),
+        duration: Duration(milliseconds: 250),
       );
 
-    return PlayAnimation<MultiTweenValues<AnimationType>>(
-      delay: Duration(milliseconds: (500 * 1).round()),
-      duration: tween.duration,
-      tween: tween,
-      child: child,
-      builder: (context, child, value) => Opacity(
-        opacity: value.get(AnimationType.opacity),
+    return PlayAnimationBuilder<Movie>(
+      tween: movieTween,
+      duration: movieTween.duration,
+      onStarted: () => debugPrint('onStart'),
+      onCompleted: () => debugPrint('onComplete'),
+      builder: (context, movie, child) => Opacity(
+        opacity: movie.get<double>('opacity'),
         child: Transform.translate(
-            offset: Offset(value.get(AnimationType.translateX), 0),
+            offset: Offset(movie.get<double>('translateX'), 0),
             child: child),
       ),
     );

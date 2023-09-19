@@ -5,21 +5,21 @@ import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import 'package:odoo_rpc/odoo_rpc.dart';
-import 'package:shopping_app_ui/Data/ProductData.dart';
-import 'package:shopping_app_ui/OdooApiCall_DataMapping/ResPartner.dart';
-import 'package:shopping_app_ui/OdooApiCall_DataMapping/SupportTicketandResPartner.dart';
-import 'package:shopping_app_ui/OdooApiCall_DataMapping/ToCheckIn_ToCheckOut_SupportTicket.dart';
-import 'package:shopping_app_ui/colors/Colors.dart';
-import 'package:shopping_app_ui/constant/Constants.dart';
-import 'package:shopping_app_ui/model/Product.dart';
-import 'package:shopping_app_ui/model/ProductInCart.dart';
-import 'package:shopping_app_ui/screens/launch/HomeScreen.dart';
-import 'package:shopping_app_ui/screens/products/MyAttendanceScreen.dart';
-import 'package:shopping_app_ui/screens/products/TicketDetailScreen.dart';
-import 'package:shopping_app_ui/util/RemoveGlowEffect.dart';
-import 'package:shopping_app_ui/util/size_config.dart';
-import 'package:shopping_app_ui/widgets/Styles.dart';
-import 'package:shopping_app_ui/util/Util.dart';
+import '/Data/ProductData.dart';
+import '/OdooApiCall_DataMapping/ResPartner.dart';
+import '/OdooApiCall_DataMapping/SupportTicketandResPartner.dart';
+import '/OdooApiCall_DataMapping/ToCheckIn_ToCheckOut_SupportTicket.dart';
+import '/colors/Colors.dart';
+import '/constant/Constants.dart';
+import '/model/Product.dart';
+import '/model/ProductInCart.dart';
+import '/screens/launch/HomeScreen.dart';
+import '/screens/products/MyAttendanceScreen.dart';
+import '/screens/products/TicketDetailScreen.dart';
+import '/util/RemoveGlowEffect.dart';
+import '/util/size_config.dart';
+import '/widgets/Styles.dart';
+import '/util/Util.dart';
 import '../../OdooApiCall/AllTicketsApi.dart';
 import '../../OdooApiCall_DataMapping/SupportTicket.dart';
 import '../LoadingAnimation.dart';
@@ -34,7 +34,7 @@ class MyCheckInScreen extends StatefulWidget {
 
 class _MyCheckInScreenState extends State<MyCheckInScreen> {
   final scrollcontroller = ScrollController();
-  List<ResPartner> partnerlist ;
+  late List<ResPartner> partnerlist ;
   var _buttonValue;
 
   @override
@@ -52,6 +52,7 @@ class _MyCheckInScreenState extends State<MyCheckInScreen> {
   
   @override
   Widget build(BuildContext context) {
+
 
     scrollcontroller.addListener((){
       double maxScroll= scrollcontroller.position.maxScrollExtent; //Maximum amount of distance the user can scroll in the scrolling axis.
@@ -94,9 +95,36 @@ class _MyCheckInScreenState extends State<MyCheckInScreen> {
                     break;
 
                     case ConnectionState.done:
+
                       if(snapshot.hasData){
+                        List<ToCheckInOutSupportTicket>? tickets;
+                        try {
+                          tickets = snapshot.data as List<ToCheckInOutSupportTicket>;
+                        } catch (e) {
+                          // Handle the error appropriately.
+                        }
+                        if (tickets == null) {
+                          return Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+
+                              Lottie.asset(
+                                'assets/json/lottieJson/no-internet.json',
+                                repeat: true,
+                              ),
+                              const SizedBox(height:(10)),
+                              Text('Unable to fetch data, please refresh and try again.', style: Theme.of(context).textTheme.subtitle1?.copyWith(
+                                fontWeight: Theme.of(context).textTheme.subtitle2?.fontWeight),textAlign: TextAlign.center,),
+                              Text("${snapshot.error}"),
+
+
+                            ],
+                          );
+                        }
+
                         return buildSupportTickets(//partners,
-                        tickets);
+                        tickets!); // Error
                       }
                       else if (snapshot.hasError){
 
@@ -110,8 +138,8 @@ class _MyCheckInScreenState extends State<MyCheckInScreen> {
                               repeat: true,
                             ),
                             const SizedBox(height:(10)),
-                            Text('Unable to fetch data, please refresh and try again.', style: Theme.of(context).textTheme.subtitle1.copyWith(
-                              fontWeight: Theme.of(context).textTheme.subtitle2.fontWeight),textAlign: TextAlign.center,),
+                            Text('Unable to fetch data, please refresh and try again.', style: Theme.of(context).textTheme.subtitle1?.copyWith(
+                              fontWeight: Theme.of(context).textTheme.subtitle2?.fontWeight),textAlign: TextAlign.center,),
                             Text("${snapshot.error}"),
                 
 
@@ -211,19 +239,31 @@ class _MyCheckInScreenState extends State<MyCheckInScreen> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [                       
-                          avatarUrl != null ? CircleAvatar(
-                            backgroundImage: NetworkImage(avatarUrl, headers: {"X-Openerp-Session-Id":globalClient.sessionId.id}), 
-                            onBackgroundImageError: null,
-                            backgroundColor: Color.fromARGB(255, 150, 190, 223),     
-                            radius:getProportionateScreenWidth(35) )
-                            :                  
-                            CircleAvatar(
-                            backgroundColor: Color.fromARGB(255, 150, 190, 223),     
-                            radius:getProportionateScreenWidth(35) ),              
+                        children: [
+                          avatarUrl != null
+                              ? (globalClient.sessionId?.id != null
+                              ? CircleAvatar(
+                              backgroundImage: NetworkImage(
+                                  avatarUrl,
+                                  headers: {"X-Openerp-Session-Id": globalClient.sessionId!.id}
+                              ),
+                              onBackgroundImageError: null,
+                              backgroundColor: Color.fromARGB(255, 150, 190, 223),
+                              radius:getProportionateScreenWidth(35)
+                          )
+                              : CircleAvatar( // This is where you handle the case where sessionId is null.
+                              backgroundColor: Color.fromARGB(255, 150, 190, 223),
+                              radius:getProportionateScreenWidth(35)
+                          )
+                          )
+                              : CircleAvatar(
+                              backgroundColor: Color.fromARGB(255, 150, 190, 223),
+                              radius:getProportionateScreenWidth(35)
+                          ),
                           SizedBox(width: getProportionateScreenWidth(10)),
                           Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+
+                          crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Column(
@@ -237,8 +277,8 @@ class _MyCheckInScreenState extends State<MyCheckInScreen> {
                                       '#${supportticket.ticket_number} ${supportticket.subject}',
                                       overflow: TextOverflow.ellipsis,
                                       maxLines: 2,
-                                      style: Theme.of(context).textTheme.subtitle1.copyWith(
-                                            fontWeight: Theme.of(context).textTheme.subtitle2.fontWeight),
+                                      style: Theme.of(context).textTheme.subtitle1?.copyWith(
+                                            fontWeight: Theme.of(context).textTheme.subtitle2?.fontWeight),
                                       
                                     ),
                                   
@@ -286,7 +326,7 @@ class _MyCheckInScreenState extends State<MyCheckInScreen> {
                                                 style:Theme.of(context)
                                                 .textTheme
                                                 .bodyText2
-                                                .copyWith(
+                                                ?.copyWith(
                                                   //decoration:
                                                   //    TextDecoration.lineThrough,
                                                 ),
@@ -311,10 +351,10 @@ class _MyCheckInScreenState extends State<MyCheckInScreen> {
                                                 style:Theme.of(context)
                                                 .textTheme
                                                 .bodyText2
-                                                .copyWith(
+                                                ?.copyWith(
                                                   //decoration:
                                                   //    TextDecoration.lineThrough,
-                                                  color: Theme.of(context).textTheme.caption.color,
+                                                  color: Theme.of(context).textTheme.caption?.color,
                                                 ),
                                               ),
                                             ],
@@ -337,7 +377,7 @@ class _MyCheckInScreenState extends State<MyCheckInScreen> {
                                                 style:Theme.of(context)
                                                 .textTheme
                                                 .bodyText2
-                                                .copyWith(
+                                                ?.copyWith(
                                                   decoration: TextDecoration.underline,
                                                   color: orangeredColor                                  
                                                 ),
@@ -352,7 +392,7 @@ class _MyCheckInScreenState extends State<MyCheckInScreen> {
                                                     style:Theme.of(context)
                                                     .textTheme
                                                     .bodyText2
-                                                    .copyWith(
+                                                    ?.copyWith(
                                                       decoration: TextDecoration.underline,
                                                       color: orangeredColor                                  
                                                     )
@@ -362,7 +402,7 @@ class _MyCheckInScreenState extends State<MyCheckInScreen> {
                                                     style:Theme.of(context)
                                                     .textTheme
                                                     .caption
-                                                    .copyWith(                                                   
+                                                    ?.copyWith(
                                                     ),
                                                   )
                                                 ]
@@ -440,7 +480,7 @@ class _MyCheckInScreenState extends State<MyCheckInScreen> {
                           (Set<MaterialState> states) {
                             if (states.contains(MaterialState.pressed))
                               return 16;
-                            return null;
+                            return 0;
                           }),
                           //shape: RectangularRangeSliderTrackShap
                           backgroundColor: MaterialStateProperty.all<Color>(primaryColor),
@@ -459,7 +499,7 @@ class _MyCheckInScreenState extends State<MyCheckInScreen> {
                                     ? _buttonValue = 'SUBMIT FORM'
                                     : null,
                                     
-                                    style: Theme.of(context).textTheme.button.copyWith(
+                                    style: Theme.of(context).textTheme.button?.copyWith(
                                         fontFamily: poppinsFont,
                                         color: Colors.white,
                                         fontWeight: FontWeight.w600,

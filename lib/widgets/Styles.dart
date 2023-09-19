@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:lottie/lottie.dart';
 import 'package:shimmer/shimmer.dart';
-import 'package:shopping_app_ui/colors/Colors.dart';
-import 'package:shopping_app_ui/constant/Constants.dart';
-import 'package:shopping_app_ui/model/produtct_reviews.dart';
-import 'package:shopping_app_ui/util/RemoveGlowEffect.dart';
-import 'package:shopping_app_ui/util/Util.dart';
-import 'package:shopping_app_ui/util/size_config.dart';
+import '/colors/Colors.dart';
+import '/constant/Constants.dart';
+import '/model/produtct_reviews.dart';
+import '/util/RemoveGlowEffect.dart';
+import '/util/Util.dart';
+import '/util/size_config.dart';
 
 import 'SingleProduct.dart';
 
@@ -182,7 +183,7 @@ Widget buildAddressInputField(
     TextInputAction inputAction,
     bool enabled,
     FocusNode focusNode,
-    {@required Function onSubmitted}) {
+    {required Function onSubmitted}) {
   return Container(
       child: Container(
     height: 50,
@@ -368,7 +369,7 @@ Widget buildButtonWithIcon(
     double elevation,
     double highlightElevation,
     double borderRadius,
-    {@required onPressed()}) {
+    {required onPressed()}) {
   return MaterialButton(
     child: Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -418,7 +419,7 @@ Widget buildButtonWithSvgIcon(
     double elevation,
     double highlightElevation,
     double borderRadius,
-    {@required onPressed()}) {
+    {required onPressed()}) {
   return MaterialButton(
     child: Row(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -548,7 +549,7 @@ Widget buildErrorNotification(String errorMessage, Color backgroundColor) {
 }
 
 Stack buildHeaderIcons(IconData icon, int itemCount, bool isDarkMode,
-    {@required Function onTap}) {
+    {required Function onTap}) {
   return Stack(
     clipBehavior: Clip.none,
     children: [
@@ -684,7 +685,7 @@ Widget buildIconButtonForToolbar(
     double elevation,
     double highlightElevation,
     double borderRadius,
-    {@required onPressed()}) {
+    {required onPressed()}) {
   return MaterialButton(
     child: Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -732,7 +733,7 @@ Widget buildInputWithIcon(
   Color fillColor,
   focusNode,
   String hint, {
-  @required IconData iconData,
+  required IconData iconData,
   @required onChange,
   @required onSubmit,
 }) {
@@ -798,17 +799,19 @@ Widget buildReadOnlyRatingBar(
             Icons.star,
             color: ratingColor,
           ),
-      onRatingUpdate: null);
+      onRatingUpdate: (rating) {
+        print(rating);
+      });
 }
 
 Widget buildAppBar(BuildContext context, String title,
-    {@required Function onBackPress}) {
+    {required Function onBackPress}) {
   return AppBar(
     backgroundColor: isDarkMode(context) ? darkGreyColor : Colors.white,
     title: Text(
       title,
-      style: Theme.of(context).textTheme.subtitle1.copyWith(
-          fontWeight: Theme.of(context).textTheme.subtitle2.fontWeight),
+      style: Theme.of(context).textTheme.subtitle1?.copyWith(
+          fontWeight: Theme.of(context).textTheme.subtitle2?.fontWeight),
     ),
     leading: InkWell(
       child: Icon(
@@ -847,6 +850,55 @@ Widget buildNavigationItem(String image, String title) {
     ),
   );
 }
+
+Widget buildDialogWithAnimation(
+  
+  
+  BuildContext context, String successmessage, String buttonText, String pathlottie, {@required onTap}){
+      return Stack(children: [
+        Dialog(
+          child: Container(
+            height: 150.0,
+            width: MediaQuery.of(context).size.width,
+            child: Padding(
+              padding: const EdgeInsets.only(top: 50.0),
+              child: Column(
+                children: [
+                  Text(
+                    successmessage,
+                    style: Theme.of(context).textTheme.bodyText1,
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  InkWell(
+                    child: Text(
+                      buttonText,
+                      style: homeScreensClickableLabelStyle,
+                    ),
+                    onTap: () {
+                      onTap();
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+        Center(
+          child: Lottie.asset(
+            'assets/LottieLogo1.json',
+            width: 80,
+            height: 80,
+            fit: BoxFit.fill,
+          )
+        )
+      ]);
+
+  }
+  
+
+
 
 Widget buildDialog(
     BuildContext context, String message, String buttonText, String topIcon,
@@ -898,9 +950,9 @@ Widget buildProductGridView(
   Axis scrollDirection,
   bool isLoading, {
   @required heroTagPrefix,
-  @required onCartTap(i, b),
-  @required onFavoriteTap(i),
-  @required onProductSelected(i),
+  required onCartTap(i, b),
+  required onFavoriteTap(i),
+  required onProductSelected(i),
 }) {
   return Column(
     children: [
@@ -967,8 +1019,8 @@ void buildConfirmationDialog(
           child: Text(
             'Cancel',
             style: TextStyle(
-              fontSize: Theme.of(context).textTheme.subtitle1.fontSize,
-              fontFamily: Theme.of(context).textTheme.subtitle1.fontFamily,
+              fontSize: Theme.of(context).textTheme.subtitle1?.fontSize,
+              fontFamily: Theme.of(context).textTheme.subtitle1?.fontFamily,
               color: Colors.white,
             ),
           ),
@@ -980,8 +1032,8 @@ void buildConfirmationDialog(
 
 Shimmer shimmerLoading(BuildContext context) {
   return Shimmer.fromColors(
-    baseColor: Colors.grey[200],
-    highlightColor: Colors.grey[350],
+    baseColor: Colors.grey[200] ?? Colors.grey, // provide a default color here
+    highlightColor: Colors.grey[350] ?? Colors.grey, // provide a default color here
     child: Center(
       child: Text(
         loadingTitle,
@@ -990,6 +1042,7 @@ Shimmer shimmerLoading(BuildContext context) {
     ),
   );
 }
+
 
 Widget buildRating(int starCount, double ratingValue, bool isDarkMode) {
   return Padding(

@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:shopping_app_ui/Data/ProductData.dart';
-import 'package:shopping_app_ui/colors/Colors.dart';
-import 'package:shopping_app_ui/constant/Constants.dart';
-import 'package:shopping_app_ui/model/ProductInCart.dart';
-import 'package:shopping_app_ui/screens/launch/HomeScreen.dart';
-import 'package:shopping_app_ui/util/RemoveGlowEffect.dart';
-import 'package:shopping_app_ui/util/size_config.dart';
-import 'package:shopping_app_ui/widgets/Styles.dart';
-import 'package:shopping_app_ui/screens/order_process/CheckoutScreen.dart';
-import 'package:shopping_app_ui/util/Util.dart';
+import '/Data/ProductData.dart';
+import '/colors/Colors.dart';
+import '/constant/Constants.dart';
+import '/model/ProductInCart.dart';
+import '/screens/launch/HomeScreen.dart';
+import '/util/RemoveGlowEffect.dart';
+import '/util/size_config.dart';
+import '/widgets/Styles.dart';
+import '/screens/order_process/CheckoutScreen.dart';
+import '/util/Util.dart';
 
 class MyCartScreen extends StatefulWidget {
   @override
@@ -20,13 +20,13 @@ class _MyCartScreenState extends State<MyCartScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: buildAppBar(
-        context,
-        myCart,
-        onBackPress: () {
-       Navigator.pop(context);
-        },
-      ),
+      // appBar: buildAppBar(
+      //   context,
+      //   myCart,
+      //   onBackPress: () {
+      //  Navigator.pop(context);
+      //   },
+      // ),
       backgroundColor: isDarkMode(context)
           ? darkBackgroundColor
           : Theme.of(context).backgroundColor,
@@ -136,8 +136,8 @@ class _MyCartScreenState extends State<MyCartScreen> {
                                                     .product.discountPercent /
                                                 100))
                                         .toStringAsFixed(2),
-                                style: Theme.of(context).textTheme.subtitle1.copyWith(
-                                    fontWeight: Theme.of(context).textTheme.subtitle2.fontWeight),
+                                style: Theme.of(context).textTheme.subtitle1?.copyWith(
+                                    fontWeight: Theme.of(context).textTheme.subtitle2?.fontWeight),
                               ),
                               SizedBox(
                                 width: 10,
@@ -149,7 +149,7 @@ class _MyCartScreenState extends State<MyCartScreen> {
                                 style: Theme.of(context)
                                     .textTheme
                                     .caption
-                                    .copyWith(
+                                    ?.copyWith(
                                   decoration:
                                   TextDecoration.lineThrough,
                                 ),

@@ -5,21 +5,21 @@ import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import 'package:odoo_rpc/odoo_rpc.dart';
-import 'package:shopping_app_ui/Data/ProductData.dart';
-import 'package:shopping_app_ui/OdooApiCall_DataMapping/ResPartner.dart';
-import 'package:shopping_app_ui/OdooApiCall_DataMapping/SupportTicketandResPartner.dart';
-import 'package:shopping_app_ui/OdooApiCall_DataMapping/ToCheckIn_ToCheckOut_SupportTicket.dart';
-import 'package:shopping_app_ui/colors/Colors.dart';
-import 'package:shopping_app_ui/constant/Constants.dart';
-import 'package:shopping_app_ui/model/Product.dart';
-import 'package:shopping_app_ui/model/ProductInCart.dart';
-import 'package:shopping_app_ui/screens/launch/HomeScreen.dart';
-import 'package:shopping_app_ui/screens/products/MyAttendanceScreen.dart';
-import 'package:shopping_app_ui/screens/products/TicketDetailScreen.dart';
-import 'package:shopping_app_ui/util/RemoveGlowEffect.dart';
-import 'package:shopping_app_ui/util/size_config.dart';
-import 'package:shopping_app_ui/widgets/Styles.dart';
-import 'package:shopping_app_ui/util/Util.dart';
+import '/Data/ProductData.dart';
+import '/OdooApiCall_DataMapping/ResPartner.dart';
+import '/OdooApiCall_DataMapping/SupportTicketandResPartner.dart';
+import '/OdooApiCall_DataMapping/ToCheckIn_ToCheckOut_SupportTicket.dart';
+import '/colors/Colors.dart';
+import '/constant/Constants.dart';
+import '/model/Product.dart';
+import '/model/ProductInCart.dart';
+import '/screens/launch/HomeScreen.dart';
+import '/screens/products/MyAttendanceScreen.dart';
+import '/screens/products/TicketDetailScreen.dart';
+import '/util/RemoveGlowEffect.dart';
+import '/util/size_config.dart';
+import '/widgets/Styles.dart';
+import '/util/Util.dart';
 import '../../OdooApiCall/AllTicketsApi.dart';
 import '../../OdooApiCall_DataMapping/SupportTicket.dart';
 import '../LoadingAnimation.dart';
@@ -34,13 +34,13 @@ class MyTicketScreen extends StatefulWidget {
 
 class _MyTicketScreenState extends State<MyTicketScreen> {
   final scrollcontroller = ScrollController();
-  List<ResPartner> partnerlist ;
+  late List<ResPartner> partnerlist ;
   var _buttonValue;
 
   @override
   void initState(){
     super.initState();
-    print ('find out whether sessionId exist!?' + globalClient.sessionId.id.toString());
+    print ('find out whether sessionId exist!?' + globalClient.sessionId!.id.toString());
     print ('find out what the fuck is in globalsession '+ globalSession.toString());
    
   }
@@ -93,8 +93,7 @@ class _MyTicketScreenState extends State<MyTicketScreen> {
 
                     case ConnectionState.done:
                       if(snapshot.hasData){
-                        return buildSupportTickets(//partners,
-                        tickets);
+                        return buildSupportTickets(tickets as List<ToCheckInOutSupportTicket>);
                       }
                       else if (snapshot.hasError){
                         return Column(
@@ -107,8 +106,8 @@ class _MyTicketScreenState extends State<MyTicketScreen> {
                               repeat: true,
                             ),
                             const SizedBox(height:(10)),
-                            Text('Unable to fetch data, please refresh and try again.', style: Theme.of(context).textTheme.subtitle1.copyWith(
-                              fontWeight: Theme.of(context).textTheme.subtitle2.fontWeight),textAlign: TextAlign.center,),
+                            Text('Unable to fetch data, please refresh and try again.', style: Theme.of(context).textTheme.subtitle1?.copyWith(
+                              fontWeight: Theme.of(context).textTheme.subtitle2?.fontWeight),textAlign: TextAlign.center,),
                             Text("${snapshot.error}"),
                 
 
@@ -208,16 +207,28 @@ class _MyTicketScreenState extends State<MyTicketScreen> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [                       
-                          avatarUrl != null ? CircleAvatar(
-                            backgroundImage: NetworkImage(avatarUrl, headers: {"X-Openerp-Session-Id":globalClient.sessionId.id}), 
-                            onBackgroundImageError: null,
-                            backgroundColor: Color.fromARGB(255, 150, 190, 223),     
-                            radius:getProportionateScreenWidth(35) )
-                            :                  
-                            CircleAvatar(
-                            backgroundColor: Color.fromARGB(255, 150, 190, 223),     
-                            radius:getProportionateScreenWidth(35) ),              
+                        children: [
+                          avatarUrl != null ?
+                          (globalClient.sessionId?.id != null ?
+                          CircleAvatar(
+                              backgroundImage: NetworkImage(avatarUrl, headers: {"X-Openerp-Session-Id": globalClient.sessionId!.id}),
+                              onBackgroundImageError: null,
+                              backgroundColor: Color.fromARGB(255, 150, 190, 223),
+                              radius:getProportionateScreenWidth(35)
+                          )
+                              : // Handle the case where sessionId is null
+                          CircleAvatar(
+                              backgroundImage: NetworkImage(avatarUrl),
+                              onBackgroundImageError: null,
+                              backgroundColor: Color.fromARGB(255, 150, 190, 223),
+                              radius:getProportionateScreenWidth(35)
+                          )
+                          )
+                              :
+                          CircleAvatar(
+                              backgroundColor: Color.fromARGB(255, 150, 190, 223),
+                              radius:getProportionateScreenWidth(35)
+                          ),
                           SizedBox(width: getProportionateScreenWidth(10)),
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -234,8 +245,8 @@ class _MyTicketScreenState extends State<MyTicketScreen> {
                                       '#${supportticket.ticket_number} ${supportticket.subject}',
                                       overflow: TextOverflow.ellipsis,
                                       maxLines: 2,
-                                      style: Theme.of(context).textTheme.subtitle1.copyWith(
-                                            fontWeight: Theme.of(context).textTheme.subtitle2.fontWeight),
+                                      style: Theme.of(context).textTheme.subtitle1?.copyWith(
+                                            fontWeight: Theme.of(context).textTheme.subtitle2?.fontWeight),
                                       
                                     ),
                                   
@@ -281,7 +292,7 @@ class _MyTicketScreenState extends State<MyTicketScreen> {
                                                 style:Theme.of(context)
                                                 .textTheme
                                                 .bodyText2
-                                                .copyWith(
+                                                ?.copyWith(
                                                   //decoration:
                                                   //    TextDecoration.lineThrough,
                                                 ),
@@ -306,10 +317,10 @@ class _MyTicketScreenState extends State<MyTicketScreen> {
                                                 style:Theme.of(context)
                                                 .textTheme
                                                 .bodyText2
-                                                .copyWith(
+                                                ?.copyWith(
                                                   //decoration:
                                                   //    TextDecoration.lineThrough,
-                                                  color: Theme.of(context).textTheme.caption.color,
+                                                  color: Theme.of(context).textTheme.caption?.color,
                                                 ),
                                               ),
                                             ],
@@ -332,7 +343,7 @@ class _MyTicketScreenState extends State<MyTicketScreen> {
                                                 style:Theme.of(context)
                                                 .textTheme
                                                 .bodyText2
-                                                .copyWith(
+                                                ?.copyWith(
                                                   decoration: TextDecoration.underline,
                                                   color: orangeredColor                                  
                                                 ),
@@ -347,7 +358,7 @@ class _MyTicketScreenState extends State<MyTicketScreen> {
                                                     style:Theme.of(context)
                                                     .textTheme
                                                     .bodyText2
-                                                    .copyWith(
+                                                    ?.copyWith(
                                                       decoration: TextDecoration.underline,
                                                       color: orangeredColor                                  
                                                     )
@@ -357,7 +368,7 @@ class _MyTicketScreenState extends State<MyTicketScreen> {
                                                     style:Theme.of(context)
                                                     .textTheme
                                                     .caption
-                                                    .copyWith(                                                   
+                                                    ?.copyWith(
                                                     ),
                                                   )
                                                 ]
@@ -445,7 +456,7 @@ class _MyTicketScreenState extends State<MyTicketScreen> {
                           (Set<MaterialState> states) {
                             if (states.contains(MaterialState.pressed))
                               return 16;
-                            return null;
+                            return 0;
                           }),
                           //shape: RectangularRangeSliderTrackShap
                           backgroundColor: MaterialStateProperty.all<Color>(primaryColor),
@@ -464,7 +475,7 @@ class _MyTicketScreenState extends State<MyTicketScreen> {
                                     ? _buttonValue = 'SUBMIT FORM'
                                     : null,
                                     
-                                    style: Theme.of(context).textTheme.button.copyWith(
+                                    style: Theme.of(context).textTheme.button?.copyWith(
                                         fontFamily: poppinsFont,
                                         color: Colors.white,
                                         fontWeight: FontWeight.w600,

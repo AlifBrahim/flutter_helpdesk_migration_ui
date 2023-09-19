@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:shopping_app_ui/Data/ProductData.dart';
-import 'package:shopping_app_ui/OdooApiCall_DataMapping/SupportTicketandResPartner.dart';
-import 'package:shopping_app_ui/OdooApiCall_DataMapping/ToCheckIn_ToCheckOut_SupportTicket.dart';
-import 'package:shopping_app_ui/colors/Colors.dart';
-import 'package:shopping_app_ui/constant/Constants.dart';
-import 'package:shopping_app_ui/util/size_config.dart';
-import 'package:shopping_app_ui/widgets/Styles.dart';
-import 'package:shopping_app_ui/widgets/MyCustomStepperHafiz.dart'
+import '/Data/ProductData.dart';
+import '/OdooApiCall_DataMapping/SupportTicketandResPartner.dart';
+import '/OdooApiCall_DataMapping/ToCheckIn_ToCheckOut_SupportTicket.dart';
+import '/colors/Colors.dart';
+import '/constant/Constants.dart';
+import '/util/size_config.dart';
+import '/widgets/Styles.dart';
+import '/widgets/MyCustomStepperHafiz.dart'
     as MyCustomStepper;
-import 'package:shopping_app_ui/util/Util.dart';
+import '/util/Util.dart';
 
 class TicketDetailScreen extends StatefulWidget {
 
@@ -33,6 +33,14 @@ class _TicketDetailScreenState extends State<TicketDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
+    PreferredSize buildAppBar(BuildContext context, String title, {VoidCallback? onBackPress}) {
+      return PreferredSize(
+        preferredSize: Size.fromHeight(kToolbarHeight), // Set the height as needed
+        child: AppBar(
+          // Your AppBar code here
+        ),
+      );
+    }
     return Scaffold(
       backgroundColor: isDarkMode(context) ? darkBackgroundColor : Theme.of(context).backgroundColor,
       appBar: buildAppBar(context, 'Details', onBackPress: () {
@@ -298,10 +306,13 @@ class _TicketDetailScreenState extends State<TicketDetailScreen> {
             physics: ClampingScrollPhysics(),
             steps: orderSteps,
             currentStep: 2,
-            controlsBuilder: (BuildContext context,
-                    ControlsDetails controls) =>
-                Container(),
+            controlsBuilder: (BuildContext context, ControlsDetails controls) => Container(),
+            key: UniqueKey(),
+            onStepTapped: (int value) {  },
+            controls: ControlsDetails(currentStep: 0, stepIndex: 0), // Provide a valid ControlsDetails object here
           ),
+
+
         ),
       ),
     );
@@ -715,7 +726,7 @@ class _TicketDetailScreenState extends State<TicketDetailScreen> {
                   left: getProportionateScreenWidth(12)),
               child: Text(
                 detailsLabel,
-                style: Theme.of(context).textTheme.subtitle1.copyWith(
+                style: Theme.of(context).textTheme.subtitle1?.copyWith(
                   fontWeight: FontWeight.bold
                 ),
               ),

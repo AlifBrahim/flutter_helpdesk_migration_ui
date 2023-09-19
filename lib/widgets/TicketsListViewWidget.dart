@@ -3,18 +3,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
-import 'package:shopping_app_ui/colors/Colors.dart';
-import 'package:shopping_app_ui/constant/Constants.dart';
-import 'package:shopping_app_ui/screens/products/MyAttendanceScreen.dart';
-import 'package:shopping_app_ui/screens/products/MySubmitFormScreen.dart';
-import 'package:shopping_app_ui/screens/products/TicketDetailScreen.dart';
-import 'package:shopping_app_ui/util/Util.dart';
-import 'package:shopping_app_ui/widgets/Styles.dart';
+import '/colors/Colors.dart';
+import '/constant/Constants.dart';
+import '/screens/products/MyAttendanceScreen.dart';
+import '/screens/products/MySubmitFormScreen.dart';
+import '/screens/products/TicketDetailScreen.dart';
+import '/util/Util.dart';
+import '/widgets/Styles.dart';
 
 import '../util/size_config.dart';
 
-Widget buildTicketList(item,globalClient,context,index){ 
-        
+Widget buildTicketList(item,globalClient,context,index){
+
               var avatarUrl;
               if(item.partner_id != null)
             avatarUrl= '${globalClient.baseURL}/web/image?model=res.partner&id=${item.partner_id}&field=image_medium'; //&unique=$unique';
@@ -26,8 +26,8 @@ Widget buildTicketList(item,globalClient,context,index){
             String create_date = DateFormat("dd/MM/yyyy hh:mm:ss a").format(MYtimezone); //use this variable, because malaysia timezone is +8 hours from UTC. database gives u UTC time
             String respartner_id = item.partner_id != null ? item.partner_id : ''; //we need this to pass non null partner_id data to the attendance screen, to get the partner_latitude and longitude
             //field respartner_id is very important.
-            
-              String _buttonValue;
+
+              String _buttonValue = 'SUBMIT FORM'; // Assign a default value
               return Padding(
               padding: EdgeInsets.symmetric(
             horizontal: getProportionateScreenWidth(16),
@@ -80,8 +80,8 @@ Widget buildTicketList(item,globalClient,context,index){
                                         '#${item.ticket_number} ${item.subject}',
                                         overflow: TextOverflow.ellipsis,
                                         maxLines: 2,
-                                        style: Theme.of(context).textTheme.subtitle1.copyWith(
-                                              fontWeight: Theme.of(context).textTheme.subtitle2.fontWeight),
+                                        style: Theme.of(context).textTheme.subtitle1?.copyWith(
+                                              fontWeight: Theme.of(context).textTheme.subtitle2?.fontWeight),
                                         
                                       ),
                                     
@@ -127,7 +127,7 @@ Widget buildTicketList(item,globalClient,context,index){
                                                   style:Theme.of(context)
                                                   .textTheme
                                                   .bodyText2
-                                                  .copyWith(
+                                                  ?.copyWith(
                                                     //decoration:
                                                     //    TextDecoration.lineThrough,
                                                   ),
@@ -152,10 +152,10 @@ Widget buildTicketList(item,globalClient,context,index){
                                                   style:Theme.of(context)
                                                   .textTheme
                                                   .bodyText2
-                                                  .copyWith(
+                                                  ?.copyWith(
                                                     //decoration:
                                                     //    TextDecoration.lineThrough,
-                                                    color: Theme.of(context).textTheme.caption.color,
+                                                    color: Theme.of(context).textTheme.caption?.color,
                                                   ),
                                                 ),
                                               ],
@@ -178,7 +178,7 @@ Widget buildTicketList(item,globalClient,context,index){
                                                   style:Theme.of(context)
                                                   .textTheme
                                                   .bodyText2
-                                                  .copyWith(
+                                                  ?.copyWith(
                                                     decoration: TextDecoration.underline,
                                                     color: orangeredColor                                  
                                                   ),
@@ -193,7 +193,7 @@ Widget buildTicketList(item,globalClient,context,index){
                                                       style:Theme.of(context)
                                                       .textTheme
                                                       .bodyText2
-                                                      .copyWith(
+                                                      ?.copyWith(
                                                         decoration: TextDecoration.underline,
                                                         color: orangeredColor                                  
                                                       )
@@ -203,7 +203,7 @@ Widget buildTicketList(item,globalClient,context,index){
                                                       style:Theme.of(context)
                                                       .textTheme
                                                       .caption
-                                                      .copyWith(                                                   
+                                                      ?.copyWith(
                                                       ),
                                                     )
                                                   ]
@@ -277,7 +277,7 @@ Widget buildTicketList(item,globalClient,context,index){
                             (Set<MaterialState> states) {
                               if (states.contains(MaterialState.pressed))
                                 return 16;
-                              return null;
+                              return 0;
                             }),
                             //shape: RectangularRangeSliderTrackShap
                             backgroundColor: MaterialStateProperty.all<Color>(primaryColor),
@@ -296,7 +296,7 @@ Widget buildTicketList(item,globalClient,context,index){
                                       ? _buttonValue = 'SUBMIT FORM'
                                       : null,
                                       
-                                      style: Theme.of(context).textTheme.button.copyWith(
+                                      style: Theme.of(context).textTheme.button?.copyWith(
                                           fontFamily: poppinsFont,
                                           color: Colors.white,
                                           fontWeight: FontWeight.w600,

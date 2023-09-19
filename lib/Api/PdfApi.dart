@@ -2,14 +2,14 @@ import 'dart:io';
 import 'dart:ui';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter/services.dart';
-import 'package:shopping_app_ui/OdooApiCall_DataMapping/ToCheckIn_ToCheckOut_SupportTicket.dart';
+import '/OdooApiCall_DataMapping/ToCheckIn_ToCheckOut_SupportTicket.dart';
 import 'package:syncfusion_flutter_pdf/pdf.dart';
 
 import '../OdooApiCall_DataMapping/SupportTicket.dart';
 
 class PdfApi {
   static Future<File> generatePDF(
-    { ByteData imageSignature, supportTicket, ToCheckInOutSupportTicket supportticket}
+    { required ByteData imageSignature, supportTicket, required ToCheckInOutSupportTicket supportticket}
   
   
   ) async {
@@ -26,7 +26,7 @@ class PdfApi {
   final fileName =
       path.path + '/CM Form${DateTime.now().toIso8601String()}.pdf';
   final file = File(fileName); 
-  file.writeAsBytes(document.save());
+  //file.writeAsBytes(document.save());
   document.dispose();
   return file;
   }
@@ -134,7 +134,7 @@ class PdfApi {
       }
     }
     //Draw grid and get drawn bounds
-    final PdfLayoutResult result =
+    final PdfLayoutResult? result =
         headerGrid.draw(page: page, bounds: const Rect.fromLTWH(1, 1, 0, 0));
 
     //Create a new grid
@@ -182,9 +182,9 @@ class PdfApi {
     }
     //Draw content grid based on the bounds calculated in first grid
     contentGrid.draw(
-        page: result.page,
+        page: result?.page,
         bounds:
-            Rect.fromLTWH(1, result.bounds.top + result.bounds.height, 0, 0));
+            Rect.fromLTWH(1, result!.bounds.top + result.bounds.height, 0, 0));
 
     
     //final grid = PdfGrid();

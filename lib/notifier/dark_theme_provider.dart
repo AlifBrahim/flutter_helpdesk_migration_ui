@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:shopping_app_ui/sharedPreference/PreferenceKeys.dart';
+import '/sharedPreference/PreferenceKeys.dart';
 
 class DarkThemeProvider with ChangeNotifier {
   ThemePreferences themePreferences = ThemePreferences();

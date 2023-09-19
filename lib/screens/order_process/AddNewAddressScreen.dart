@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:shopping_app_ui/colors/Colors.dart';
+import '/colors/Colors.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:shopping_app_ui/constant/Constants.dart';
-import 'package:shopping_app_ui/widgets/Styles.dart';
+import '/constant/Constants.dart';
+import '/widgets/Styles.dart';
 import 'package:country_picker/country_picker.dart';
-import 'package:shopping_app_ui/util/Util.dart';
+import '/util/Util.dart';
 
 class AddNewAddressScreen extends StatefulWidget {
   @override
@@ -62,9 +62,9 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
       backgroundColor: isDarkMode(context)
           ? darkBackgroundColor
           : Theme.of(context).backgroundColor,
-      appBar: buildAppBar(context, newAddressLabel, onBackPress: () {
-        Navigator.pop(context);
-      }),
+      // appBar: buildAppBar(context, newAddressLabel, onBackPress: () {
+      //   Navigator.pop(context);
+      // }),
       body: SafeArea(
         child: SingleChildScrollView(
           controller: scrollController,
@@ -92,7 +92,7 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
                                     errorMessage,
                                     hideLabel,
                                     isDarkMode(context)
-                                        ? Colors.red[900]
+                                        ? Colors.red[900]!
                                         : pinkishColor,
                                     true,
                                     focusNode: focusNodeErrorNotification,
@@ -206,7 +206,7 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
       context,
       addressLineOne,
       enterAddressLabel,
-      null,
+        Icons.cabin, // cannot be null
       TextInputType.streetAddress,
       TextInputAction.next,
       true,
@@ -220,7 +220,7 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
       context,
       city,
       enterCityLabel,
-      null,
+      Icons.location_city,
       TextInputType.streetAddress,
       TextInputAction.next,
       true,
@@ -234,7 +234,7 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
       context,
       zipCode,
       enterZipLabel,
-      null,
+      Icons.abc, // cannot be null
       TextInputType.number,
       TextInputAction.done,
       true,
@@ -271,7 +271,7 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
           onChanged: (b) {
             setState(
               () {
-                isHomeSelected = b;
+                isHomeSelected = b!;
                 if (b) {
                   isOfficeSelected = false;
                 }
@@ -293,7 +293,7 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
           onChanged: (b) {
             setState(
               () {
-                isOfficeSelected = b;
+                isOfficeSelected = b!;
                 if (b) {
                   isHomeSelected = false;
                 }

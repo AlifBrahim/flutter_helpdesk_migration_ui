@@ -1,4 +1,4 @@
-import 'package:shopping_app_ui/model/Notification.dart';
+import '/model/Notification.dart';
 
 var notificationData = [
   Notification(

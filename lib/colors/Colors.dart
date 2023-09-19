@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:shopping_app_ui/constant/Constants.dart';
+import 'package:flutter/services.dart';
+import '/constant/Constants.dart';
 
 ThemeData themeData(bool isDarkTheme, BuildContext context) {
   return ThemeData(
     
-    primarySwatch: Colors.blue,
     primaryColor: isDarkTheme ? Colors.black : Colors.white,
-    backgroundColor: isDarkTheme ? Colors.grey : Color(0xffF1F5FB),
     indicatorColor: isDarkTheme ? Color(0xff0E1D36) : Color(0xffCBDCF8),
-    buttonColor: isDarkTheme ? Color(0xff3B3B3B) : Color(0xffF1F5FB),
     hintColor: isDarkTheme ? Color(0xff280C0B) : Color(0xffEECED3),
     highlightColor: isDarkTheme ? Color(0xff372901) : primaryColor.withOpacity(0.4),
     hoverColor: isDarkTheme ? Color(0xff3A3A3B) : Color(0xff4285F4),
@@ -32,20 +30,24 @@ ThemeData themeData(bool isDarkTheme, BuildContext context) {
     appBarTheme: AppBarTheme(
       elevation: 0.0,
       backgroundColor: isDarkTheme ? Colors.blue[900] : primaryColor,
-      brightness: Brightness.dark,
-      iconTheme: IconThemeData(color: Colors.white),
-      textTheme: TextTheme(
+      iconTheme: IconThemeData(color: Colors.white), systemOverlayStyle: SystemUiOverlayStyle.light, toolbarTextStyle: TextTheme(
         headline6: TextStyle(
           color: Colors.white,
           fontSize: 18,
           fontWeight: FontWeight.w500,
         ),
-      ),
+      ).bodyText2, titleTextStyle: TextTheme(
+        headline6: TextStyle(
+          color: Colors.white,
+          fontSize: 18,
+          fontWeight: FontWeight.w500,
+        ),
+      ).headline6,
     ),
     textSelectionTheme: TextSelectionThemeData(
       selectionColor:
       isDarkTheme ? Colors.white60 : Colors.black.withOpacity(0.8),
-    ),
+    ), colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.blue).copyWith(background: isDarkTheme ? Colors.grey : Color(0xffF1F5FB)),
   );
 }
 

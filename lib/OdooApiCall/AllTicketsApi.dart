@@ -1,8 +1,8 @@
 import 'package:flutter/widgets.dart';
 import 'package:odoo_rpc/odoo_rpc.dart';
-import 'package:shopping_app_ui/OdooApiCall_DataMapping/ResPartner.dart';
-import 'package:shopping_app_ui/OdooApiCall_DataMapping/SupportTicketandResPartner.dart';
-import 'package:shopping_app_ui/OdooApiCall_DataMapping/ToCheckIn_ToCheckOut_SupportTicket.dart';
+import '/OdooApiCall_DataMapping/ResPartner.dart';
+import '/OdooApiCall_DataMapping/SupportTicketandResPartner.dart';
+import '/OdooApiCall_DataMapping/ToCheckIn_ToCheckOut_SupportTicket.dart';
 import '../OdooApiCall_DataMapping/SupportTicket.dart';
 import '../screens/authentication/LoginScreen.dart';
 

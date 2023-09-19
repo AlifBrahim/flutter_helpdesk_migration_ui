@@ -1,6 +1,6 @@
 // TODO Implement this library.import 'dart:convert';
 import 'package:odoo_rpc/odoo_rpc.dart';
-import 'package:shopping_app_ui/screens/authentication/LoginScreen.dart';
+import '/screens/authentication/LoginScreen.dart';
 import '../OdooApiCall_DataMapping/ToCheckIn_ToCheckOut_SupportTicket.dart';
 
   

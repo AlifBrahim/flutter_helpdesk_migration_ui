@@ -3,16 +3,16 @@ import 'dart:async';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shopping_app_ui/colors/Colors.dart';
-import 'package:shopping_app_ui/screens/products/MyTicketScreen.dart';
-import 'package:shopping_app_ui/screens/products/MyToCheckInScreen.dart';
-import 'package:shopping_app_ui/screens/products/tabCheckIn.dart';
-import 'package:shopping_app_ui/screens/products/tabCheckOut.dart';
-import 'package:shopping_app_ui/screens/products/tabSubmitForm.dart';
-import 'package:shopping_app_ui/screens/products/tabSubmitJobDetails.dart';
-import 'package:shopping_app_ui/util/Util.dart';
-import 'package:shopping_app_ui/util/size_config.dart';
-import 'package:shopping_app_ui/widgets/Styles.dart';
+import '/colors/Colors.dart';
+import '/screens/products/MyTicketScreen.dart';
+import '/screens/products/MyToCheckInScreen.dart';
+import '/screens/products/tabCheckIn.dart';
+import '/screens/products/tabCheckOut.dart';
+import '/screens/products/tabSubmitForm.dart';
+//import '/screens/products/tabSubmitJobDetails.dart';
+import '/util/Util.dart';
+import '/util/size_config.dart';
+import '/widgets/Styles.dart';
 
 
 class MyTicketMainScreen extends ConsumerStatefulWidget {
@@ -25,7 +25,7 @@ class MyTicketMainScreen extends ConsumerStatefulWidget {
 
 
 class _MyTicketMainScreenState extends ConsumerState with SingleTickerProviderStateMixin {
-  TabController _controller;
+  late TabController _controller;
 
   @override
   void initState() {
@@ -54,8 +54,8 @@ class _MyTicketMainScreenState extends ConsumerState with SingleTickerProviderSt
             backgroundColor: isDarkMode(context) ? darkGreyColor : Colors.white,
             title: Text(
               'My Tickets',
-              style: Theme.of(context).textTheme.subtitle1.copyWith(
-                  fontWeight: Theme.of(context).textTheme.subtitle2.fontWeight),
+              style: Theme.of(context).textTheme.subtitle1?.copyWith(
+                  fontWeight: Theme.of(context).textTheme.subtitle2?.fontWeight),
             ),
             leading: InkWell(
               child: Icon(
@@ -93,9 +93,9 @@ class _MyTicketMainScreenState extends ConsumerState with SingleTickerProviderSt
             controller: _controller,  
             children: [
               MyTicketScreen(),
-              CheckInTab(),
-              CheckOutTab(),
-              SubmitJobDetailsTab(),
+              CheckInTab(key: UniqueKey()),
+              CheckOutTab(key: UniqueKey(),),
+              //SubmitJobDetailsTab(),
               SubmitFormTab(),
               //MyCheckInScreen(),
               //Icon(Icons.flight, size: 350),

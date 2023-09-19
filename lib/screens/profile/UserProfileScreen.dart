@@ -7,13 +7,13 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:package_info/package_info.dart';
 import 'package:share/share.dart';
-import 'package:shopping_app_ui/colors/Colors.dart';
-import 'package:shopping_app_ui/constant/Constants.dart';
-import 'package:shopping_app_ui/screens/settings/SettingsScreen.dart';
-import 'package:shopping_app_ui/util/RemoveGlowEffect.dart';
-import 'package:shopping_app_ui/util/size_config.dart';
-import 'package:shopping_app_ui/widgets/Styles.dart';
-import 'package:shopping_app_ui/util/Util.dart';
+import '/colors/Colors.dart';
+import '/constant/Constants.dart';
+import '/screens/settings/SettingsScreen.dart';
+import '/util/RemoveGlowEffect.dart';
+import '/util/size_config.dart';
+import '/widgets/Styles.dart';
+import '/util/Util.dart';
 
 import '../authentication/LoginScreen.dart';
 import 'AccountInfoScreen.dart';
@@ -26,8 +26,8 @@ class UserProfileScreen extends StatefulWidget {
 }
 
 class _UserProfileScreenState extends State<UserProfileScreen> {
-  PackageInfo packageInfo;
-  File imageFile;
+  late PackageInfo packageInfo;
+  late File imageFile;
 
   final ImagePicker imagePicker = ImagePicker();
 
@@ -225,7 +225,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                 onTap: () {
                   navigateToScreen(
                     context,
-                    SettingsScreen(isFromBottomNav: false,),
+                    SettingsScreen(isFromBottomNav: false, key: UniqueKey(),),
                   );
                 },
               ),
@@ -276,7 +276,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
     );
   }
 
-  Widget buildListRow(String title, {@required Function onTap}) {
+  Widget buildListRow(String title, {required Function onTap}) {
     return InkWell(
       child: Padding(
         padding: EdgeInsets.symmetric(
@@ -340,7 +340,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
 
   Future pickImageFromCamera(BuildContext context) async {
     try {
-      final pickedFile = await imagePicker.getImage(
+      final pickedFile = await imagePicker.pickImage(
         source: ImageSource.camera,
         maxHeight: 800,
         maxWidth: 800,
@@ -351,15 +351,15 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
         cropImage(context, pickedFile?.path ?? "");
 
     } catch (e) {
-      PlatformException exemption = e;
+      // PlatformException exemption = e;
 
-      showErrorToast(context, 'Error ${exemption.message}');
+      showErrorToast(context, 'Error Pick file!');
     }
   }
 
   Future pickImageFromGallery(BuildContext context) async {
     try {
-      final pickedFile = await imagePicker.getImage(
+      final pickedFile = await imagePicker.pickImage(
         source: ImageSource.gallery,
         maxWidth: 800,
         maxHeight: 800,
@@ -370,14 +370,14 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
         cropImage(context, pickedFile?.path     ?? "");
 
     } catch (e) {
-      PlatformException exemption = e;
 
-      showErrorToast(context, 'Error ${exemption.message}');
+
+      showErrorToast(context, 'Error Pick file');
     }
   }
 
   Future cropImage(BuildContext context, String filePath) async {
-    CroppedFile croppedFile = await ImageCropper().cropImage(
+    CroppedFile? croppedFile = await ImageCropper().cropImage(
         sourcePath: filePath,
         aspectRatioPresets: setAspectRatios(),
         uiSettings: [        

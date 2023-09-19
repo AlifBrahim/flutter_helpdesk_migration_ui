@@ -8,18 +8,17 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 enum NetworkStatus { NotDetermined, On, Off }
 
 class NetworkDetectorNotifier extends StateNotifier<NetworkStatus> {
-  
+
   StreamController<ConnectivityResult> controller = StreamController<ConnectivityResult>();
 
   NetworkStatus lastResult;
 
-  NetworkDetectorNotifier() : super(NetworkStatus.NotDetermined) {
+  NetworkDetectorNotifier() : lastResult = NetworkStatus.NotDetermined, super(NetworkStatus.NotDetermined) {
 
-    lastResult = NetworkStatus.NotDetermined;
     Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
-      // Use Connectivity() here to gather more info if you need 
-      NetworkStatus newState;
-      
+      // Use Connectivity() here to gather more info if you need
+      NetworkStatus newState = NetworkStatus.NotDetermined;
+
       switch (result) {
         case ConnectivityResult.mobile:
           newState = NetworkStatus.On;
@@ -29,13 +28,12 @@ class NetworkDetectorNotifier extends StateNotifier<NetworkStatus> {
           break;
         case ConnectivityResult.none:
           newState = NetworkStatus.Off;
-          // TODO: Handle this case.
           break;
         case ConnectivityResult.bluetooth:
-          // TODO: Handle this case.
+        // TODO: Handle this case.
           break;
         case ConnectivityResult.ethernet:
-          // TODO: Handle this case.
+        // TODO: Handle this case.
           break;
       }
       if (newState != state) {
@@ -44,6 +42,7 @@ class NetworkDetectorNotifier extends StateNotifier<NetworkStatus> {
     });
   }
 }
+
 
 
 

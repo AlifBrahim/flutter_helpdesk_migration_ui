@@ -4,19 +4,19 @@ import 'package:geolocator/geolocator.dart';
 import 'package:geolocator_platform_interface/src/models/position.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
-import 'package:shopping_app_ui/OdooApiCall/ToCheckInTicketsApi.dart';
-import 'package:shopping_app_ui/OdooApiCall_DataMapping/ResPartner.dart';
-import 'package:shopping_app_ui/OdooApiCall_DataMapping/SupportTicketandResPartner.dart';
-import 'package:shopping_app_ui/colors/Colors.dart';
-import 'package:shopping_app_ui/constant/Constants.dart';
-import 'package:shopping_app_ui/riverpod_class/attendance_api.dart';
-import 'package:shopping_app_ui/riverpod_class/currentAddress_api.dart';
-import 'package:shopping_app_ui/riverpod_class/currentLocation_api.dart';
-import 'package:shopping_app_ui/screens/authentication/LoginScreen.dart';
-import 'package:shopping_app_ui/widgets/Styles.dart';
-import 'package:shopping_app_ui/widgets/MyCustomStepper.dart'
+import '/OdooApiCall/ToCheckInTicketsApi.dart';
+import '/OdooApiCall_DataMapping/ResPartner.dart';
+import '/OdooApiCall_DataMapping/SupportTicketandResPartner.dart';
+import '/colors/Colors.dart';
+import '/constant/Constants.dart';
+import '/riverpod_class/attendance_api.dart';
+import '/riverpod_class/currentAddress_api.dart';
+import '/riverpod_class/currentLocation_api.dart';
+import '/screens/authentication/LoginScreen.dart';
+import '/widgets/Styles.dart';
+import '/widgets/MyCustomStepper.dart'
     as MyCustomStepper;
-import 'package:shopping_app_ui/util/Util.dart';
+import '/util/Util.dart';
 import 'package:slide_to_act/slide_to_act.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import '../../OdooApiCall/AllTicketsApi.dart';
@@ -41,27 +41,27 @@ class _MyAttendanceScreenState extends State<MyAttendanceScreen> with SingleTick
     fontFamily: poppinsFont,
     color: Colors.black.withOpacity(0.6),
   );
-  double partnerLat; //dont initialize it, this is for a late field.
-  double partnerLong; //same as this one, follow the rules of partnerLat
+  late double partnerLat; //dont initialize it, this is for a late field.
+  late double partnerLong; //same as this one, follow the rules of partnerLat
   String checkin = ''; // jst for temporary variable and also for ternary operation on slideaction
   String checkout = '';
 
   //all fetchedcheck fields are used for attendanceprovider to give checkin and checkout time
   //fetchedcheck fields are declared at the top because it is needed to be used as conditionals in slide to action 
-  DateTime fetchedCheckout;
-  DateTime fetchedCheckout_plus8;
-  DateTime fetchedCheckin;
-  DateTime fetchedCheckin_plus8;
+  late DateTime fetchedCheckout;
+  late DateTime fetchedCheckout_plus8;
+  late DateTime fetchedCheckin;
+  late DateTime fetchedCheckin_plus8;
   
 
   final panelController = PanelController();
-  double currentlatitude; //we try to sync provider data with the parameters in slidetocheckin consumer
-  double currentlongitude; //we try to sync provider data with the parameters in slidetocheckin consumer
-  String fullAddress;
+  late double currentlatitude; //we try to sync provider data with the parameters in slidetocheckin consumer
+  late double currentlongitude; //we try to sync provider data with the parameters in slidetocheckin consumer
+  late String fullAddress;
   // isLocationDone is used to set flag to true after we manage to fetch location,.. this flag is to be used for slide to check in, if no location is get/error, slide to checkin will appear as container, as sliding it might cause unknown bugs especially on singletickercancel error.
   // another thing is to be proper, we will only show slide to checkin after location is get, because this will prevent user from doing mistakes, in easy word, it makes it more user friendly.
 
-  AnimationController controller; //animation upon slide to check in
+  late AnimationController controller; //animation upon slide to check in
 
   Future<void> getResPartnerData() async {
 
@@ -72,8 +72,10 @@ class _MyAttendanceScreenState extends State<MyAttendanceScreen> with SingleTick
       print(widget.respartner_id);
       setState(() {
         for(int i=0;i<listResPartner.length;i++){
-        partnerLat= listResPartner[i].partner_latitude;
-        partnerLong= listResPartner[i].partner_longitude;
+
+        partnerLat= listResPartner[i].partner_latitude.toDouble();
+
+        partnerLong= listResPartner[i].partner_longitude.toDouble();
       }
       });    
     }
@@ -109,9 +111,9 @@ class _MyAttendanceScreenState extends State<MyAttendanceScreen> with SingleTick
 
     return Scaffold(
       backgroundColor: isDarkMode(context) ? darkBackgroundColor : Theme.of(context).backgroundColor,
-      appBar: buildAppBar(context, 'My Attendance', onBackPress: () {
-        Navigator.pop(context);       
-      }),
+      // appBar: buildAppBar(context, 'My Attendance', onBackPress: () {
+      //   Navigator.pop(context);
+      // }),
       body: SlidingUpPanel (
         defaultPanelState: PanelState.CLOSED,
         color: Theme.of(context).primaryColor,
@@ -120,7 +122,7 @@ class _MyAttendanceScreenState extends State<MyAttendanceScreen> with SingleTick
         maxHeight: panelHeightOpen,
         parallaxEnabled: true,
         parallaxOffset: 1.0, //maybe 0.5 is better
-        body: MapsWidget(widget.supporticket,partnerLat,partnerLong),
+        body: MapsWidget(widget.supporticket,partnerLat,partnerLong, key: UniqueKey(),),
         panelBuilder: (controller) => PanelWidget(
           panelController : panelController,
           controller: controller,
@@ -162,8 +164,8 @@ class _MyAttendanceScreenState extends State<MyAttendanceScreen> with SingleTick
               controller.duration = composition.duration;
               controller.forward();
           }),
-          Text('Success: Attendance Recorded',style: Theme.of(context).textTheme.subtitle1.copyWith(
-             fontWeight: Theme.of(context).textTheme.subtitle2.fontWeight),),
+          Text('Success: Attendance Recorded',style: Theme.of(context).textTheme.subtitle1?.copyWith(
+             fontWeight: Theme.of(context).textTheme.subtitle2?.fontWeight),),
             const SizedBox(height:16),
         ],
       ), 
@@ -190,13 +192,13 @@ class _MyAttendanceScreenState extends State<MyAttendanceScreen> with SingleTick
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Text('Error: You are out of allowed check in radius!',style: Theme.of(context).textTheme.subtitle1.copyWith(
-               fontWeight: Theme.of(context).textTheme.subtitle2.fontWeight),textAlign: TextAlign.center,),
+            child: Text('Error: You are out of allowed check in radius!',style: Theme.of(context).textTheme.subtitle1?.copyWith(
+               fontWeight: Theme.of(context).textTheme.subtitle2?.fontWeight),textAlign: TextAlign.center,),
           ),
           const SizedBox(height:16),
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Text('Please get nearer to your Customer location and perform Check-In inside the allowed circle radius. \n\nThank you.',style: Theme.of(context).textTheme.subtitle2.copyWith(
+            child: Text('Please get nearer to your Customer location and perform Check-In inside the allowed circle radius. \n\nThank you.',style: Theme.of(context).textTheme.subtitle2?.copyWith(
             ),textAlign: TextAlign.center,),
           ),
         ],
@@ -221,8 +223,8 @@ class _MyAttendanceScreenState extends State<MyAttendanceScreen> with SingleTick
               controller.forward();
             }
           ),
-          Text('Error: failed to check in! Details: $e ',style: Theme.of(context).textTheme.subtitle1.copyWith(
-             fontWeight: Theme.of(context).textTheme.subtitle2.fontWeight),),
+          Text('Error: failed to check in! Details: $e ',style: Theme.of(context).textTheme.subtitle1?.copyWith(
+             fontWeight: Theme.of(context).textTheme.subtitle2?.fontWeight),),
           const SizedBox(height:16),
         ],
       ), 
@@ -295,7 +297,7 @@ class _MyAttendanceScreenState extends State<MyAttendanceScreen> with SingleTick
     ? panelController.panelPosition == 0.0
     : panelController.panelPosition == 1.0;
 
-  Widget PanelWidget({ScrollController controller, PanelController panelController}){
+  Widget PanelWidget({required ScrollController controller, required PanelController panelController}){
     //final ScrollController controller; 
     //we will combine all the widgets needed inside here.
     return
@@ -341,13 +343,13 @@ class _MyAttendanceScreenState extends State<MyAttendanceScreen> with SingleTick
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Hello, ' + globalClient.sessionId.userName.toString(),
+                Text('Hello, ' + globalClient.sessionId!.userName.toString(),
                 
                 //+ 'this is partner longitude: '+widget.supporticket.partner_long.toString()
                 //+' \n this is partner latitude: '+ partnerLat.toString()
                 //+' \N this is last update '+ partnerLong.toString(),
-                  style: Theme.of(context).textTheme.subtitle1.copyWith(
-                      fontWeight: Theme.of(context).textTheme.subtitle2.fontWeight),
+                  style: Theme.of(context).textTheme.subtitle1?.copyWith(
+                      fontWeight: Theme.of(context).textTheme.subtitle2?.fontWeight),
                 ),
                 SizedBox(
                   height: 5,
@@ -426,8 +428,8 @@ class _MyAttendanceScreenState extends State<MyAttendanceScreen> with SingleTick
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text('Delivery expected on Sat, 19',
-                  style: Theme.of(context).textTheme.subtitle1.copyWith(
-                      fontWeight: Theme.of(context).textTheme.subtitle2.fontWeight),
+                  style: Theme.of(context).textTheme.subtitle1?.copyWith(
+                      fontWeight: Theme.of(context).textTheme.subtitle2?.fontWeight),
                 ),
                 SizedBox(
                   height: 5,
@@ -458,7 +460,7 @@ class _MyAttendanceScreenState extends State<MyAttendanceScreen> with SingleTick
           child: Column(
             children: [
                   Consumer(
-                  builder: (BuildContext context, WidgetRef ref, Widget child) {
+                    builder: (BuildContext context, WidgetRef ref, Widget? child) {
                     final watchAddress = ref.watch(currentaddressFutureProvider);
                     return watchAddress.when(
                       data:(placemark){
@@ -486,8 +488,8 @@ class _MyAttendanceScreenState extends State<MyAttendanceScreen> with SingleTick
                               child: Text('Error occured!\nDetails $e', textAlign: TextAlign.start,),
                             ),
                             
-                            Consumer(          
-                            builder: (BuildContext context, WidgetRef ref, Widget child) { 
+                            Consumer(
+                              builder: (BuildContext context, WidgetRef ref, Widget? child) {
                               return buildrefreshButtonWithIcon(ref);     
                             },
             ),
@@ -502,7 +504,7 @@ class _MyAttendanceScreenState extends State<MyAttendanceScreen> with SingleTick
 
               Divider(),
               Consumer(
-                builder: (BuildContext context, WidgetRef ref, Widget child) {  
+                builder: (BuildContext context, WidgetRef ref, Widget? child) {
                   final watchCheckin = ref.watch(attendanceProvider).checkInTime;
                   final watchCheckout = ref.watch(attendanceProvider).checkOutTime;
                   checkin = watchCheckin;             
@@ -630,15 +632,15 @@ class _MyAttendanceScreenState extends State<MyAttendanceScreen> with SingleTick
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Consumer(
-                  builder: (BuildContext context, WidgetRef ref, Widget child) {  
+                  builder: (BuildContext context, WidgetRef ref, Widget? child) {
                     final watchPosition = ref.watch(currentlocationFutureProvider);
                     return watchPosition.when(
                       data:(value){
                       currentlatitude = value.latitude; //value to be inserted when slide to check in
                       currentlongitude = value.longitude; //same as currentlatitude line
                         return Text(
-                          value.toString(), style: Theme.of(context).textTheme.subtitle2.copyWith(
-                          fontWeight: Theme.of(context).textTheme.subtitle2.fontWeight
+                          value.toString(), style: Theme.of(context).textTheme.subtitle2?.copyWith(
+                          fontWeight: Theme.of(context).textTheme.subtitle2?.fontWeight
                         ));
                       },
                       error: (e,stack) => Text('Error! Details$e'),  //TODO:// we should show old location too if error happens, we should persist the old data 
@@ -669,7 +671,7 @@ class _MyAttendanceScreenState extends State<MyAttendanceScreen> with SingleTick
       builder: (context){
         final GlobalKey <SlideActionState> key = GlobalKey();
         return Consumer(
-          builder: (BuildContext context, WidgetRef ref, Widget child) { 
+          builder: (BuildContext context, WidgetRef ref, Widget? child) {
             final watchCheckInTime = ref.watch(attendanceProvider).checkInTime;
             final watchCheckOutTime = ref.watch(attendanceProvider).checkOutTime;
             final watchLastKnownLocation = ref.read(lastknownlocationFutureProvider);
@@ -696,7 +698,7 @@ class _MyAttendanceScreenState extends State<MyAttendanceScreen> with SingleTick
 
                 Future.delayed(
                   Duration(milliseconds: 900),
-                  () => key.currentState.reset());  
+                  () => key.currentState?.reset());
                 // if not check in, fill check in first, if already check in, then fill checkout. 
                 //firstly, we have to put the value of fetched data (if it exist) into attendance provider first. , this should be done at top of build method
               
@@ -812,8 +814,8 @@ class _MyAttendanceScreenState extends State<MyAttendanceScreen> with SingleTick
                         ),
                         Text(
                           address1+',',
-                          style: Theme.of(context).textTheme.subtitle2.copyWith(
-                            fontWeight: Theme.of(context).textTheme.subtitle2.fontWeight
+                          style: Theme.of(context).textTheme.subtitle2?.copyWith(
+                            fontWeight: Theme.of(context).textTheme.subtitle2?.fontWeight
                           ),
                           overflow: TextOverflow.ellipsis,
                           maxLines: 2,
@@ -821,24 +823,24 @@ class _MyAttendanceScreenState extends State<MyAttendanceScreen> with SingleTick
                         const SizedBox(height: 5),
                         Text(
                           address2+',',
-                          style: Theme.of(context).textTheme.subtitle2.copyWith(
-                            fontWeight: Theme.of(context).textTheme.subtitle2.fontWeight
+                          style: Theme.of(context).textTheme.subtitle2?.copyWith(
+                            fontWeight: Theme.of(context).textTheme.subtitle2?.fontWeight
                           ),
                           maxLines: 2,
                         ),
                         const SizedBox(height: 5),
                         Text(
                           address3+',',
-                          style: Theme.of(context).textTheme.subtitle2.copyWith(
-                            fontWeight: Theme.of(context).textTheme.subtitle2.fontWeight
+                          style: Theme.of(context).textTheme.subtitle2?.copyWith(
+                            fontWeight: Theme.of(context).textTheme.subtitle2?.fontWeight
                           ),
                           maxLines: 2,
                         ),
                         const SizedBox(height: 5),
                         Text(
                           address4,
-                          style: Theme.of(context).textTheme.subtitle2.copyWith(
-                            fontWeight: Theme.of(context).textTheme.subtitle2.fontWeight
+                          style: Theme.of(context).textTheme.subtitle2?.copyWith(
+                            fontWeight: Theme.of(context).textTheme.subtitle2?.fontWeight
                           ),
                           maxLines: 2,
                         ),
@@ -850,8 +852,8 @@ class _MyAttendanceScreenState extends State<MyAttendanceScreen> with SingleTick
               ),
             ),
             Spacer(),
-            Consumer(          
-              builder: (BuildContext context, WidgetRef ref, Widget child) {
+            Consumer(
+              builder: (BuildContext context, WidgetRef ref, Widget? child) {
               return buildrefreshButtonWithIcon(ref);
               //return Container( //container might be necessary because we dont want address to cause renderflow problem, address is related to iconbutton location too.
               //  width: SizeConfig.screenWidth*0.09,
@@ -909,8 +911,8 @@ class _MyAttendanceScreenState extends State<MyAttendanceScreen> with SingleTick
                       subtitle,
                       overflow: TextOverflow.ellipsis,
                       maxLines: 3,
-                      style: Theme.of(context).textTheme.subtitle1.copyWith(
-                        fontWeight: Theme.of(context).textTheme.subtitle2.fontWeight
+                      style: Theme.of(context).textTheme.subtitle1?.copyWith(
+                        fontWeight: Theme.of(context).textTheme.subtitle2?.fontWeight
                       ),
                     ),
                   ],              
@@ -940,8 +942,8 @@ class _MyAttendanceScreenState extends State<MyAttendanceScreen> with SingleTick
                     subtitle2,
                     overflow: TextOverflow.ellipsis,
                     maxLines: 3,
-                    style: Theme.of(context).textTheme.subtitle1.copyWith(
-                      fontWeight: Theme.of(context).textTheme.subtitle2.fontWeight
+                    style: Theme.of(context).textTheme.subtitle1?.copyWith(
+                      fontWeight: Theme.of(context).textTheme.subtitle2?.fontWeight
                     ),
                   ),
                 ]

@@ -9,21 +9,23 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
-import 'package:shopping_app_ui/colors/Colors.dart';
+import '/colors/Colors.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:shopping_app_ui/constant/Constants.dart';
-import 'package:shopping_app_ui/screens/authentication/LoginScreen.dart';
-import 'package:shopping_app_ui/screens/authentication/VerifyAccountScreen.dart';
-import 'package:shopping_app_ui/screens/products/VerifyCustomerScreen.dart';
-import 'package:shopping_app_ui/util/size_config.dart';
-import 'package:shopping_app_ui/widgets/FullScreenPhotoView.dart';
-import 'package:shopping_app_ui/widgets/Styles.dart';
-import 'package:shopping_app_ui/util/Util.dart';
-import 'package:month_picker_dialog/month_picker_dialog.dart';
+import '/constant/Constants.dart';
+import '/screens/authentication/LoginScreen.dart';
+import '/screens/authentication/VerifyAccountScreen.dart';
+import '/screens/products/VerifyCustomerScreen.dart';
+import '/util/size_config.dart';
+//import '/widgets/FullScreenPhotoView.dart';
+import '/widgets/Styles.dart';
+import '/util/Util.dart';
+//import 'package:month_picker_dialog/month_picker_dialog.dart';
 import 'package:path/path.dart';
-import 'package:shopping_app_ui/widgets/multiselection.dart'; //due to importing path, a lot of our context have to be change to this.context ,, this is due to the problem of importing path package itself. please note this.
+import '/widgets/multiselection.dart';
+//import '/widgets/multiselection.dart'; //due to importing path, a lot of our context have to be change to this.context ,, this is due to the problem of importing path package itself. please note this.
 
 
+//List<Item> itemList;
 List selectedList = []; //purposely declare as global so that we can access from widget multiselection, for better coding this should be done, but due to this is a rapid development this have to be done.
 
 class MySubmitFormScreen extends StatefulWidget {
@@ -56,10 +58,10 @@ class _MySubmitFormScreenState extends State<MySubmitFormScreen> {
   FocusNode focusNodeErrorNotification = new FocusNode();
   FocusNode focusNodeProblem = new FocusNode();
 
-  File imageFile;
+  late File imageFile;
   
 
-  DateTime selectedCardExpiryDate;
+  late DateTime selectedCardExpiryDate;
   bool isSaveCardSelected = false,
   displaySuccessDialog = false,
   isDisplayErrorNotification = false;
@@ -99,6 +101,7 @@ class _MySubmitFormScreenState extends State<MySubmitFormScreen> {
               await pickImageFromCamera(context);
               //selectImages();
             },
+            
             child: Text(
               camera,
               style: TextStyle(
@@ -140,9 +143,9 @@ class _MySubmitFormScreenState extends State<MySubmitFormScreen> {
         imageFileList.add(pickedFile);
 
     } catch (e) {
-      PlatformException exemption = e;
+      // PlatformException exemption = e;
 
-      showErrorToast(context, 'Error ${exemption.message}');
+      showErrorToast(context, 'Error!');
     }
   }
 
@@ -159,14 +162,14 @@ class _MySubmitFormScreenState extends State<MySubmitFormScreen> {
         cropImage(context, pickedFile?.path     ?? "");
 
     } catch (e) {
-      PlatformException exemption = e;
+      // PlatformException exemption = e;
 
-      showErrorToast(context, 'Error ${exemption.message}');
+      showErrorToast(context, 'Error!');
     }
   }
 
   Future cropImage(BuildContext context, String filePath) async {
-    CroppedFile croppedFile = await ImageCropper().cropImage(
+    CroppedFile? croppedFile = await ImageCropper().cropImage(
         sourcePath: filePath,
         aspectRatioPresets: setAspectRatios(),
         uiSettings: [        
@@ -272,7 +275,7 @@ class _MySubmitFormScreenState extends State<MySubmitFormScreen> {
                                 errorMessage,
                                 hideLabel,
                                 isDarkMode(context)
-                                    ? Colors.red[900]
+                                    ? Colors.red[900]!
                                     : pinkishColor,
                                 true,
                                 focusNode: focusNodeErrorNotification,
@@ -705,8 +708,8 @@ class _MySubmitFormScreenState extends State<MySubmitFormScreen> {
 
   }
 
-    Widget buildProblem() {
-    return buildTextFormFieldExtraHeightRequired(
+  Widget buildProblem() {
+    return buildTextFieldExtraHeight(
         this.context,
         problem,
         TextCapitalization.words,
@@ -729,6 +732,7 @@ class _MySubmitFormScreenState extends State<MySubmitFormScreen> {
         onChange: (value) {},
         onSubmit: () {});
   }
+  
 
   Widget buildValidUntil() {
     return buildTextField(
@@ -781,7 +785,7 @@ class _MySubmitFormScreenState extends State<MySubmitFormScreen> {
   }
 
   Widget buildResolutionName() {
-    return buildTextFormFieldExtraHeightRequired(
+    return buildTextField(
         this.context,
         resolution,
         TextCapitalization.words,
@@ -797,7 +801,6 @@ class _MySubmitFormScreenState extends State<MySubmitFormScreen> {
             ? primaryColor.withOpacity(0.15)
             : Colors.transparent,
         500,
-        3,
         '',
         true,
         focusNode: focusNodeResolution,
@@ -807,7 +810,7 @@ class _MySubmitFormScreenState extends State<MySubmitFormScreen> {
 
   buildDatePicker(BuildContext context) async {
 
-    final DateTime picked = await showDatePicker(
+    final DateTime? picked = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
       firstDate: DateTime.now(),
@@ -831,7 +834,7 @@ class _MySubmitFormScreenState extends State<MySubmitFormScreen> {
           activeColor: primaryColor,
           onChanged: (b) {
             setState(() {
-              isSaveCardSelected = b;
+              isSaveCardSelected = b!;
             });
           },
         ),
@@ -973,7 +976,7 @@ class _MySubmitFormScreenState extends State<MySubmitFormScreen> {
 
           buildErrorNotification(
                 "Failed saving data, please try again",
-                isDarkMode(this.context) ? Colors.red[900] : pinkishColor,
+                isDarkMode(this.context) ? Colors.red[900]! : pinkishColor,
               );
           return print(e.toString());
         }

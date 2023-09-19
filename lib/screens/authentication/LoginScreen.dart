@@ -2,13 +2,13 @@ import 'package:email_validator/email_validator.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:odoo_rpc/odoo_rpc.dart';
-import 'package:shopping_app_ui/colors/Colors.dart';
-import 'package:shopping_app_ui/constant/Constants.dart';
-import 'package:shopping_app_ui/screens/launch/HomeScreen.dart';
-import 'package:shopping_app_ui/util/size_config.dart';
-import 'package:shopping_app_ui/widgets/Styles.dart';
-import 'package:shopping_app_ui/screens/authentication/ForgotPasswordScreen.dart';
-import 'package:shopping_app_ui/util/Util.dart';
+import '/colors/Colors.dart';
+import '/constant/Constants.dart';
+import '/screens/launch/HomeScreen.dart';
+import '/util/size_config.dart';
+import '/widgets/Styles.dart';
+import '/screens/authentication/ForgotPasswordScreen.dart';
+import '/util/Util.dart';
 
 //create a global variable because, sometimes we need a global variable.
 //using client and session will not cause security issues on global by the way, it is only used for calling data from API.
@@ -155,7 +155,7 @@ class _LoginScreenState extends State<LoginScreen> {
               context,
               errorMessage,
               forgetPasswordLabel,
-              isDarkMode(context) ? Colors.red[900] : pinkishColor,
+              isDarkMode(context) ? Colors.red[900]! : pinkishColor,
               true,
               focusNode: focusNodeErrorNotification,
               onOptionTap: () {
@@ -170,7 +170,7 @@ class _LoginScreenState extends State<LoginScreen> {
               visible: isDisplayEmailErrorNotification,
               child: buildErrorNotification(
                 errorMessage,
-                isDarkMode(context) ? Colors.red[900] : pinkishColor,
+                  isDarkMode(context) ? Colors.red[900]! : pinkishColor,
               )),
           SizedBox(
             height: SizeConfig.screenHeight * 0.010,
@@ -392,13 +392,17 @@ class _LoginScreenState extends State<LoginScreen> {
         });
         ScaffoldMessenger.of(context).clearMaterialBanners();  
           // for a little bit of animation we remove the original line which is  //navigateAndClearHistory(context, HomeScreen.routeName)
-          Navigator.pushAndRemoveUntil(
-            context, 
-            BouncyPageRoute(
-              widget: HomeScreen()
-            ), 
-          ModalRoute.withName(HomeScreen.routeName)
-          );
+        Navigator.pushAndRemoveUntil(
+          context,
+          BouncyPageRoute(
+            widget: HomeScreen(
+              key: GlobalKey(), // You can replace this with your actual Key
+              client: globalClient, // You've already defined this in your code
+              session: globalSession, // You've already defined this in your code
+            ),
+          ),
+          ModalRoute.withName(HomeScreen.routeName),
+        );
 
       } on OdooException catch(e) {
         setState(() {
@@ -416,7 +420,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
           ),
           actions: [
+            // ignore: missing_required_param
             TextButton(
+            
                 onPressed: () {
                   ScaffoldMessenger.of(context).clearMaterialBanners();
                 },

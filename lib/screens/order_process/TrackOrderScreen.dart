@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:shopping_app_ui/colors/Colors.dart';
-import 'package:shopping_app_ui/constant/Constants.dart';
-import 'package:shopping_app_ui/widgets/Styles.dart';
-import 'package:shopping_app_ui/widgets/MyCustomStepper.dart'
+import '/colors/Colors.dart';
+import '/constant/Constants.dart';
+import '/widgets/Styles.dart';
+import '/widgets/MyCustomStepper.dart'
     as MyCustomStepper;
-import 'package:shopping_app_ui/util/Util.dart';
+import '/util/Util.dart';
 
 class TrackOrderScreen extends StatefulWidget {
   @override
@@ -22,9 +22,9 @@ class _TrackOrderScreenState extends State<TrackOrderScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: isDarkMode(context) ? darkBackgroundColor : Theme.of(context).backgroundColor,
-      appBar: buildAppBar(context, trackOrderLabel, onBackPress: () {
-        Navigator.pop(context);
-      }),
+      // appBar: buildAppBar(context, trackOrderLabel, onBackPress: () {
+      //   Navigator.pop(context);
+      // }),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
@@ -64,8 +64,8 @@ class _TrackOrderScreenState extends State<TrackOrderScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text('Delivery expected on Sat, 19',
-                  style: Theme.of(context).textTheme.subtitle1.copyWith(
-                      fontWeight: Theme.of(context).textTheme.subtitle2.fontWeight),
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      fontWeight: Theme.of(context).textTheme.titleSmall?.fontWeight),
                 ),
                 SizedBox(
                   height: 5,
@@ -97,8 +97,8 @@ class _TrackOrderScreenState extends State<TrackOrderScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text('Home Address',
-                  style: Theme.of(context).textTheme.subtitle1.copyWith(
-                      fontWeight: Theme.of(context).textTheme.subtitle2.fontWeight),
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      fontWeight: Theme.of(context).textTheme.titleSmall?.fontWeight),
                 ),
                 SizedBox(
                   height: 5,
@@ -219,13 +219,17 @@ class _TrackOrderScreenState extends State<TrackOrderScreen> {
           child: MyCustomStepper.MyCustomStepper(
             steps: orderSteps,
             currentStep: 1,
-            controlsBuilder: (BuildContext context,
-                    ControlsDetails controls) =>
-                Container(),
+            controlsBuilder: (BuildContext context, ControlsDetails controls) => Container(),
+            key: UniqueKey(),
+            onStepTapped: (int value) {  },
+            controls: ControlsDetails(currentStep: 0, stepIndex: 0), // Default controls.
+            physics: AlwaysScrollableScrollPhysics(), // Default physics.
           ),
         ),
       ),
     );
+
+
   }
 
   Widget buildBottomPart() {

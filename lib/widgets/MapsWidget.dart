@@ -7,15 +7,15 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:shopping_app_ui/OdooApiCall_DataMapping/SupportTicket.dart';
-import 'package:shopping_app_ui/OdooApiCall_DataMapping/SupportTicketandResPartner.dart';
-import 'package:shopping_app_ui/util/size_config.dart';
+import '/OdooApiCall_DataMapping/SupportTicket.dart';
+import '/OdooApiCall_DataMapping/SupportTicketandResPartner.dart';
+import '/util/size_config.dart';
 import '../colors/Colors.dart';
 import '../util/Util.dart';
 import 'Styles.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shopping_app_ui/riverpod_class/currentLocation_api.dart';
+import '/riverpod_class/currentLocation_api.dart';
 
 //For demo, we will set this value to const
 const double CAMERA_ZOOM=17.0;
@@ -29,7 +29,7 @@ class MapsWidget extends StatefulWidget {
   final supportticket;
   final partner_lat;
   final partner_long;
-  MapsWidget(this.supportticket, this.partner_lat, this.partner_long, {Key key}): super(key: key);
+  MapsWidget(this.supportticket, this.partner_lat, this.partner_long, {required Key key}): super(key: key);
 
   @override
   State<StatefulWidget> createState() {
@@ -43,16 +43,16 @@ class _MapsWidgetState extends State<MapsWidget> with AutomaticKeepAliveClientMi
 {
 
   
-  BitmapDescriptor siteLocationIcon;
+  late BitmapDescriptor siteLocationIcon;
   Set<Marker> _markers = {};
   Set<Circle> _circles = {};
-  GoogleMapController _googleMapController;
+  late GoogleMapController _googleMapController;
   Completer<GoogleMapController> _controller = Completer();
   var currentLong; //= 2.9293851; // WE WILL SET SOMETHING 
   var currentLat; //= 101.6292768; //should be null or empty because later, setstate will change the value when geolocator position are called
   var currentSiteLat;
   var currentSiteLong;
-  String _mapStyle;
+  late String _mapStyle;
 
 
   
@@ -81,7 +81,7 @@ class _MapsWidgetState extends State<MapsWidget> with AutomaticKeepAliveClientMi
 
   
   
- StreamSubscription<Position> positionStream;
+ late StreamSubscription<Position> positionStream;
   // ignore: cancel_subscriptions
 
   void streamLocation () {
@@ -107,7 +107,7 @@ class _MapsWidgetState extends State<MapsWidget> with AutomaticKeepAliveClientMi
 
   Future<void> _getCurrentUserLocation() async {
    final GoogleMapController controller = await _controller.future;
-   Position  currentLocation;
+   Position?  currentLocation;
 
   
    try {
@@ -124,7 +124,7 @@ class _MapsWidgetState extends State<MapsWidget> with AutomaticKeepAliveClientMi
     controller.animateCamera(CameraUpdate.newCameraPosition(
       CameraPosition(
         bearing: 0,
-        target: LatLng(currentLocation.latitude, currentLocation.longitude),
+        target: LatLng(currentLocation!.latitude, currentLocation!.longitude),
         zoom: 17.0,
       ),
     ));

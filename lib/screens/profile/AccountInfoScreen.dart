@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:shopping_app_ui/colors/Colors.dart';
-import 'package:shopping_app_ui/constant/Constants.dart';
-import 'package:shopping_app_ui/screens/authentication/EditPasswordScreen.dart';
-import 'package:shopping_app_ui/screens/profile/EditProfileScreen.dart';
-import 'package:shopping_app_ui/util/Util.dart';
-import 'package:shopping_app_ui/util/size_config.dart';
-import 'package:shopping_app_ui/widgets/Styles.dart';
+import '/colors/Colors.dart';
+import '/constant/Constants.dart';
+import '/screens/authentication/EditPasswordScreen.dart';
+import '/screens/profile/EditProfileScreen.dart';
+import '/util/Util.dart';
+import '/util/size_config.dart';
+import '/widgets/Styles.dart';
 
 class AccountInfoScreen extends StatefulWidget {
   @override
@@ -15,6 +15,15 @@ class AccountInfoScreen extends StatefulWidget {
 class _AccountInfoScreenState extends State<AccountInfoScreen> {
   @override
   Widget build(BuildContext context) {
+    PreferredSize buildAppBar(BuildContext context, String title, {VoidCallback? onBackPress}) {
+      return PreferredSize(
+        preferredSize: Size.fromHeight(kToolbarHeight), // Set the height as needed
+        child: AppBar(
+          // Your AppBar code here
+        ),
+      );
+    }
+
     return Scaffold(
       backgroundColor: isDarkMode(context) ? darkBackgroundColor : Theme.of(context).backgroundColor,
       appBar: buildAppBar(
@@ -61,7 +70,7 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
     );
   }
 
-  Widget buildListRow(String title, String data, {@required Function onTap}) {
+  Widget buildListRow(String title, String data, {required Function onTap}) {
     return InkWell(
       child: Padding(
         padding: EdgeInsets.symmetric(
@@ -106,7 +115,7 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
               onPressed: () {
                 navigateToScreen(
                   context,
-                  EditProfileScreen(),
+                  EditProfileScreen(key: UniqueKey(),),
                 );
               },
             ),

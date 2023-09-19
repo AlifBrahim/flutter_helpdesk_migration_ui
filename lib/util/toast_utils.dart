@@ -1,11 +1,11 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:shopping_app_ui/util/toast_animation.dart';
+import '/util/toast_animation.dart';
 
 class ToastUtils {
-  static Timer toastTimer;
-  static OverlayEntry _overlayEntry;
+  static Timer toastTimer = Timer(Duration(seconds: 0), () {});
+  static OverlayEntry _overlayEntry = OverlayEntry(builder: (_) => Container());
 
   static void showCustomToast(BuildContext context, String message,
       Color backgroundColor, int duration) {

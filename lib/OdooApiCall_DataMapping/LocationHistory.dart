@@ -12,11 +12,11 @@ class LocationHistory {
 
 
   const LocationHistory({
-   this.check_in,
-   this.check_in_address,
-   this.check_out,
-   this.check_out_address, 
-   this.ticket_id, 
+   required this.check_in,
+   required this.check_in_address,
+   required this.check_out,
+   required this.check_out_address,
+   required this.ticket_id,
    });
 
   static LocationHistory fromJson(Map<String, dynamic> json) => LocationHistory(

@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:shopping_app_ui/colors/Colors.dart';
-import 'package:shopping_app_ui/util/Util.dart';
-import 'package:shopping_app_ui/util/size_config.dart';
+import '/colors/Colors.dart';
+import '/util/Util.dart';
+import '/util/size_config.dart';
 
 class BuildNotificationPreference extends StatefulWidget {
   final bool initialValue;
   final String title;
 
   const BuildNotificationPreference(
-      {Key key, @required this.initialValue, @required this.title})
+      {required Key key, required this.initialValue, required this.title})
       : super(key: key);
   @override
   _BuildNotificationPreferenceState createState() =>

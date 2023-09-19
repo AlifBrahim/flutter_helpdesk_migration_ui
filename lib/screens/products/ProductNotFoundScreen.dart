@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:shopping_app_ui/colors/Colors.dart';
-import 'package:shopping_app_ui/constant/Constants.dart';
-import 'package:shopping_app_ui/util/Util.dart';
-import 'package:shopping_app_ui/widgets/Styles.dart';
+import '/colors/Colors.dart';
+import '/constant/Constants.dart';
+import '/util/Util.dart';
+import '/widgets/Styles.dart';
 
 class ProductNotFoundScreen extends StatefulWidget {
   @override

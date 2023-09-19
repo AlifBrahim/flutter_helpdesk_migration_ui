@@ -1,23 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:like_button/like_button.dart';
-import 'package:shopping_app_ui/colors/Colors.dart';
-import 'package:shopping_app_ui/constant/Constants.dart';
-import 'package:shopping_app_ui/model/Product.dart';
-import 'package:shopping_app_ui/util/size_config.dart';
+import '/colors/Colors.dart';
+import '/constant/Constants.dart';
+import '/model/Product.dart';
+import '/util/size_config.dart';
 
 import 'Styles.dart';
 
 Widget buildSingleProduct({
-  BuildContext context,
-  Product product,
-  bool isDarkMode,
-  String heroTagPrefix,
+  required BuildContext context,
+  required Product product,
+  required bool isDarkMode,
+  required String heroTagPrefix,
   onCartTap,
-  Function onProductSelected,
+  required Function onProductSelected,
 }) {
   return Card(
     elevation: 2,
-    shape: const RoundedRectangleBorder(
+    shape:  RoundedRectangleBorder(
       borderRadius: BorderRadius.all(
         Radius.circular(8),
       ),
@@ -65,7 +65,7 @@ Widget buildSingleProduct({
                 color: isDarkMode
                     ? Colors.white.withOpacity(0.9)
                     : Colors.black.withOpacity(0.9),
-                fontSize: Theme.of(context).textTheme.subtitle2.fontSize,
+                fontSize: Theme.of(context).textTheme.subtitle2?.fontSize,
               ),
               maxLines: 1,
               overflow: TextOverflow.visible,
@@ -83,7 +83,7 @@ Widget buildSingleProduct({
           child: buildReadOnlyRatingBar(
               product.rating,
               SizeConfig.screenHeight * 0.018,
-              isDarkMode ? Colors.yellow[800] : Colors.amberAccent),
+              isDarkMode ? Colors.yellow[800]! : Colors.amberAccent),
         ),
 
         //info: price and cart
@@ -107,9 +107,9 @@ Widget buildSingleProduct({
                       color: isDarkMode
                           ? Colors.white70
                           : Colors.black.withOpacity(0.7),
-                      fontSize: Theme.of(context).textTheme.bodyText1.fontSize,
+                      fontSize: Theme.of(context).textTheme.bodyText1?.fontSize,
                       fontWeight:
-                          Theme.of(context).textTheme.subtitle2.fontWeight,
+                          Theme.of(context).textTheme.subtitle2?.fontWeight,
                     ),
                   ),
                   Row(
@@ -120,8 +120,8 @@ Widget buildSingleProduct({
                         style: TextStyle(
                             fontFamily: poppinsFont,
                             fontSize:
-                                Theme.of(context).textTheme.caption.fontSize,
-                            color: Theme.of(context).textTheme.caption.color,
+                                Theme.of(context).textTheme.caption?.fontSize,
+                            color: Theme.of(context).textTheme.caption?.color,
                             decoration: TextDecoration.lineThrough),
                       ),
                       SizedBox(width: SizeConfig.screenWidth * 0.01),

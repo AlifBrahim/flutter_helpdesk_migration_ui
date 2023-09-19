@@ -4,26 +4,26 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:odoo_rpc/odoo_rpc.dart';
-import 'package:shopping_app_ui/Data/CategoryData.dart';
-import 'package:shopping_app_ui/Data/NotificationData.dart';
-import 'package:shopping_app_ui/Data/ProductData.dart';
-import 'package:shopping_app_ui/colors/Colors.dart';
-import 'package:shopping_app_ui/constant/Constants.dart';
-import 'package:shopping_app_ui/global_keys/navbar_key.dart';
-import 'package:shopping_app_ui/model/Product.dart';
-import 'package:shopping_app_ui/model/ProductInCart.dart';
-import 'package:shopping_app_ui/screens/products/MyTicketMainScreen.dart';
-import 'package:shopping_app_ui/screens/products/MyTicketScreen.dart';
-import 'package:shopping_app_ui/screens/settings/SettingsScreen.dart';
-import 'package:shopping_app_ui/util/RemoveGlowEffect.dart';
-import 'package:shopping_app_ui/util/size_config.dart';
-import 'package:shopping_app_ui/widgets/SingleProduct.dart';
-import 'package:shopping_app_ui/widgets/Styles.dart';
-import 'package:shopping_app_ui/screens/products/AllProductScreen.dart';
+import '/Data/CategoryData.dart';
+import '/Data/NotificationData.dart';
+import '/Data/ProductData.dart';
+import '/colors/Colors.dart';
+import '/constant/Constants.dart';
+import '/global_keys/navbar_key.dart';
+import '/model/Product.dart';
+import '/model/ProductInCart.dart';
+import '/screens/products/MyTicketMainScreen.dart';
+import '/screens/products/MyTicketScreen.dart';
+import '/screens/settings/SettingsScreen.dart';
+import '/util/RemoveGlowEffect.dart';
+import '/util/size_config.dart';
+import '/widgets/SingleProduct.dart';
+import '/widgets/Styles.dart';
+import '/screens/products/AllProductScreen.dart';
 
-import 'package:shopping_app_ui/screens/products/ProductDetailScreen.dart';
+import '/screens/products/ProductDetailScreen.dart';
 
-import 'package:shopping_app_ui/util/Util.dart';
+import '/util/Util.dart';
 
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
@@ -36,10 +36,10 @@ class HomeScreen extends StatefulWidget {
   static String routeName = '/home';
   final OdooClient client;
   final OdooSession session;
-  
+
   static int cartItemCount = myCartData.length;
 
-  const HomeScreen({Key key, this.client, this.session}) : super(key: key);
+  const HomeScreen({Key? key, required this.client, required this.session}) : super(key: key);
 
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -57,9 +57,9 @@ class _HomeScreenState extends State<HomeScreen>
   bool isBestSellerLoading = true;
   bool isBestInElectronicsLoading = true;
   bool isOtherProductsLoading = true;
-  int currentBottomBarIndex;
+  late int currentBottomBarIndex;
 
-  CurvedNavigationBarState navState;
+  late CurvedNavigationBarState navState;
 
   Future<bool> onWillPop() async {
     if (currentBottomBarIndex != 0)
@@ -131,7 +131,7 @@ class _HomeScreenState extends State<HomeScreen>
         ),
         body: selectScreenWidgetToShow(),
         bottomNavigationBar: CurvedNavigationBar(
-          color: isDarkMode(context) ? darkGreyColor : Colors.grey[300],
+          color: isDarkMode(context) ? Colors.grey[100]! : Colors.grey[300]!,
           backgroundColor: isDarkMode(context)
               ? darkBackgroundColor
               : Theme.of(context).backgroundColor,
@@ -212,7 +212,7 @@ class _HomeScreenState extends State<HomeScreen>
         break;
       case 3:
         return SettingsScreen(
-          isFromBottomNav: true,
+          isFromBottomNav: true, key: UniqueKey(),
         );
         break;
       case 4:
@@ -247,7 +247,7 @@ class _HomeScreenState extends State<HomeScreen>
                         context,
                         AllProductScreen(
                           categoryTitle: 'Summer Spacial',
-                          productList: mixProducts,
+                          productList: mixProducts, key: UniqueKey(),
                         ),
                       );
                     }),
@@ -288,7 +288,7 @@ class _HomeScreenState extends State<HomeScreen>
                         context,
                         AllProductScreen(
                           categoryTitle: 'Men\'s Fashion',
-                          productList: shopForMen,
+                          productList: shopForMen, key: UniqueKey(),
                         ),
                       );
                     }),
@@ -359,7 +359,7 @@ class _HomeScreenState extends State<HomeScreen>
                         categoryTitle: searchController.text.isNotEmpty
                             ? searchController.text
                             : 'Search Result',
-                        productList: mixProducts,
+                        productList: mixProducts, key: UniqueKey(),
                       ),
                     );
                     searchController.clear();
@@ -444,7 +444,7 @@ class _HomeScreenState extends State<HomeScreen>
                 return Center(
                   child: Card(
                     elevation: 0,
-                    shape: const RoundedRectangleBorder(
+                    shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.all(
                         Radius.circular(6),
                       ),
@@ -473,15 +473,15 @@ class _HomeScreenState extends State<HomeScreen>
                               style: Theme.of(context)
                                   .textTheme
                                   .bodyText1
-                                  .copyWith(
+                                  ?.copyWith(
                                       fontSize: Theme.of(context)
                                           .textTheme
                                           .caption
-                                          .fontSize),
+                                          ?.fontSize),
                               overflow: TextOverflow.ellipsis,
                               maxLines: 2,
                             )
-                          ], 
+                          ],
                         ),
                       ),
                       borderRadius: BorderRadius.all(
@@ -493,7 +493,7 @@ class _HomeScreenState extends State<HomeScreen>
                           context,
                           AllProductScreen(
                             categoryTitle: '${categoryTitles[index]}',
-                            productList: getCategoryProducts(index),
+                            productList: getCategoryProducts(index), key: UniqueKey(),
                           ),
                         );
                       },
@@ -528,7 +528,7 @@ class _HomeScreenState extends State<HomeScreen>
                 context,
                 AllProductScreen(
                   categoryTitle: bestSellerLabel,
-                  productList: mixProducts,
+                  productList: mixProducts, key: UniqueKey(),
                 ),
               ),
             )
@@ -551,7 +551,7 @@ class _HomeScreenState extends State<HomeScreen>
               MaterialPageRoute(
                 builder: (context) => ProductDetailScreen(
                   product: mixProducts[i],
-                  heroTagPrefix: tagBestSeller,
+                  heroTagPrefix: tagBestSeller, key: UniqueKey(),
                 ),
               ),
             );
@@ -582,7 +582,7 @@ class _HomeScreenState extends State<HomeScreen>
                 context,
                 AllProductScreen(
                   categoryTitle: bestInElectronics,
-                  productList: bestInElectronicsData,
+                  productList: bestInElectronicsData, key: UniqueKey(),
                 ),
               ),
             )
@@ -607,7 +607,7 @@ class _HomeScreenState extends State<HomeScreen>
               MaterialPageRoute(
                 builder: (context) => ProductDetailScreen(
                   product: bestInElectronicsData[i],
-                  heroTagPrefix: tagBestInElectronics,
+                  heroTagPrefix: tagBestInElectronics, key: UniqueKey(),
                 ),
               ),
             );
@@ -619,7 +619,7 @@ class _HomeScreenState extends State<HomeScreen>
 
   //INFO: banner
 
-  Widget buildBanner(String imagePath, {@required Function onBannerClick}) {
+  Widget buildBanner(String imagePath, {required Function onBannerClick}) {
     return InkWell(
       child: Container(
         height: SizeConfig.screenHeight * 0.18,
@@ -750,7 +750,7 @@ class _HomeScreenState extends State<HomeScreen>
                 context,
                 AllProductScreen(
                   categoryTitle: stayHealthyLabel,
-                  productList: stayHealthyData,
+                  productList: stayHealthyData, key: UniqueKey(),
                 ),
               ),
             )
@@ -775,7 +775,7 @@ class _HomeScreenState extends State<HomeScreen>
               MaterialPageRoute(
                 builder: (context) => ProductDetailScreen(
                   product: stayHealthyData[i],
-                  heroTagPrefix: '$tagStayHealthy',
+                  heroTagPrefix: '$tagStayHealthy', key: UniqueKey(),
                 ),
               ),
             );
@@ -806,7 +806,7 @@ class _HomeScreenState extends State<HomeScreen>
                 context,
                 AllProductScreen(
                   categoryTitle: makeupProducts,
-                  productList: makupProductsData,
+                  productList: makupProductsData, key: UniqueKey(),
                 ),
               ),
             )
@@ -834,7 +834,7 @@ class _HomeScreenState extends State<HomeScreen>
               MaterialPageRoute(
                 builder: (context) => ProductDetailScreen(
                     product: makupProductsData[i],
-                    heroTagPrefix: tagBeautyProducts),
+                    heroTagPrefix: tagBeautyProducts, key: UniqueKey(),),
               ),
             );
           },
@@ -866,7 +866,7 @@ class _HomeScreenState extends State<HomeScreen>
                   context,
                   AllProductScreen(
                     categoryTitle: lowPriceEver,
-                    productList: lowPriceProductList,
+                    productList: lowPriceProductList, key: UniqueKey(),
                   ),
                 ),
               )
@@ -975,7 +975,7 @@ class _HomeScreenState extends State<HomeScreen>
                   context,
                   AllProductScreen(
                     categoryTitle: shopForMenLabel,
-                    productList: shopForMen,
+                    productList: shopForMen, key: UniqueKey(),
                   ),
                 ),
               )
@@ -1058,7 +1058,7 @@ class _HomeScreenState extends State<HomeScreen>
                   context,
                   AllProductScreen(
                     categoryTitle: shopForWomenLabel,
-                    productList: shopForWomen,
+                    productList: shopForWomen, key: UniqueKey(),
                   ),
                 ),
               )
@@ -1143,7 +1143,7 @@ class _HomeScreenState extends State<HomeScreen>
       context,
       ProductDetailScreen(
         product: product,
-        heroTagPrefix: heroTagPrefix,
+        heroTagPrefix: heroTagPrefix, key: UniqueKey(),
       ),
     );
   }

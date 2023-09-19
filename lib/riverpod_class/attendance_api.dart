@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:shopping_app_ui/screens/authentication/LoginScreen.dart';
+import '/screens/authentication/LoginScreen.dart';
 import 'package:odoo_rpc/odoo_rpc.dart';
 
 class ClassAttendanceProvider extends ChangeNotifier{

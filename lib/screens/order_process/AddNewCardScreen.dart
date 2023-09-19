@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:shopping_app_ui/colors/Colors.dart';
+import '/colors/Colors.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:shopping_app_ui/constant/Constants.dart';
-import 'package:shopping_app_ui/widgets/Styles.dart';
-import 'package:shopping_app_ui/util/Util.dart';
-import 'package:month_picker_dialog/month_picker_dialog.dart';
+import '/constant/Constants.dart';
+import '/widgets/Styles.dart';
+import '/util/Util.dart';
+//import 'package:month_picker_dialog/month_picker_dialog.dart';
 
 class AddNewCardScreen extends StatefulWidget {
   @override
@@ -24,7 +24,7 @@ class _AddNewCardScreenState extends State<AddNewCardScreen> {
   FocusNode focusNodeCardHolder = new FocusNode();
   FocusNode focusNodeErrorNotification = new FocusNode();
 
-  DateTime selectedCardExpiryDate;
+  late DateTime selectedCardExpiryDate;
 
   bool isSaveCardSelected = false,
       displaySuccessDialog = false,
@@ -72,9 +72,9 @@ class _AddNewCardScreenState extends State<AddNewCardScreen> {
       backgroundColor: isDarkMode(context)
           ? darkBackgroundColor
           : Theme.of(context).backgroundColor,
-      appBar: buildAppBar(context, newCardLabel, onBackPress: () {
-        Navigator.pop(context);
-      }),
+      // appBar: buildAppBar(context, newCardLabel, onBackPress: () {
+      //   Navigator.pop(context);
+      // }),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Stack(
@@ -100,9 +100,7 @@ class _AddNewCardScreenState extends State<AddNewCardScreen> {
                                 context,
                                 errorMessage,
                                 hideLabel,
-                                isDarkMode(context)
-                                    ? Colors.red[900]
-                                    : pinkishColor,
+                                isDarkMode(context) ? Colors.red[900]! : pinkishColor,
                                 true,
                                 focusNode: focusNodeErrorNotification,
                                 onOptionTap: () {
@@ -163,7 +161,7 @@ class _AddNewCardScreenState extends State<AddNewCardScreen> {
                                   InkWell(
                                     child: buildValidUntil(),
                                     onTap: () {
-                                      buildDatePicker(context);
+                                      //buildDatePicker(context);
                                     },
                                   )
                                 ],
@@ -342,6 +340,7 @@ class _AddNewCardScreenState extends State<AddNewCardScreen> {
         onSubmit: () {});
   }
 
+  /*
   buildDatePicker(BuildContext context) async {
     final DateTime picked = await showMonthPicker(
       context: context,
@@ -358,6 +357,8 @@ class _AddNewCardScreenState extends State<AddNewCardScreen> {
       );
   }
 
+   */
+
   Widget buildCheckBox() {
     return Row(
       children: [
@@ -366,7 +367,7 @@ class _AddNewCardScreenState extends State<AddNewCardScreen> {
           activeColor: primaryColor,
           onChanged: (b) {
             setState(() {
-              isSaveCardSelected = b;
+              isSaveCardSelected = b!;
             });
           },
         ),

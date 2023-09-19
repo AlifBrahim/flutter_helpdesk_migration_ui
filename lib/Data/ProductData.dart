@@ -1,6 +1,6 @@
-import 'package:shopping_app_ui/constant/Constants.dart';
-import 'package:shopping_app_ui/model/Product.dart';
-import 'package:shopping_app_ui/model/ProductInCart.dart';
+import '/constant/Constants.dart';
+import '/model/Product.dart';
+import '/model/ProductInCart.dart';
 
 //INFO: Demo product images
 

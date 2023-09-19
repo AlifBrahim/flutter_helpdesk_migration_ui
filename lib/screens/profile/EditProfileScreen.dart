@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:shopping_app_ui/colors/Colors.dart';
-import 'package:shopping_app_ui/constant/Constants.dart';
-import 'package:shopping_app_ui/util/Util.dart';
-import 'package:shopping_app_ui/util/size_config.dart';
-import 'package:shopping_app_ui/widgets/Styles.dart';
+import '/colors/Colors.dart';
+import '/constant/Constants.dart';
+import '/util/Util.dart';
+import '/util/size_config.dart';
+import '/widgets/Styles.dart';
 
 class EditProfileScreen extends StatefulWidget {
-  const EditProfileScreen({Key key}) : super(key: key);
+  const EditProfileScreen({required Key key}) : super(key: key);
 
   @override
   _EditProfileScreenState createState() => _EditProfileScreenState();
@@ -23,7 +23,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   FocusNode focusNodeDob = new FocusNode();
 
   var userDob = DateTime.now();
-  DateTime selectedDob;
+  late DateTime selectedDob;
 
   String errorMessage = '';
   bool isDisplayErrorNotification = false;
@@ -68,6 +68,15 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    PreferredSize buildAppBar(BuildContext context, String title, {VoidCallback? onBackPress}) {
+      return PreferredSize(
+        preferredSize: Size.fromHeight(kToolbarHeight), // Set the height as needed
+        child: AppBar(
+          // Your AppBar code here
+        ),
+      );
+    }
+
     return Scaffold(
       backgroundColor: isDarkMode(context) ? darkBackgroundColor : Theme.of(context).backgroundColor,
       appBar: buildAppBar(
@@ -90,7 +99,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   visible: isDisplayErrorNotification,
                   child: buildErrorNotification(
                     errorMessage,
-                    isDarkMode(context) ? Colors.red[900] : pinkishColor,
+                    isDarkMode(context) ? Colors.red[900]! : pinkishColor,
                   ),
                 ),
                 buildInputFields(),
@@ -248,7 +257,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   }
 
   buildDateOfBirthPicker(BuildContext context) async {
-    final DateTime picked = await showDatePicker(
+    final DateTime? picked = await showDatePicker(
       context: context,
       helpText: selectDobLabel,
       initialDate: userDob,

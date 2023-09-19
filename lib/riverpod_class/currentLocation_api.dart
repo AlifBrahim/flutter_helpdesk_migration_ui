@@ -23,9 +23,20 @@ Future<Position> fetchCurrentLocation() async {
 
 final lastknownlocationFutureProvider = FutureProvider<Position>((ref) => fetchLastKnownLocation());
 Future<Position> fetchLastKnownLocation() async {
-
-  Position lastKnownLocation = await Geolocator.getLastKnownPosition();
+  Position? lastKnownLocation = await Geolocator.getLastKnownPosition();
+  if (lastKnownLocation == null) {
+    // Provide a default Position here if lastKnownLocation is null
+    return Position(
+        latitude: 0,
+        longitude: 0,
+        timestamp: DateTime.now(),
+        accuracy: 0,
+        altitude: 0,
+        heading: 0,
+        speed: 0,
+        speedAccuracy: 0
+    );
+  }
   return lastKnownLocation;
 }
-
 

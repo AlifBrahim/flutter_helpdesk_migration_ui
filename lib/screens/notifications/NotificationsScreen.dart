@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:shopping_app_ui/Data/NotificationData.dart';
-import 'package:shopping_app_ui/colors/Colors.dart';
-import 'package:shopping_app_ui/constant/Constants.dart';
-import 'package:shopping_app_ui/util/Util.dart';
-import 'package:shopping_app_ui/widgets/Styles.dart';
+import '/Data/NotificationData.dart';
+import '/colors/Colors.dart';
+import '/constant/Constants.dart';
+import '/util/Util.dart';
+import '/widgets/Styles.dart';
 
 class NotificationsScreen extends StatefulWidget {
   @override
@@ -13,6 +13,14 @@ class NotificationsScreen extends StatefulWidget {
 class _NotificationsScreenState extends State<NotificationsScreen> {
   @override
   Widget build(BuildContext context) {
+    PreferredSize buildAppBar(BuildContext context, String title, {VoidCallback? onBackPress}) {
+      return PreferredSize(
+        preferredSize: Size.fromHeight(kToolbarHeight), // Set the height as needed
+        child: AppBar(
+          // Your AppBar code here
+        ),
+      );
+    }
     return Scaffold(
       backgroundColor: isDarkMode(context) ? darkBackgroundColor : Theme.of(context).backgroundColor,
       appBar: buildAppBar(

@@ -1,5 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.arkayapps.shopping_app_ui">
+    package="com.arkayapps.sigmahelpdesk">
+
     <!-- io.flutter.app.FlutterApplication is an android.app.Application that
          calls FlutterMain.startInitialization(this); in its onCreate method.
          In most cases you can leave this as-is, but you if you want to provide
@@ -8,10 +9,12 @@
            <uses-permission android:name="android.permission.CAMERA"/>
            <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES"/>
     <application
+
         android:name="${applicationName}"
         android:label="iSupport Sigma"
         android:icon="@mipmap/launcher_icon">
         <activity
+            android:exported="true"
             android:name=".MainActivity"
             android:launchMode="singleTop"
             android:theme="@style/LaunchTheme"
@@ -52,6 +55,7 @@
         <meta-data android:name="com.google.android.geo.API_KEY"
         android:value="AIzaSyDgJb-Ss4BFWDxYa0zANNYSIYwFhRkh1vU"/> <!-- this is googlemaps API KEY for android @apeace.luffy acc, have to change this to company profile oneday.-->
     </application>
+
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> <!-- for use of geofencing(future), and getting precise location-->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 </manifest>

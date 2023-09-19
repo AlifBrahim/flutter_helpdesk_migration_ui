@@ -29,13 +29,13 @@ class ToCheckInOutSupportTicket {
   final String cmform_number;
 
   const ToCheckInOutSupportTicket({
-    this.ticket_number, this.ticket_id, this.assigned_user, 
-    this.check_in, this.check_out, this.check_in_address, this.check_out_address,
-    this.subject, this.created_date, this.rating, this.partner_name, this.partner_id,
-    this.equipment_location, this.equipment_user, this.reported_by,this.contact_num,
-    this.email, this.department,this.address,
-    this.category_name, this.subcategory_name, this.problem_name,
-    this.open_case, this.itemname, this.close_comment, this.cmform_number
+    required this.ticket_number, required this.ticket_id, required this.assigned_user,
+    required this.check_in, required this.check_out, required this.check_in_address, required this.check_out_address,
+    required this.subject, required this.created_date, required this.rating, required this.partner_name, required this.partner_id,
+    required this.equipment_location, required this.equipment_user, required this.reported_by,required this.contact_num,
+    required this.email, required this.department,required this.address,
+    required this.category_name, required this.subcategory_name, required this.problem_name,
+    required this.open_case, required this.itemname, required this.close_comment, required this.cmform_number
   });
 
   static ToCheckInOutSupportTicket fromJson(Map<String, dynamic> json) => ToCheckInOutSupportTicket(
@@ -51,8 +51,8 @@ class ToCheckInOutSupportTicket {
     created_date: json['create_date'] == false ? json['create_date'] = '' : json['create_date'].toString(),
     subject: json['subject'] == false ? json['subject'] = '' : json['subject'].toString(),
     rating: json['rating'] == null ? json['rating'] = '0' : json['rating'].toString(),
-    partner_id: json['partner_id'] == false || json['partner_id'] == null  ? json['partner_id'] = null : json['partner_id'][0].toString(),
-    partner_name: json['partner_id'] == false || json['partner_id'] == null ? json['partner_id'] = null : json['partner_id'][1].toString(),    
+    partner_id: json['partner_id'] == false || json['partner_id'] == null  ? '' : json['partner_id'][0].toString(),
+    partner_name: json['partner_id'] == false || json['partner_id'] == null ? '' : json['partner_id'][1].toString(),
     equipment_location: json['equipment_location'] == false ? json['equipment_location'] = '' : json['equipment_location'].toString(),
     equipment_user: json['user'] == false ? json['user'] = '' : json['user'].toString(),
     reported_by: json['person_name'] == false ? json['person_name'] = '' : json['person_name'].toString(),

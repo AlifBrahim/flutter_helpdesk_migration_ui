@@ -1,15 +1,15 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:shopping_app_ui/Data/ProductData.dart';
-import 'package:shopping_app_ui/colors/Colors.dart';
-import 'package:shopping_app_ui/constant/Constants.dart';
-import 'package:shopping_app_ui/model/Product.dart';
-import 'package:shopping_app_ui/widgets/Styles.dart';
-import 'package:shopping_app_ui/screens/products/FilterProductScreen.dart';
-import 'package:shopping_app_ui/screens/products/ProductNotFoundScreen.dart';
-import 'package:shopping_app_ui/screens/products/ProductDetailScreen.dart';
-import 'package:shopping_app_ui/screens/order_process/TrackOrderScreen.dart';
-import 'package:shopping_app_ui/util/Util.dart';
+import '/Data/ProductData.dart';
+import '/colors/Colors.dart';
+import '/constant/Constants.dart';
+import '/model/Product.dart';
+import '/widgets/Styles.dart';
+import '/screens/products/FilterProductScreen.dart';
+import '/screens/products/ProductNotFoundScreen.dart';
+import '/screens/products/ProductDetailScreen.dart';
+import '/screens/order_process/TrackOrderScreen.dart';
+import '/util/Util.dart';
 
 class MyOrdersScreen extends StatefulWidget {
   @override
@@ -119,8 +119,8 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
                           child: Text(
                             myOrdersLabel,
                             style: TextStyle(
-                              fontSize: Theme.of(context).textTheme.subtitle1.fontSize,
-                              fontFamily: Theme.of(context).textTheme.subtitle1.fontFamily,
+                              fontSize: Theme.of(context).textTheme.subtitle1?.fontSize,
+                              fontFamily: Theme.of(context).textTheme.subtitle1?.fontFamily,
                               color: Colors.white,
                             ),
                           ),
@@ -218,7 +218,7 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
                       context,
                       ProductDetailScreen(
                         product: product,
-                        heroTagPrefix: tagAllProducts,
+                        heroTagPrefix: tagAllProducts, key: UniqueKey(),
                       ),
                     );
                   },
@@ -316,7 +316,7 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
                       context,
                       ProductDetailScreen(
                         product: product,
-                        heroTagPrefix: tagAllProducts,
+                        heroTagPrefix: tagAllProducts, key: UniqueKey(),
                       ),
                     );
                   },
@@ -369,7 +369,7 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
                               context,
                               ProductDetailScreen(
                                 product: product,
-                                heroTagPrefix: tagAllProducts,
+                                heroTagPrefix: tagAllProducts, key: UniqueKey(),
                               ),
                             );
                           },

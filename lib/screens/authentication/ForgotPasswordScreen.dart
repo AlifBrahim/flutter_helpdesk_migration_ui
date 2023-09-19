@@ -1,9 +1,9 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
-import 'package:shopping_app_ui/colors/Colors.dart';
-import 'package:shopping_app_ui/constant/Constants.dart';
-import 'package:shopping_app_ui/widgets/Styles.dart';
-import 'package:shopping_app_ui/util/Util.dart';
+import '/colors/Colors.dart';
+import '/constant/Constants.dart';
+import '/widgets/Styles.dart';
+import '/util/Util.dart';
 
 import 'ResetPasswordSuccessScreen.dart';
 
@@ -69,7 +69,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                           child: buildErrorNotification(
                             errorMessage,
                             isDarkMode(context)
-                                ? Colors.red[900]
+                                ? Colors.red[900]!
                                 : pinkishColor,
                           )),
                       SizedBox(

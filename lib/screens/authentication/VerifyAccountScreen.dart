@@ -2,11 +2,11 @@ import 'dart:async';
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:shopping_app_ui/colors/Colors.dart';
-import 'package:shopping_app_ui/constant/Constants.dart';
-import 'package:shopping_app_ui/screens/launch/HomeScreen.dart';
-import 'package:shopping_app_ui/widgets/Styles.dart';
-import 'package:shopping_app_ui/util/Util.dart';
+import '/colors/Colors.dart';
+import '/constant/Constants.dart';
+import '/screens/launch/HomeScreen.dart';
+import '/widgets/Styles.dart';
+import '/util/Util.dart';
 
 class VerifyAccountScreen extends StatefulWidget {
   @override
@@ -16,7 +16,7 @@ class VerifyAccountScreen extends StatefulWidget {
 class _VerifyAccountScreenState extends State<VerifyAccountScreen> {
   bool isDisplayErrorNotification = false;
   String errorMessage = "";
-  Timer _timer;
+  late Timer _timer;
   int _start = 60;
 
   TextEditingController otpDigit1 = new TextEditingController();
@@ -129,7 +129,7 @@ class _VerifyAccountScreenState extends State<VerifyAccountScreen> {
               context,
               errorMessage,
               '',
-              isDarkMode(context) ? Colors.red[900] : pinkishColor,
+              isDarkMode(context) ? Colors.red[900]! : pinkishColor,
               false,
               onOptionTap: () {},
             ),

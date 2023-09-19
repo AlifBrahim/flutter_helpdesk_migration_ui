@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:shopping_app_ui/colors/Colors.dart';
-import 'package:shopping_app_ui/constant/Constants.dart';
-import 'package:shopping_app_ui/widgets/Styles.dart';
-import 'package:shopping_app_ui/screens/order_process/AddNewAddressScreen.dart';
-import 'package:shopping_app_ui/screens/order_process/PaymentMethodScreen.dart';
-import 'package:shopping_app_ui/util/Util.dart';
+import '/colors/Colors.dart';
+import '/constant/Constants.dart';
+import '/widgets/Styles.dart';
+import '/screens/order_process/AddNewAddressScreen.dart';
+import '/screens/order_process/PaymentMethodScreen.dart';
+import '/util/Util.dart';
 
 class DeliveryAddressScreen extends StatefulWidget {
   final bool shouldDisplayPaymentButton;
 
-  const DeliveryAddressScreen({Key key, this.shouldDisplayPaymentButton})
+  const DeliveryAddressScreen({required Key key, required this.shouldDisplayPaymentButton})
       : super(key: key);
 
   @override
@@ -21,9 +21,9 @@ class _DeliveryAddressScreenState extends State<DeliveryAddressScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: isDarkMode(context) ? darkBackgroundColor : Theme.of(context).backgroundColor,
-      appBar: buildAppBar(context, deliveryAddressLabel, onBackPress: () {
-        Navigator.pop(context);
-      }),
+      // appBar: buildAppBar(context, deliveryAddressLabel, onBackPress: () {
+      //   Navigator.pop(context);
+      // }),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
@@ -84,7 +84,7 @@ class _DeliveryAddressScreenState extends State<DeliveryAddressScreen> {
                     style: TextStyle(
                       fontFamily: poppinsFont,
                       color: isDarkMode(context) ? Colors.white70 : primaryColor,
-                      fontSize: Theme.of(context).textTheme.button.fontSize,
+                      fontSize: Theme.of(context).textTheme.button?.fontSize,
                     ),
                   ),
                 ],
@@ -117,8 +117,8 @@ class _DeliveryAddressScreenState extends State<DeliveryAddressScreen> {
               children: [
                 Text(
                   homeAddressLabel,
-                  style: Theme.of(context).textTheme.subtitle1.copyWith(
-                      fontWeight: Theme.of(context).textTheme.subtitle2.fontWeight),
+                  style: Theme.of(context).textTheme.subtitle1?.copyWith(
+                      fontWeight: Theme.of(context).textTheme.subtitle2?.fontWeight),
                 ),
                 SizedBox(
                   height: 5,
@@ -171,8 +171,8 @@ class _DeliveryAddressScreenState extends State<DeliveryAddressScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(billingAddressLabel,
-                  style: Theme.of(context).textTheme.subtitle1.copyWith(
-                      fontWeight: Theme.of(context).textTheme.subtitle2.fontWeight),
+                  style: Theme.of(context).textTheme.subtitle1?.copyWith(
+                      fontWeight: Theme.of(context).textTheme.subtitle2?.fontWeight),
                 ),
                 SizedBox(
                   height: 5,
@@ -222,7 +222,7 @@ class _DeliveryAddressScreenState extends State<DeliveryAddressScreen> {
           navigateToScreen(
             context,
             PaymentMethodScreen(
-              shouldDisplayContinueButton: true,
+              shouldDisplayContinueButton: true, key: UniqueKey(),
             ),
           );
         },

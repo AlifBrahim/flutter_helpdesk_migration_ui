@@ -1,12 +1,12 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:shopping_app_ui/colors/Colors.dart';
-import 'package:shopping_app_ui/constant/Constants.dart';
-import 'package:shopping_app_ui/screens/launch/HomeScreen.dart';
-import 'package:shopping_app_ui/widgets/Styles.dart';
-import 'package:shopping_app_ui/screens/authentication/LoginScreen.dart';
-import 'package:shopping_app_ui/util/Util.dart';
+import '/colors/Colors.dart';
+import '/constant/Constants.dart';
+import '/screens/launch/HomeScreen.dart';
+import '/widgets/Styles.dart';
+import '/screens/authentication/LoginScreen.dart';
+import '/util/Util.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'SetPasswordScreen.dart';
@@ -129,7 +129,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           Visibility(
               visible: isDisplayErrorNotification,
               child: buildErrorNotificationWithOption(context, errorMessage, '',
-                  isDarkMode(context) ? Colors.red[900] : pinkishColor, false,
+                  isDarkMode(context) ? Colors.red[900]! : pinkishColor, false,
                   onOptionTap: () {})),
           SizedBox(
             height: 10,
@@ -291,15 +291,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
         controlAffinity: ListTileControlAffinity.leading,
         value: termsConditionsChecked,
         onChanged: enableCheckBox
-            ? (bool value) {
-                setState(
-                  () {
-                    termsConditionsChecked = value;
-                    hideErrorNotification();
-                  },
-                );
-              }
-            : null,
+            ? (bool? value) {
+          setState(
+                () {
+              termsConditionsChecked = value ?? false;
+              hideErrorNotification();
+            },
+          );
+        } : null,
         checkColor: Colors.white,
         activeColor: primaryColor,
       ),

@@ -6,18 +6,18 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
-import 'package:shopping_app_ui/OdooApiCall_DataMapping/ToCheckIn_ToCheckOut_SupportTicket.dart';
-import 'package:shopping_app_ui/colors/Colors.dart';
-import 'package:shopping_app_ui/constant/Constants.dart';
-import 'package:shopping_app_ui/screens/launch/HomeScreen.dart';
-import 'package:shopping_app_ui/screens/products/MySignatureScreen.dart';
-import 'package:shopping_app_ui/widgets/Styles.dart';
-import 'package:shopping_app_ui/util/Util.dart';
+import '/OdooApiCall_DataMapping/ToCheckIn_ToCheckOut_SupportTicket.dart';
+import '/colors/Colors.dart';
+import '/constant/Constants.dart';
+import '/screens/launch/HomeScreen.dart';
+import '/screens/products/MySignatureScreen.dart';
+import '/widgets/Styles.dart';
+import '/util/Util.dart';
 
 class VerifyCustomerScreen extends StatefulWidget {
   final ToCheckInOutSupportTicket supportticket;
 
-  VerifyCustomerScreen({Key key, this.supportticket}) : super(key: key);
+  VerifyCustomerScreen({required Key key, required this.supportticket}) : super(key: key);
   
   @override
   _VerifyCustomerScreenState createState() => _VerifyCustomerScreenState();
@@ -26,7 +26,7 @@ class VerifyCustomerScreen extends StatefulWidget {
 class _VerifyCustomerScreenState extends State<VerifyCustomerScreen> {
   bool isDisplayErrorNotification = false;
   String errorMessage = "";
-  Timer _timer;
+  late Timer _timer;
   int _start = 60;
   FirebaseAuth auth  = FirebaseAuth.instance;
   String demoPhone = "+"+"60128865095"; //test for demo phone number
@@ -42,9 +42,9 @@ class _VerifyCustomerScreenState extends State<VerifyCustomerScreen> {
   FocusNode focusNodeOtp3 = new FocusNode();
   FocusNode focusNodeOtp4 = new FocusNode();
   
-  String verID;
-  int screenState;
-  String otpPin;
+  late String verID;
+  late int screenState;
+  late String otpPin;
   bool hasError = false;
 
   void showErrorNotification(String message) {
@@ -97,6 +97,15 @@ class _VerifyCustomerScreenState extends State<VerifyCustomerScreen> {
 
   @override
   Widget build(BuildContext context) {
+    PreferredSize buildAppBar(BuildContext context, String title, {VoidCallback? onBackPress}) {
+      return PreferredSize(
+        preferredSize: Size.fromHeight(kToolbarHeight), // Set the height as needed
+        child: AppBar(
+          // Your AppBar code here
+        ),
+      );
+    }
+
 
     return Scaffold(
       appBar: buildAppBar(context, "Verify Customer's Authority", onBackPress: () {
@@ -191,7 +200,7 @@ class _VerifyCustomerScreenState extends State<VerifyCustomerScreen> {
               context,
               errorMessage,
               '',
-              isDarkMode(context) ? Colors.red[900] : pinkishColor,
+              isDarkMode(context) ? Colors.red[900]! : pinkishColor,
               false,
               onOptionTap: () {},
             ),
@@ -545,9 +554,7 @@ class _VerifyCustomerScreenState extends State<VerifyCustomerScreen> {
   );
 }*/
 
-
   Future<void> verifyPhone(String number) async {
-
     await FirebaseAuth.instance.verifyPhoneNumber(
       phoneNumber: number,
       timeout: const Duration(seconds: 60),
@@ -560,7 +567,7 @@ class _VerifyCustomerScreenState extends State<VerifyCustomerScreen> {
         print("failed"+e.toString());
         hasError = true;
       },
-      codeSent: (String verificationId, int resendToken) {
+      codeSent: (String verificationId, int? resendToken) {
         showSnackBarText("OTP Sent!");
         verID = verificationId;
         //setState(() {
@@ -572,6 +579,7 @@ class _VerifyCustomerScreenState extends State<VerifyCustomerScreen> {
       },
     );
   }
+
 
     Future<void> verifyOTP() async {
     try{
@@ -585,7 +593,7 @@ class _VerifyCustomerScreenState extends State<VerifyCustomerScreen> {
     //.whenComplete(() {
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
-          builder: (context) => MySignatureScreen(supportticket:widget.supportticket),
+          builder: (context) => MySignatureScreen(supportticket:widget.supportticket, key: UniqueKey()),
         ),
       );
     //});

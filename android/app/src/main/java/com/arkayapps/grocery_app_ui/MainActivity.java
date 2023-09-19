@@ -1,4 +1,4 @@
-package com.arkayapps.shopping_app_ui;
+package com.arkayapps.sigmahelpdesk;
 
 import io.flutter.embedding.android.FlutterActivity;
 

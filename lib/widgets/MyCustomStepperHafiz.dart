@@ -2,14 +2,12 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-// @dart = 2.8
-
 //aim is jus tto change, some of the icon, for eg: shipped, delivered, with related icons to supportticket services
 
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:shopping_app_ui/colors/Colors.dart';
+import '/colors/Colors.dart';
 
 /// The state of a [Step] which is used to control the style of the circle and
 /// text.
@@ -90,9 +88,9 @@ class Step {
   ///
   /// The [title], [content], and [state] arguments must not be null.
   const Step({
-    @required this.title,
-    this.subtitle,
-    @required this.content,
+    required this.title,
+    required this.subtitle,
+    required this.content,
     this.state = StepState.indexed,
     this.isActive = false,
   })  : assert(title != null),
@@ -143,14 +141,14 @@ class MyCustomStepperHafiz extends StatefulWidget {
   ///
   /// The [steps], [type], and [currentStep] arguments must not be null.
   const MyCustomStepperHafiz({
-    Key key,
-    @required this.steps,
-    this.physics,
+    required Key key,
+    required this.steps,
+    required this.physics,
     this.type = StepperType.vertical,
     this.currentStep = 0,
-    this.onStepTapped,
-    this.controlsBuilder,
-    this.controls,
+    required this.onStepTapped,
+    required this.controlsBuilder,
+    required this.controls,
   })  : assert(steps != null),
         assert(type != null),
         assert(currentStep != null),
@@ -254,7 +252,7 @@ class MyCustomStepperHafiz extends StatefulWidget {
 
 class _MyCustomStepperHafizState extends State<MyCustomStepperHafiz>
     with TickerProviderStateMixin {
-  List<GlobalKey> _keys;
+  late List<GlobalKey> _keys;
   final Map<int, StepState> _oldStates = <int, StepState>{};
 
   @override
@@ -302,8 +300,8 @@ class _MyCustomStepperHafizState extends State<MyCustomStepperHafiz>
     );
   }
 
-  Widget _buildCircleChild(int index, bool oldState) {
-    final StepState state =
+  Widget? _buildCircleChild(int index, bool oldState) {
+    final StepState? state =
         oldState ? _oldStates[index] : widget.steps[index].state;
     final bool isDarkActive = _isDark() && widget.steps[index].isActive;
     assert(state != null);
@@ -390,7 +388,7 @@ class _MyCustomStepperHafizState extends State<MyCustomStepperHafiz>
           : Colors.black38;
     } else {
       return widget.steps[index].isActive
-          ? themeData.accentColor
+          ? themeData.colorScheme.secondary // use colorScheme.secondary instead of accentColor
           : themeData.backgroundColor;
     }
   }
@@ -502,19 +500,19 @@ class _MyCustomStepperHafizState extends State<MyCustomStepperHafiz>
               onPressed: widget.controls.onStepContinue,
               style: ButtonStyle(
                 foregroundColor: MaterialStateProperty.resolveWith<Color>(
-                    (Set<MaterialState> states) {
-                  return states.contains(MaterialState.disabled)
-                      ? null
-                      : (_isDark()
+                        (Set<MaterialState> states) {
+                      return states.contains(MaterialState.disabled)
+                          ? Colors.transparent // provide a default color here
+                          : (_isDark()
                           ? colorScheme.onSurface
                           : colorScheme.onPrimary);
-                }),
+                    }),
                 backgroundColor: MaterialStateProperty.resolveWith<Color>(
-                    (Set<MaterialState> states) {
-                  return _isDark() || states.contains(MaterialState.disabled)
-                      ? null
-                      : colorScheme.primary;
-                }),
+                        (Set<MaterialState> states) {
+                      return _isDark() || states.contains(MaterialState.disabled)
+                          ? Colors.transparent // provide a default color here
+                          : colorScheme.primary;
+                    }),
                 padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
                     buttonPadding),
                 shape: MaterialStateProperty.all<OutlinedBorder>(buttonShape),
@@ -539,7 +537,7 @@ class _MyCustomStepperHafizState extends State<MyCustomStepperHafiz>
     );
   }
 
-  TextStyle _titleStyle(int index) {
+  TextStyle? _titleStyle(int index) {
     final ThemeData themeData = Theme.of(context);
     final TextTheme textTheme = themeData.textTheme;
 
@@ -557,15 +555,15 @@ class _MyCustomStepperHafizState extends State<MyCustomStepperHafiz>
         return textTheme.bodyText1;
       case StepState.disabled:
         return textTheme.bodyText1
-            .copyWith(color: _isDark() ? _kDisabledDark : _kDisabledLight);
+            ?.copyWith(color: _isDark() ? _kDisabledDark : _kDisabledLight);
       case StepState.error:
         return textTheme.bodyText1
-            .copyWith(color: _isDark() ? _kErrorDark : _kErrorLight);
+            ?.copyWith(color: _isDark() ? _kErrorDark : _kErrorLight);
     }
     return null;
   }
 
-  TextStyle _subtitleStyle(int index) {
+  TextStyle? _subtitleStyle(int index) {
     final ThemeData themeData = Theme.of(context);
     final TextTheme textTheme = themeData.textTheme;
 
@@ -583,10 +581,10 @@ class _MyCustomStepperHafizState extends State<MyCustomStepperHafiz>
         return textTheme.caption;
       case StepState.disabled:
         return textTheme.caption
-            .copyWith(color: _isDark() ? _kDisabledDark : _kDisabledLight);
+            ?.copyWith(color: _isDark() ? _kDisabledDark : _kDisabledLight);
       case StepState.error:
         return textTheme.caption
-            .copyWith(color: _isDark() ? _kErrorDark : _kErrorLight);
+            ?.copyWith(color: _isDark() ? _kErrorDark : _kErrorLight);
     }
     return null;
   }
@@ -597,7 +595,7 @@ class _MyCustomStepperHafizState extends State<MyCustomStepperHafiz>
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
         AnimatedDefaultTextStyle(
-          style: _titleStyle(index),
+          style: _titleStyle(index) ?? DefaultTextStyle.of(context).style, // provide a default style here
           duration: kThemeAnimationDuration,
           curve: Curves.fastOutSlowIn,
           child: widget.steps[index].title,
@@ -606,7 +604,7 @@ class _MyCustomStepperHafizState extends State<MyCustomStepperHafiz>
           Container(
             margin: const EdgeInsets.only(top: 2.0),
             child: AnimatedDefaultTextStyle(
-              style: _subtitleStyle(index),
+              style: _subtitleStyle(index) ?? DefaultTextStyle.of(context).style, // provide a default style here
               duration: kThemeAnimationDuration,
               curve: Curves.fastOutSlowIn,
               child: widget.steps[index].subtitle,
@@ -615,6 +613,7 @@ class _MyCustomStepperHafizState extends State<MyCustomStepperHafiz>
       ],
     );
   }
+
 
   Widget _buildVerticalHeader(int index) {
     return Container(
@@ -698,16 +697,18 @@ class _MyCustomStepperHafizState extends State<MyCustomStepperHafiz>
               InkWell(
                 onTap: widget.steps[i].state != StepState.disabled
                     ? () {
-                        // In the vertical case we need to scroll to the newly tapped
-                        // step.
-                        Scrollable.ensureVisible(
-                          _keys[i].currentContext,
-                          curve: Curves.fastOutSlowIn,
-                          duration: kThemeAnimationDuration,
-                        );
+                  // In the vertical case we need to scroll to the newly tapped
+                  // step.
+                  if (_keys[i].currentContext != null) {
+                    Scrollable.ensureVisible(
+                      _keys[i].currentContext!,
+                      curve: Curves.fastOutSlowIn,
+                      duration: kThemeAnimationDuration,
+                    );
+                  }
 
-                        if (widget.onStepTapped != null) widget.onStepTapped(i);
-                      }
+                  if (widget.onStepTapped != null) widget.onStepTapped(i);
+                }
                     : null,
                 canRequestFocus: widget.steps[i].state != StepState.disabled,
                 child: _buildVerticalHeader(i),
@@ -718,6 +719,7 @@ class _MyCustomStepperHafizState extends State<MyCustomStepperHafiz>
       ],
     );
   }
+
 
   Widget _buildHorizontal() {
     final List<Widget> children = <Widget>[
@@ -774,7 +776,7 @@ class _MyCustomStepperHafizState extends State<MyCustomStepperHafiz>
               AnimatedSize(
                 curve: Curves.fastOutSlowIn,
                 duration: kThemeAnimationDuration,
-                vsync: this,
+                key: UniqueKey(),
                 child: widget.steps[widget.currentStep].content,
               ),
               _buildVerticalControls(),
@@ -803,8 +805,9 @@ class _MyCustomStepperHafizState extends State<MyCustomStepperHafiz>
         return _buildVertical();
       case StepperType.horizontal:
         return _buildHorizontal();
+      default:
+        return Container(); // provide a default widget here
     }
-    return null;
   }
 }
 
@@ -812,7 +815,7 @@ class _MyCustomStepperHafizState extends State<MyCustomStepperHafiz>
 // top vertex the middle of its top.
 class _TrianglePainter extends CustomPainter {
   _TrianglePainter({
-    this.color,
+    required this.color,
   });
 
   final Color color;
