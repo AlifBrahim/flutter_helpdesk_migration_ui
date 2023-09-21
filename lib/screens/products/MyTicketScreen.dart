@@ -53,6 +53,7 @@ class _MyTicketScreenState extends State<MyTicketScreen> {
   @override
   Widget build(BuildContext context) {
 
+
     return Scaffold(
       backgroundColor: isDarkMode(context)
           ? darkBackgroundColor
@@ -74,75 +75,61 @@ class _MyTicketScreenState extends State<MyTicketScreen> {
               children: [
                 SizedBox(
                   height: getProportionateScreenWidth(10.0),
-                ),               
-              FutureBuilder(
-                future: AllTicketsApi.getAllSupportTickets(),//Future.wait( [AllTicketsApi.combinedData(), AllTicketsApi.getAllSupportTickets()]),
-                builder: (context, snapshot) {
-                  final tickets = snapshot.data;
-                     
-                  switch (snapshot.connectionState) {
-                    case ConnectionState.waiting:
+                ),
+                FutureBuilder(
+                  future: AllTicketsApi.getAllSupportTickets(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
                       return AnimatedContainers(context);
-
-                    case ConnectionState.none:
-                      break;
-                                  
-                    case ConnectionState.active: //this is for stream so, futurebuilder does not need to use this.
-                      // TODO: Handle this case.
-                    break;
-
-                    case ConnectionState.done:
-                      if(snapshot.hasData){
-                        return buildSupportTickets(tickets as List<ToCheckInOutSupportTicket>);
-                      }
-                      else if (snapshot.hasError){
+                    } else if (snapshot.hasData) {
+                      final tickets = snapshot.data as List<ToCheckInOutSupportTicket>;
+                      if (tickets.isEmpty) {
                         return Column(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            
-                            Lottie.asset(
-                              'assets/json/lottieJson/no-internet.json',
-                              repeat: true,
+                            Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: SvgPicture.asset(
+                                isDarkMode(context)
+                                    ? '$darkIconPath/empty_wishlist.svg'
+                                    : '$lightIconPath/empty_wishlist.svg',
+                                height: SizeConfig.screenHeight * 0.5,
+                                width: double.infinity,
+                              ),
                             ),
-                            const SizedBox(height:(10)),
-                            Text('Unable to fetch data, please refresh and try again.', style: Theme.of(context).textTheme.subtitle1?.copyWith(
-                              fontWeight: Theme.of(context).textTheme.subtitle2?.fontWeight),textAlign: TextAlign.center,),
-                            Text("${snapshot.error}"),
-                
-
+                            Text(
+                              'No tickets found!',
+                              style: Theme.of(context).textTheme.headline6,
+                            )
                           ],
                         );
-                        //return Text('Some error has occured on snapshot');
+                      } else {
+                        return buildSupportTickets(tickets);
                       }
-                      else if (snapshot.hasData == false){
-                        return Column(
+                    } else if (snapshot.hasError) {
+                      print('Error: ' + snapshot.error.toString());
+                    print('Stack Trace: ' + snapshot.stackTrace.toString());
+                    print('Data: ' + snapshot.data.toString());
+                    print('Connection State: ' + snapshot.connectionState.toString());
+                      return Column(
                         mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Padding(
-                            padding: const EdgeInsets.all(16.0),
-                            child: SvgPicture.asset(
-                              isDarkMode(context)
-                                  ? '$darkIconPath/empty_wishlist.svg'
-                                  : '$lightIconPath/empty_wishlist.svg',
-                              height: SizeConfig.screenHeight * 0.5,
-                              width: double.infinity,
-                            ),
+                          Lottie.asset(
+                            'assets/json/lottieJson/no-internet.json',
+                            repeat: true,
                           ),
-                          Text(
-                            'No tickets found!',
-                            style: Theme.of(context).textTheme.headline6,
-                          )
+                          const SizedBox(height:(10)),
+                          Text('Unable to fetch data, please refresh and try again.', style: Theme.of(context).textTheme.subtitle1?.copyWith(
+                              fontWeight: Theme.of(context).textTheme.subtitle2?.fontWeight),textAlign: TextAlign.center,),
+                          Text("${snapshot.error}"),
                         ],
                       );
-                      }
-                      else
-                        return Center(child: Text('ConnectionDone but some error occured!'));
-                                   
-                  }
-                  return Text('Connection is broken,Some error ocurred! ${snapshot.connectionState}');
-                },
-              ),                    
+                    } else {
+                      return Text('Connection is broken,Some error ocurred! ${snapshot.connectionState}');
+                    }
+                  },
+                )
               ],
             ),
           ),
@@ -162,7 +149,7 @@ class _MyTicketScreenState extends State<MyTicketScreen> {
       itemCount: supporttickets.length,
       controller: scrollcontroller,
       itemBuilder: (context, index){
-
+  if (index < supporttickets.length) {
         var supportticket = supporttickets[index];
         //var respartner = respartners[index];
         String unique = 'empty' ;
@@ -504,6 +491,9 @@ class _MyTicketScreenState extends State<MyTicketScreen> {
         ),
       //),
       );
+  } else {
+    print('Index $index out of range!');
+  }
       } 
 
 
