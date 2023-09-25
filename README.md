@@ -1,3 +1,3 @@
-# shopping_app_ui
+# Flutter Helpdesk App for Technicians
 
-Shopping App UIf
+An app for Sigma Rectrix technicians to submit report with the ability to check in and check out at their work site.
