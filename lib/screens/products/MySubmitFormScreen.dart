@@ -1040,7 +1040,7 @@ Future<void> saveToDatabase(problem,resolution,followup,imageFileList, ticket_id
       //print("file name after convert? : "+imageFile.toString());
 
         //final _filename = basename(imageFile.path);
-        final _extension = extension(imageFileList[i].path);
+        final _extension = extension(imageFileList[i].path).substring(1); // Remove the leading period
       DateTime now = new DateTime.now();
       DateTime date = new DateTime(now.year, now.month, now.day, now.hour, now.minute);
       //imageFile.rename ("TicketImage"+DateTime.now().toString() +_extension.toString());
@@ -1057,7 +1057,7 @@ Future<void> saveToDatabase(problem,resolution,followup,imageFileList, ticket_id
             'type': 'binary',
             'mime_type' : 'image/$_extension',
             //'store_fname': _filename,
-            'datas_fname':'proofImage_'+date.toString(),
+            'datas_fname':'proofImage_'+DateFormat('yyyyMMddHHmmss').format(date),
             'datas':imageBase64,
             //'datas':'base64.b64encode($imageBase64)'
           },

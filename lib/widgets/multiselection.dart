@@ -1,5 +1,5 @@
 import 'dart:collection';
-
+import 'dart:io';
 import 'package:flutter/material.dart';
 import '../screens/products/MySubmitFormScreen.dart';
 
@@ -28,22 +28,23 @@ class _GridItemState extends State<GridItem> {
       },
       child: Stack(
         children: <Widget>[
-          Image.asset(
-            widget.item.imageUrl,
+          Image.file(
+            File(widget.item), // Change this line
             color: Colors.black.withOpacity(isSelected ? 0.9 : 0),
             colorBlendMode: BlendMode.color,
           ),
+
           isSelected
               ? Align(
-            alignment: Alignment.bottomRight,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Icon(
-                Icons.check_circle,
-                color: Colors.blue,
-              ),
-            ),
-          )
+                  alignment: Alignment.bottomRight,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Icon(
+                      Icons.check_circle,
+                      color: Colors.blue,
+                    ),
+                  ),
+                )
               : Container()
         ],
       ),
