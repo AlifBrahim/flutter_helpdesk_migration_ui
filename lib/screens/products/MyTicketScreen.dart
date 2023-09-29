@@ -41,7 +41,7 @@ class _MyTicketScreenState extends State<MyTicketScreen> {
   void initState(){
     super.initState();
     print ('find out whether sessionId exist!?' + globalClient.sessionId!.id.toString());
-    print ('find out what the fuck is in globalsession '+ globalSession.toString());
+    print ('find out is in globalsession '+ globalSession.toString());
    
   }
 
@@ -153,9 +153,6 @@ class _MyTicketScreenState extends State<MyTicketScreen> {
         var supportticket = supporttickets[index];
         //var respartner = respartners[index];
         String unique = 'empty' ;
-        print('is the problem here before getpartnerimage?');
-        print('can we get the supportticket_id here?' +supportticket.partner_id.toString());
-        print ('unique' + unique);
         
         var avatarUrl;
         if(supportticket.partner_id != null)

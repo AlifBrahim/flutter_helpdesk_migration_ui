@@ -14,7 +14,7 @@ class SubmitFormTicketsApi {
       'kwargs': {
         'context': {}, //because by default odoo fields.char return False when its null, therefore we change the default return '' rather than false
         //'domain': [ ['check_in','=','']],
-        'domain': [['check_in','!=',null],['check_out','!=',null],['close_comment','!=',''] ],
+        'domain': [['check_in','!=',null],['check_out','!=',null] ], // the close_comment is what caused my testing ticket to not show
         'fields': [],
         'order':'check_in desc', //still testing
         'offset':offset, //should change (increase/decrease one way) over time

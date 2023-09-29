@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:geolocator_platform_interface/src/models/position.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import '/OdooApiCall/ToCheckInTicketsApi.dart';
@@ -41,8 +43,8 @@ class _MyAttendanceScreenState extends State<MyAttendanceScreen> with SingleTick
     fontFamily: poppinsFont,
     color: Colors.black.withOpacity(0.6),
   );
-  late double partnerLat; //dont initialize it, this is for a late field.
-  late double partnerLong; //same as this one, follow the rules of partnerLat
+  late double partnerLat = 0; //dont initialize it, this is for a late field.
+  late double partnerLong = 0; //same as this one, follow the rules of partnerLat
   String checkin = ''; // jst for temporary variable and also for ternary operation on slideaction
   String checkout = '';
 
@@ -55,8 +57,8 @@ class _MyAttendanceScreenState extends State<MyAttendanceScreen> with SingleTick
   
 
   final panelController = PanelController();
-  late double currentlatitude; //we try to sync provider data with the parameters in slidetocheckin consumer
-  late double currentlongitude; //we try to sync provider data with the parameters in slidetocheckin consumer
+  late double currentlatitude = 0; //we try to sync provider data with the parameters in slidetocheckin consumer
+  late double currentlongitude = 0; //we try to sync provider data with the parameters in slidetocheckin consumer
   late String fullAddress;
   // isLocationDone is used to set flag to true after we manage to fetch location,.. this flag is to be used for slide to check in, if no location is get/error, slide to checkin will appear as container, as sliding it might cause unknown bugs especially on singletickercancel error.
   // another thing is to be proper, we will only show slide to checkin after location is get, because this will prevent user from doing mistakes, in easy word, it makes it more user friendly.
@@ -104,39 +106,48 @@ class _MyAttendanceScreenState extends State<MyAttendanceScreen> with SingleTick
   Widget build(BuildContext context) {
     //firstly, we have to put the value of fetched data (if it exist) into attendance provider first. ,
     //this should be done at top of build method
-   
-
     final panelHeightClosed = SizeConfig.screenHeight*0.16;
     final panelHeightOpen = SizeConfig.screenHeight*0.55;
+
+    final container = ProviderContainer();
+    final currentLocationFuture = container.read(currentlocationFutureProvider.future);
 
     return Scaffold(
       backgroundColor: isDarkMode(context) ? darkBackgroundColor : Theme.of(context).backgroundColor,
       // appBar: buildAppBar(context, 'My Attendance', onBackPress: () {
       //   Navigator.pop(context);
       // }),
-      body: SlidingUpPanel (
-        defaultPanelState: PanelState.CLOSED,
-        color: Theme.of(context).primaryColor,
-        controller: panelController,
-        minHeight: panelHeightClosed,
-        maxHeight: panelHeightOpen,
-        parallaxEnabled: true,
-        parallaxOffset: 1.0, //maybe 0.5 is better
-        body: MapsWidget(widget.supporticket,partnerLat,partnerLong, key: UniqueKey(),),
-        panelBuilder: (controller) => PanelWidget(
-          panelController : panelController,
-          controller: controller,
-        
-        ),
-        /* //notes by hafizalwi: ideally we can use onPanelSlide and create a better gui where floating button will float on top of slidinguppanel even when panel is open or close
-        //but we will not used it as It brings a lot of lagginess to the apps.
-        onPanelSlide: (position)=> setState((){
-          //print(position);
-          position;
-        }),
-        */    
+      body: FutureBuilder(
+        future: currentLocationFuture,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return CircularProgressIndicator();
+          } else if (snapshot.hasError) {
+            // Handle the error here
+            return Text('Error: ${snapshot.error}');
+          } else {
+            final currentLocation = snapshot.data as Position?;
+            if (currentLocation != null) {
+              return SlidingUpPanel (
+                defaultPanelState: PanelState.CLOSED,
+                color: Theme.of(context).primaryColor,
+                controller: panelController,
+                minHeight: panelHeightClosed,
+                maxHeight: panelHeightOpen,
+                parallaxEnabled: true,
+                parallaxOffset: 1.0, //maybe 0.5 is better
+                body: MapsWidget(widget.supporticket, currentLocation.latitude, currentLocation.longitude, key: UniqueKey(),),
+                panelBuilder: (controller) => PanelWidget(
+                  panelController : panelController,
+                  controller: controller,
+                ),
+              );
+            } else {
+              return Text('Current location is not available.');
+            }
+          }
+        },
       ),
-
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 22.0, vertical: 25.0),
         child: Container(
@@ -146,7 +157,8 @@ class _MyAttendanceScreenState extends State<MyAttendanceScreen> with SingleTick
         ),
       ),
     );
-    }
+  }
+
 
   void showDoneDialog() => 
   showDialog(
@@ -206,30 +218,33 @@ class _MyAttendanceScreenState extends State<MyAttendanceScreen> with SingleTick
     )
   );
 
-  void showFailedDialog(e) => 
-  showDialog(
-    barrierDismissible: true,
-    context: context,
-    builder: (context) => Dialog(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Lottie.asset(
-            'assets/json/lottieJson/cross-unapproved.json',
-            repeat: false,
-            controller: controller,
-            onLoaded: (composition) {
-              controller.duration = composition.duration;
-              controller.forward();
-            }
+  void showFailedDialog(e) {
+    print('Error: failed to check in! Details: $e');
+    showDialog(
+        barrierDismissible: true,
+        context: context,
+        builder: (context) => Dialog(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Lottie.asset(
+                  'assets/json/lottieJson/cross-unapproved.json',
+                  repeat: false,
+                  controller: controller,
+                  onLoaded: (composition) {
+                    controller.duration = composition.duration;
+                    controller.forward();
+                  }
+              ),
+              Text('Error: failed to check in! Details: $e ',style: Theme.of(context).textTheme.subtitle1?.copyWith(
+                  fontWeight: Theme.of(context).textTheme.subtitle2?.fontWeight),),
+              const SizedBox(height:16),
+            ],
           ),
-          Text('Error: failed to check in! Details: $e ',style: Theme.of(context).textTheme.subtitle1?.copyWith(
-             fontWeight: Theme.of(context).textTheme.subtitle2?.fontWeight),),
-          const SizedBox(height:16),
-        ],
-      ), 
-    )
-  );
+        )
+    );
+  }
+
 
   void showLoadingDialog() => 
   showDialog(
@@ -664,109 +679,133 @@ class _MyAttendanceScreenState extends State<MyAttendanceScreen> with SingleTick
     );
   }
 
+  void checkLocationPermission() async {
+    var status = await Permission.location.status;
+    if (status.isDenied) {
+      // We didn't ask for permission yet or the permission has been denied before but not permanently.
+      print('Location permission is denied');
+    } else if (status.isPermanentlyDenied) {
+      // The OS restricts access, for example because of parental controls.
+      print('Location permission is permanently denied');
+    } else if (status.isRestricted) {
+      // The OS restricts access, for example because of parental controls.
+      print('Location permission is restricted');
+    } else if (status.isGranted) {
+      // You can request the permission.
+      print('Location permission is granted');
+    } else if (status.isLimited) {
+      // On iOS this means that the permission is granted only once.
+      print('Location permission is limited');
+    }
+  }
+
   Widget attendanceWidget() {
-  return Container(
-     
-    child: Builder(
-      builder: (context){
-        final GlobalKey <SlideActionState> key = GlobalKey();
-        return Consumer(
-          builder: (BuildContext context, WidgetRef ref, Widget? child) {
-            final watchCheckInTime = ref.watch(attendanceProvider).checkInTime;
-            final watchCheckOutTime = ref.watch(attendanceProvider).checkOutTime;
-            final watchLastKnownLocation = ref.read(lastknownlocationFutureProvider);
+    return Container(
+        child: Builder(
+            builder: (context){
+              final GlobalKey <SlideActionState> key = GlobalKey();
+              return Consumer(
+                builder: (BuildContext context, WidgetRef ref, Widget? child) {
+                  final watchCheckInTime = ref.watch(attendanceProvider).checkInTime;
+                  final watchCheckOutTime = ref.watch(attendanceProvider).checkOutTime;
+                  final watchLastKnownLocation = ref.read(lastknownlocationFutureProvider);
 
-            return 
-            watchCheckOutTime != '' || widget.supporticket.check_out != '' || checkout != '' //|| _isLocationDone != true //container will be return if one of these conditions are met.
-            ? Container() 
-            : SlideAction(
-              
-              text:
+                  print('Check-in time: $watchCheckInTime');
+                  print('Check-out time: $watchCheckOutTime');
+                  print('partnerLat: $partnerLat');
+                  print('partnerLong: $partnerLong');
+                  print('currentlatitude: $currentlatitude');
+                  print('currentlongitude: $currentlongitude');
 
-              widget.supporticket.check_in =='' && watchCheckInTime == ''   // AND if we found no data for check in (through provider) There should be data after we slide it to check in
-              ?  'Slide to Check in' 
-              :  watchCheckOutTime == '' || widget.supporticket.check_out == ''//AND if we found no data for check out after slide to check out
-              ? 'Slide to Check Out' // then display slide to check out
-              : 'Finished',
+                  return
+                    watchCheckOutTime != '' || widget.supporticket.check_out != '' || checkout != '' //|| _isLocationDone != true //container will be return if one of these conditions are met.
+                        ? Container()
+                        : SlideAction(
+                        text:
+                        widget.supporticket.check_in =='' && watchCheckInTime == ''   // AND if we found no data for check in (through provider) There should be data after we slide it to check in
+                            ?  'Slide to Check in'
+                            :  watchCheckOutTime == '' || widget.supporticket.check_out == ''//AND if we found no data for check out after slide to check out
+                            ? 'Slide to Check Out' // then display slide to check out
+                            : 'Finished',
+                        textStyle: normalTextStyle,
+                        outerColor: isDarkMode(context) ? Colors.white : Colors.white,
+                        innerColor: isDarkMode(context) ? Colors.black : primaryColor,
+                        key: key,
 
-              textStyle: normalTextStyle,      
-              outerColor: isDarkMode(context) ? Colors.white : Colors.white,
-              innerColor: isDarkMode(context) ? Colors.black : primaryColor,
-              key: key,
-              
-              onSubmit: () {    
+                        onSubmit: () {
+                          checkLocationPermission(); // Add this line to check location permission
 
-                Future.delayed(
-                  Duration(milliseconds: 900),
-                  () => key.currentState?.reset());
-                // if not check in, fill check in first, if already check in, then fill checkout. 
-                //firstly, we have to put the value of fetched data (if it exist) into attendance provider first. , this should be done at top of build method
-              
-                
-                if (watchCheckInTime == '' && widget.supporticket.check_in =='') //|| widget.supporticket.check_in =='' && watchCheckInTime != ''  //&& widget.supporticket.check_in ==''
-                  watchLastKnownLocation.when(
-                    data:(value){
-                      
-                      //let say we got the last known location, then we calculate if the last known location is in the circle radius or not
-                      /*But please take a big note, whenever we dont have partnerLat and partnerLong (the enduser might not assign it), we do not need to calculate the distance between radius, otherwise we will get null because we compare between a value of current and null partnerlat */
-                      if(partnerLat != null && partnerLong != null){
-                        var distance = GeolocatorPlatform.instance.distanceBetween( partnerLat, partnerLong, value.latitude, value.longitude);
-                          if (distance < 1000){ //TODO set the 1000 as shared preference OR, AND fetch the value of radius from website..supportzayd.settings. if there is no settings for it , go create one!
-                            //then we will refresh the location provider, so that we will get the latest location latitude and location address 
-                            //ref.refresh(attendanceProvider).checkInTime;
-                            //then we will update the value here
-                            ref.read(attendanceProvider.notifier).updateCheckInWithTicketId(
-                            widget.supporticket.ticket_id, currentlatitude.toString(), currentlongitude.toString(), fullAddress);
-                            return showDoneDialog();  
-                          }else{
-                            //else we throw error animation and reset the checkintime to ''
-                            showFailedCheckInDialog();
-                            ref.read(attendanceProvider).checkInTime = ''; 
+                          Future.delayed(
+                              Duration(milliseconds: 900),
+                                  () => key.currentState?.reset());
+
+                          if (watchCheckInTime == '' && widget.supporticket.check_in =='')
+                            watchLastKnownLocation.when(
+                              data:(value) async {
+                                print('Last known location: $value');
+
+                                // Convert the address to geographic coordinates
+                                List<Location> locations = await locationFromAddress(widget.supporticket.address);
+                                print('Locations: $locations');
+                                   if (locations.isNotEmpty) {
+                                  Location location = locations.first;
+
+                                  // Calculate the distance
+                                  var distance = GeolocatorPlatform.instance.distanceBetween(
+                                      location.latitude,
+                                      location.longitude,
+                                      value.latitude,
+                                      value.longitude
+                                  );
+
+                                  print('Distance from location: $distance');
+
+                                  // R
+
+                                if (distance < 1000){
+                                    ref.read(attendanceProvider.notifier).updateCheckInWithTicketId(
+                                        widget.supporticket.ticket_id, currentlatitude.toString(), currentlongitude.toString(), fullAddress);
+                                    return showDoneDialog();
+                                  }
+                                else{
+                                    showFailedCheckInDialog();
+                                    ref.read(attendanceProvider).checkInTime = '';
+                                  }
+                                }
+                                // else if(partnerLat == null && partnerLong == null){
+                                //   ref.read(attendanceProvider.notifier).updateCheckInWithTicketId(
+                                //       widget.supporticket.ticket_id, currentlatitude.toString(), currentlongitude.toString(), fullAddress);
+                                //   return showDoneDialog();
+                                // }
+                              },
+                              error: (e,stack) => {
+                                showFailedDialog(e),
+                              },
+                              loading: () => showLoadingDialog(),
+                            );
+
+                          else if  (watchCheckOutTime == '' || widget.supporticket.check_out == '')
+                          {
+                            try{
+                              ref.read(attendanceProvider.notifier).updateCheckOutWithTicketId(
+                                  widget.supporticket.ticket_id, currentlatitude.toString(), currentlongitude.toString(), fullAddress);
+                              showDoneDialog();
+                            }catch(e){
+                              ref.read(attendanceProvider).checkOutTime = '';
+                              showFailedDialog(e);
+                            }
                           }
-                      }
-                      else if(partnerLat == null && partnerLong == null){
-                        // if partnerlat and partner long is null , Just let the user check in but no need to check for distance between radius and last known location
-                        ref.read(attendanceProvider.notifier).updateCheckInWithTicketId(
-                        widget.supporticket.ticket_id, currentlatitude.toString(), currentlongitude.toString(), fullAddress);
-                        return showDoneDialog();  
-                      }
-                    },
-                    error: (e,stack) => {
-                      showFailedDialog(e),
-                    }, 
-                    loading: () => showLoadingDialog(),
-                  );               
-                
 
-                else if  (watchCheckOutTime == '' || widget.supporticket.check_out == '')
-                {
-                try{
-                  ref.read(attendanceProvider.notifier).updateCheckOutWithTicketId(
-                  widget.supporticket.ticket_id, currentlatitude.toString(), currentlongitude.toString(), fullAddress);
-                  showDoneDialog();
-                }catch(e){
-                  //clear watch.checkout data, so that UI wont show updated checkout
-                  ref.read(attendanceProvider).checkOutTime = '';
-                  showFailedDialog(e);
-                }
-           
-                }
-                
-
-                print("${widget.supporticket.check_in}==widget.checkin && ${watchCheckInTime} == watchcheckin");
-                print("${widget.supporticket.check_out}==widget.checkout && ${watchCheckOutTime} == watchcheckout $checkout == checkout ");
-                
-                //else return codes to disable this slide action because checkedin and checkedout already 
-
-                //return lottie?
-              }
-            );
-          },
-        );
-      }
-    )
-  );
-  }            
+                          print("${widget.supporticket.check_in} ==widget.checkin && ${watchCheckInTime} == watchcheckin");
+                          print("${widget.supporticket.check_out} ==widget.checkout && ${watchCheckOutTime} == watchcheckout $checkout == checkout ");
+                        }
+                    );
+                },
+              );
+            }
+        )
+    );
+  }
 
   Widget buildBottomPart() {
     return Container(

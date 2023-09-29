@@ -853,7 +853,6 @@ class _MySubmitFormScreenState extends State<MySubmitFormScreen> {
       this.context,
       "'Jobs done!'- Bob The Builder",
       goBackLabel,
-      'assets/json/lottieJson/trophy-animation.json',
       onTap: () {
         SchedulerBinding.instance.addPostFrameCallback(
           (_) {
@@ -1001,7 +1000,19 @@ Future<void> saveToDatabase(problem,resolution,followup,imageFileList, ticket_id
     //here we combined problem,resolution and followup and save to database comment
     String comment = "Problem: "+problem.text+"\nResolution: "+resolution.text+"\nFollow-up: "+followup.text;
     //var attachment // for attachmenment we will upload the proof of work picture
-        
+
+    // First, get the ID of the 'Staff Closed' state
+    var stateData = await globalClient.callKw({
+      'model': 'website.supportzayd.ticket.states',
+      'method': 'search_read',
+      'args': [],
+      'kwargs': {
+        'domain': [['name', '=', 'Staff Closed']],
+        'fields': ['id'],
+      },
+    });
+    int stateId = stateData[0]['id'];
+
     await globalClient.callKw({
       
     'model': 'website.supportzayd.ticket',
@@ -1011,6 +1022,7 @@ Future<void> saveToDatabase(problem,resolution,followup,imageFileList, ticket_id
         {
           //'case_done': resolutionTimerUTC,
           'close_comment' : comment,
+          'state' : stateId, // Use the state ID here
           //'check_out_long' : ,
           //'check_out_address' : address,         
         },

@@ -854,7 +854,7 @@ Widget buildNavigationItem(String image, String title) {
 Widget buildDialogWithAnimation(
   
   
-  BuildContext context, String successmessage, String buttonText, String pathlottie, {@required onTap}){
+  BuildContext context, String successmessage, String buttonText, {@required onTap}){
       return Stack(children: [
         Dialog(
           child: Container(
@@ -885,14 +885,6 @@ Widget buildDialogWithAnimation(
             ),
           ),
         ),
-        Center(
-          child: Lottie.asset(
-            'assets/LottieLogo1.json',
-            width: 80,
-            height: 80,
-            fit: BoxFit.fill,
-          )
-        )
       ]);
 
   }
