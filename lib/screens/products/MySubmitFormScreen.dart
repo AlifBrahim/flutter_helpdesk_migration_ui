@@ -304,17 +304,17 @@ class _MySubmitFormScreenState extends State<MySubmitFormScreen> {
                           ),
                         ),
 
-                        Container(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            "Problem",
-                            style: Theme.of(context).textTheme.subtitle2,
-                          ),
-                        ),
+                        // Container(
+                        //   alignment: Alignment.centerLeft,
+                        //   child: Text(
+                        //     "Problem",
+                        //     style: Theme.of(context).textTheme.subtitle2,
+                        //   ),
+                        // ),
                         SizedBox(
                           height: 10,
                         ),
-                        buildProblem(),
+                        // buildProblem(),
                         SizedBox(
                           height: 10,
                         ),
@@ -948,9 +948,8 @@ class _MySubmitFormScreenState extends State<MySubmitFormScreen> {
   
 
   void checkValidations() {
-    if (problem.text.isEmpty) {
-      showErrorNotification('Please enter remarks for problem');
-    } else if (resolution.text.isEmpty) {
+
+    if (resolution.text.isEmpty) {
       showErrorNotification('Please enter remarks for resolution');
     //} else if (selectedCardExpiryDate == null) {
     //  showErrorNotification('Please select card expiry date');
@@ -966,7 +965,7 @@ class _MySubmitFormScreenState extends State<MySubmitFormScreen> {
 
       if (_checkboxagree == true){
         try{
-        saveToDatabase(problem,resolution,followUp, imageFileList, widget.supporticket.ticket_id, this.context); //save to backend
+        saveToDatabase(resolution,followUp, imageFileList, widget.supporticket.ticket_id, this.context); //save to backend
       setState(() {
         displaySuccessDialog = true;
       });
@@ -991,14 +990,14 @@ class _MySubmitFormScreenState extends State<MySubmitFormScreen> {
 }
 
 
-Future<void> saveToDatabase(problem,resolution,followup,imageFileList, ticket_id, context) async {
+Future<void> saveToDatabase(resolution,followup,imageFileList, ticket_id, context) async {
 
     //DateTime resolutionTimerDate = new DateFormat("yyyy-MM-dd hh:mm:ss").parse(resolutionTimer.text);
     //resolutionTimerDate.subtract(Duration(hours: 8)); // we subtract 8 hours to convert MYT to GMT
     //String resolutionTimerUTC = resolutionTimerDate.toString();
 
     //here we combined problem,resolution and followup and save to database comment
-    String comment = "Problem: "+problem.text+"\nResolution: "+resolution.text+"\nFollow-up: "+followup.text;
+    String comment = "Resolution: "+resolution.text+"\nFollow-up: "+followup.text;
     //var attachment // for attachmenment we will upload the proof of work picture
 
     // First, get the ID of the 'Staff Closed' state

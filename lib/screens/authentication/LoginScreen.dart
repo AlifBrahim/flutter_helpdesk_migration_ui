@@ -386,7 +386,9 @@ class _LoginScreenState extends State<LoginScreen> {
       });
 
       try{
-        globalSession = await globalClient.authenticate('sigmarectrix-11', 'admin@sigmarectrix.com', 'Mib@193192987');
+        var client = OdooClient(URL);
+        globalSession = await client.authenticate('sigmarectrix-11', email.text, password.text);
+        globalClient = client;  // Update the global client
         setState(() {
           showLoadingIndicator = false;
         });
