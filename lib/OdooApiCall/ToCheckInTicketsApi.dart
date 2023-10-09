@@ -16,7 +16,7 @@ class ToCheckInTicketsApi {
       'kwargs': {
         'context': {}, //because by default odoo fields.char return False when its null, therefore we change the default return '' rather than false
         //'domain': [ ['check_in','=','']],
-        'domain': [['check_in','=',null],['check_out','=',null]],
+        'domain': [['check_in','=',null],['check_out','=',null], ['user_id', '=', globalUserId]],
         'fields': [],
         'order':'check_in desc', //still testing
         'offset':offset, //should change (increase/decrease one way) over time

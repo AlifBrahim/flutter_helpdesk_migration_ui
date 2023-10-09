@@ -1,6 +1,7 @@
 // TODO Implement this library.import 'dart:convert';
 import 'package:odoo_rpc/odoo_rpc.dart';
 import '../OdooApiCall_DataMapping/LocationHistory.dart';
+import '../screens/authentication/LoginScreen.dart';
 
   
 //might need to import session id here, to get user id, to get to filter.
@@ -15,7 +16,7 @@ class LocationHistoryApi {
         'context': {}, //because by default odoo fields.char return False when its null, therefore we change the default return '' rather than false
         'domain': [
           ['check_in','!=',''],['check_out','!=',''],//['user_id','=',session.userId]
-          ],
+          ['user_id', '=', globalUserId]],
         'fields': [
           'id',
           'check_in',

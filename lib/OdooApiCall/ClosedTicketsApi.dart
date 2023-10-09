@@ -1,5 +1,6 @@
 import 'package:odoo_rpc/odoo_rpc.dart';
 import '../OdooApiCall_DataMapping//ClosedSupportTicket.dart';
+import '../screens/authentication/LoginScreen.dart';
 
 
   
@@ -12,7 +13,7 @@ class ClosedTicketsApi {
       'args': [],
       'kwargs': {
         'context': {}, //because by default odoo fields.char return False when its null, therefore we change the default return '' rather than false
-        'domain': [['state.name','=','Staff Closed']],
+        'domain': [['state.name','=','Staff Closed'], ['user_id', '=', globalUserId]],
         'fields': [
           'ticket_number',
           'state'

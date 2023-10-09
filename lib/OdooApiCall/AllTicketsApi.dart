@@ -19,7 +19,8 @@ class AllTicketsApi {
         'args': [],
         'kwargs': {
           'context': {},
-          'domain': [['state.name','!=','Staff Closed']],
+          'domain': [['state.name','!=','Staff Closed'], ['user_id', '=', globalUserId] // Add this line
+          ],
           'fields':[],
         },
       });

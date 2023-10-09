@@ -13,7 +13,7 @@ class ToCheckOutTicketsApi {
       'args': [],
       'kwargs': {
         'context': {}, //because by default odoo fields.char return False when its null, therefore we change the default return '' rather than false
-        'domain': [ ['check_out','=',null],['check_in','!=',null]],
+        'domain': [ ['check_out','=',null],['check_in','!=',null], ['user_id', '=', globalUserId]],
         'fields': [],
       },
     });

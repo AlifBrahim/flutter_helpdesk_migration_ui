@@ -17,6 +17,7 @@ import '/util/Util.dart';
 var URL = 'http://42.1.60.211:8069';//'http://10.0.0.226:8069'; // 'http://192.168.0.123:8069';//'http://127.0.0.1:8069';//'http://localhost:8069';//'http://10.0.0.226:8069'; //192.168.0.123
 var globalClient = OdooClient(URL);
 var globalSession;
+var globalUserId;
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -388,6 +389,7 @@ class _LoginScreenState extends State<LoginScreen> {
       try{
         var client = OdooClient(URL);
         globalSession = await client.authenticate('sigmarectrix-11', email.text, password.text);
+        globalUserId = globalSession.userId;  // Store the user ID
         globalClient = client;  // Update the global client
         setState(() {
           showLoadingIndicator = false;
