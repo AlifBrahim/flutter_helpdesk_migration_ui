@@ -6,12 +6,10 @@ import '/colors/Colors.dart';
 import '/constant/Constants.dart';
 import '/util/size_config.dart';
 import '/widgets/Styles.dart';
-import '/widgets/MyCustomStepperHafiz.dart'
-    as MyCustomStepper;
+import '/widgets/MyCustomStepperHafiz.dart' as MyCustomStepper;
 import '/util/Util.dart';
 
 class TicketDetailScreen extends StatefulWidget {
-
   TicketDetailScreen(this.supportticket, this.respartner_id);
 
   //final SupportTicketResPartner supportticket;
@@ -28,21 +26,26 @@ class _TicketDetailScreenState extends State<TicketDetailScreen> {
     fontFamily: poppinsFont,
     color: Colors.black.withOpacity(0.6),
   );
-  
+
   double rowLineHeight = 8.0;
 
   @override
   Widget build(BuildContext context) {
-    PreferredSize buildAppBar(BuildContext context, String title, {VoidCallback? onBackPress}) {
+    PreferredSize buildAppBar(BuildContext context, String title,
+        {VoidCallback? onBackPress}) {
       return PreferredSize(
-        preferredSize: Size.fromHeight(kToolbarHeight), // Set the height as needed
+        preferredSize:
+            Size.fromHeight(kToolbarHeight), // Set the height as needed
         child: AppBar(
-          // Your AppBar code here
-        ),
+            // Your AppBar code here
+            ),
       );
     }
+
     return Scaffold(
-      backgroundColor: isDarkMode(context) ? darkBackgroundColor : Theme.of(context).backgroundColor,
+      backgroundColor: isDarkMode(context)
+          ? darkBackgroundColor
+          : Theme.of(context).backgroundColor,
       appBar: buildAppBar(context, 'Details', onBackPress: () {
         Navigator.pop(context);
       }),
@@ -58,140 +61,15 @@ class _TicketDetailScreenState extends State<TicketDetailScreen> {
           ),
         ),
       ),
-      
-      /*
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 22.0, vertical: 25.0),
-        child: Container(
-          height: 56.0,
-          alignment: Alignment.center,
-          child: buildBottomPart(),
-        ),
-      ),
-      */
     );
   }
-
-  /*
-  Widget buildDeliveryExpectCard() {
-    return Padding(
-      padding:
-          const EdgeInsets.only(left: 16.0, right: 16.0, top: 16, bottom: 4.0),
-      child: Card(
-        elevation: 6,
-        color: isDarkMode(context) ? darkGreyColor : Colors.white,
-        shadowColor: Colors.grey.withOpacity(0.15),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-          child: Container(
-            width: double.infinity,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text('Delivery expected on Sat, 19',
-                  style: Theme.of(context).textTheme.subtitle1.copyWith(
-                      fontWeight: Theme.of(context).textTheme.subtitle2.fontWeight),
-                ),
-                SizedBox(
-                  height: 5,
-                ),
-                Text('Order ID: OD110589307',
-                    style: homeScreensClickableLabelStyle),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget buildHomeAddress() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 4.0),
-      child: Card(
-        elevation: 6,
-        color: isDarkMode(context) ? darkGreyColor : Colors.white,
-        shadowColor: Colors.grey.withOpacity(0.15),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-          child: Container(
-            width: double.infinity,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text('Home Address',
-                  style: Theme.of(context).textTheme.subtitle1.copyWith(
-                      fontWeight: Theme.of(context).textTheme.subtitle2.fontWeight),
-                ),
-                SizedBox(
-                  height: 5,
-                ),
-                Text(
-                  '2249 Carling Ave #416',
-                  style: Theme.of(context).textTheme.bodyText2,
-                ),
-                SizedBox(
-                  height: 5,
-                ),
-                Text(
-                  'Ottawa, ON K2B 7E9',
-                  style: Theme.of(context).textTheme.bodyText2,
-                ),
-                SizedBox(
-                  height: 5,
-                ),
-                Text(
-                  'Canada',
-                  style: Theme.of(context).textTheme.bodyText2,
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text('Default delivery address',
-                        style: homeScreensClickableLabelStyle),
-                    InkWell(
-                      child: Container(
-                        width: 20,
-                        height: 20,
-                        decoration: BoxDecoration(
-                          color: primaryColor,
-                          borderRadius: BorderRadius.all(
-                            Radius.elliptical(10, 10),
-                          ),
-                        ),
-                        child: Center(
-                          child: Icon(
-                            Icons.check,
-                            color: Colors.white,
-                            size: 14,
-                          ),
-                        ),
-                      ),
-                      onTap: () {}(),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-  */
 
   Widget buildStepper() {
-    
-    List<MyCustomStepper.Step> orderSteps = [
-      if(widget.supportticket.open_case != '')
-      MyCustomStepper.Step(
+    List<MyCustomStepper.Step> orderSteps = [];
+    int currentStep = 0;
+
+    if (widget.supportticket.open_case != '') {
+      orderSteps.add(MyCustomStepper.Step(
         title: Text(
           'Case Opened',
           style: Theme.of(context).textTheme.subtitle2,
@@ -203,10 +81,12 @@ class _TicketDetailScreenState extends State<TicketDetailScreen> {
           style: Theme.of(context).textTheme.caption,
         ),
         content: Container(),
-      ),
+      ));
+      currentStep++;
+    }
 
-      if(widget.supportticket.created_date != '')
-      MyCustomStepper.Step(
+    if (widget.supportticket.created_date != '') {
+      orderSteps.add(MyCustomStepper.Step(
         title: Text(
           'Ticket Created',
           style: Theme.of(context).textTheme.subtitle2,
@@ -218,30 +98,12 @@ class _TicketDetailScreenState extends State<TicketDetailScreen> {
           style: Theme.of(context).textTheme.caption,
         ),
         content: Container(),
-      ),
+      ));
+      currentStep++;
+    }
 
-
-      if(widget.supportticket.check_out != '')
-      MyCustomStepper.Step(
-        title: Text(
-          'Shipped',
-          style: Theme.of(context).textTheme.subtitle2,
-        ),
-        isActive: true,
-        state: MyCustomStepper.StepState.complete,
-        subtitle: Text(
-          'Tue, 22nd Dec 2020',
-          style: Theme.of(context).textTheme.caption,
-        ),
-        content: Text(
-          'Package left warehouse facility, 10:00 pm\n' +
-              'Package arrived at Grand Station, 12:00 am',
-          style: Theme.of(context).textTheme.caption,
-        ),
-      ),
-
-      if(widget.supportticket.check_in != '')
-        MyCustomStepper.Step(
+    if (widget.supportticket.check_in != '') {
+      orderSteps.add(MyCustomStepper.Step(
         title: Text(
           'Technician Checked In',
           style: Theme.of(context).textTheme.subtitle2,
@@ -253,10 +115,12 @@ class _TicketDetailScreenState extends State<TicketDetailScreen> {
           style: Theme.of(context).textTheme.caption,
         ),
         content: Container(),
-      ),
+      ));
+      currentStep++;
+    }
 
-      if(widget.supportticket.check_out != '')
-        MyCustomStepper.Step(
+    if (widget.supportticket.check_out != '') {
+      orderSteps.add(MyCustomStepper.Step(
         title: Text(
           'Technician Checked Out',
           style: Theme.of(context).textTheme.subtitle2,
@@ -267,27 +131,28 @@ class _TicketDetailScreenState extends State<TicketDetailScreen> {
           widget.supportticket.check_out,
           style: Theme.of(context).textTheme.caption,
         ),
-                content: Text(
-          'Package left warehouse facility, 10:00 pm\n' +
-              'Package arrived at Grand Station, 12:00 am',
-          style: Theme.of(context).textTheme.caption,
-        ),
+        content: Container(),
+      ));
+      currentStep++;
+    }
 
-        
-      ),
-
-      
-      MyCustomStepper.Step(
+    if (widget.supportticket.close_comment != '') {
+      orderSteps.add(MyCustomStepper.Step(
         title: Text(
           'Case Closed',
-          style: Theme.of(context).textTheme.subtitle2,
+          style: Theme
+              .of(context)
+              .textTheme
+              .subtitle2,
         ),
         isActive: true,
         state: MyCustomStepper.StepState.emptyCircle,
         subtitle: Container(),
         content: Container(),
-      ),
-    ];
+      ));
+      currentStep++;
+    }
+
 
     return Theme(
       data: ThemeData(
@@ -305,406 +170,393 @@ class _TicketDetailScreenState extends State<TicketDetailScreen> {
           child: MyCustomStepper.MyCustomStepperHafiz(
             physics: ClampingScrollPhysics(),
             steps: orderSteps,
-            currentStep: 2,
-            controlsBuilder: (BuildContext context, ControlsDetails controls) => Container(),
+            currentStep: currentStep - 1, // subtract one because index starts from zero
+            controlsBuilder:
+                (BuildContext context, ControlsDetails controls) => Container(),
             key: UniqueKey(),
-            onStepTapped: (int value) {  },
-            controls: ControlsDetails(currentStep: 0, stepIndex: 0), // Provide a valid ControlsDetails object here
+            onStepTapped: (int value) {},
+            controls: ControlsDetails(
+                currentStep: 0,
+                stepIndex: 0), // Provide a valid ControlsDetails object here
           ),
-
-
         ),
       ),
     );
   }
-  
 
-    Widget buildDetailScreen() {
+  Widget buildDetailScreen() {
+    var _RowSerialNumber = Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Expanded(
+          flex: 2,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              'Equipment Serial Number: ',
+              style: Theme.of(context).textTheme.bodyText2,
+              softWrap: true,
+            ),
+          ),
+        ),
+        Expanded(
+          flex: 2,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: widget.supportticket.itemname != null
+                ? Text(
+                    widget.supportticket.itemname,
+                    style: Theme.of(context).textTheme.bodyText2,
+                    textAlign: TextAlign.right,
+                    softWrap: true,
+                  )
+                : const SizedBox(height: 0),
+          ),
+        ),
+      ],
+    );
 
-      var _RowSerialNumber = Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-            flex: 2,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                'Equipment Serial Number: ',
-                style: Theme.of(context).textTheme.bodyText2,
-                softWrap: true,
-              ),
+    var _RowEquipmentLocation = Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Expanded(
+          flex: 2,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              'Equipment Location: ',
+              style: Theme.of(context).textTheme.bodyText2,
+              softWrap: true,
             ),
           ),
-          Expanded(
-            flex: 2,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child:
-              widget.supportticket.itemname != null ?
-              Text(
-                widget.supportticket.itemname,
-                style: Theme.of(context).textTheme.bodyText2,
-                textAlign: TextAlign.right,
-                softWrap: true,
-              ) 
-              : const SizedBox(height:0)  ,            
-            ),
+        ),
+        Expanded(
+          flex: 2,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: widget.supportticket.equipment_location != ''
+                ? Text(
+                    widget.supportticket.equipment_location,
+                    style: Theme.of(context).textTheme.bodyText2,
+                    textAlign: TextAlign.right,
+                    softWrap: true,
+                  )
+                : const SizedBox(height: 0),
           ),
-        ],
-      );
+        ),
+      ],
+    );
 
-      var _RowEquipmentLocation = Row (
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-            flex: 2,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                'Equipment Location: ',
-                style: Theme.of(context).textTheme.bodyText2,
-                softWrap: true,
-              ),
+    var _RowEquipmentUser = Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Expanded(
+          flex: 2,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              'Equipment User: ',
+              style: Theme.of(context).textTheme.bodyText2,
+              softWrap: true,
             ),
           ),
-          Expanded(
-            flex: 2,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: 
-              widget.supportticket.equipment_location !='' ?
-              Text(
-                widget.supportticket.equipment_location,
-                style: Theme.of(context).textTheme.bodyText2,
-                textAlign: TextAlign.right,
-                softWrap: true,
-              ) 
-              : const SizedBox(height:0)  ,            
-            ),
+        ),
+        Expanded(
+          flex: 2,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: widget.supportticket.equipment_user != ''
+                ? Text(
+                    widget.supportticket.equipment_user,
+                    style: Theme.of(context).textTheme.bodyText2,
+                    textAlign: TextAlign.right,
+                    softWrap: true,
+                  )
+                : const SizedBox(height: 0),
           ),
-        ],
-      );
+        ),
+      ],
+    );
 
-      var _RowEquipmentUser = Row (
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-            flex: 2,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                'Equipment User: ',
-                style: Theme.of(context).textTheme.bodyText2,
-                softWrap: true,
-              ),
+    var _RowReportedBy = Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Expanded(
+          flex: 2,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              'Reported By: ',
+              style: Theme.of(context).textTheme.bodyText2,
+              softWrap: true,
             ),
           ),
-          Expanded(
-            flex: 2,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: 
-              widget.supportticket.equipment_user != '' ?
-              Text(
-                widget.supportticket.equipment_user,
-                style: Theme.of(context).textTheme.bodyText2,
-                textAlign: TextAlign.right,
-                softWrap: true,
-              ) 
-              : const SizedBox(height:0),            
-            ),
+        ),
+        Expanded(
+          flex: 2,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: widget.supportticket.reported_by != ''
+                ? Text(
+                    widget.supportticket.reported_by,
+                    style: Theme.of(context).textTheme.bodyText2,
+                    textAlign: TextAlign.right,
+                    softWrap: true,
+                  )
+                : const SizedBox(height: 0),
           ),
-        ],
-      );
+        ),
+      ],
+    );
 
-      var _RowReportedBy = Row (
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-            flex: 2,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                'Reported By: ',
-                style: Theme.of(context).textTheme.bodyText2,
-                softWrap: true,
-              ),
+    var _RowContactNumber = Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Expanded(
+          flex: 2,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              'Contact Number: ',
+              style: Theme.of(context).textTheme.bodyText2,
+              softWrap: true,
             ),
           ),
-          Expanded(
-            flex: 2,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: 
-              widget.supportticket.reported_by != '' ?
-              Text(
-                widget.supportticket.reported_by,
-                style: Theme.of(context).textTheme.bodyText2,
-                textAlign: TextAlign.right,
-                softWrap: true,
-              ) 
-              : const SizedBox(height:0),            
-            ),
+        ),
+        Expanded(
+          flex: 2,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: widget.supportticket.contact_num != ''
+                ? Text(
+                    widget.supportticket.contact_num,
+                    style: Theme.of(context).textTheme.bodyText2,
+                    textAlign: TextAlign.right,
+                    softWrap: true,
+                  )
+                : const SizedBox(height: 0),
           ),
-        ],
-      );
+        ),
+      ],
+    );
 
-      var _RowContactNumber = Row (
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-            flex: 2,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                'Contact Number: ',
-                style: Theme.of(context).textTheme.bodyText2,
-                softWrap: true,
-              ),
+    var _RowEmail = Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Expanded(
+          flex: 2,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              'Email: ',
+              style: Theme.of(context).textTheme.bodyText2,
+              softWrap: true,
             ),
           ),
-          Expanded(
-            flex: 2,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: 
-              widget.supportticket.contact_num != '' ?
-              Text(
-                widget.supportticket.contact_num,
-                style: Theme.of(context).textTheme.bodyText2,
-                textAlign: TextAlign.right,
-                softWrap: true,
-              ) 
-              : const SizedBox(height:0),            
-            ),
+        ),
+        Expanded(
+          flex: 2,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: widget.supportticket.email != ''
+                ? Text(
+                    widget.supportticket.email,
+                    style: Theme.of(context).textTheme.bodyText2,
+                    textAlign: TextAlign.right,
+                    softWrap: true,
+                  )
+                : const SizedBox(height: 0),
           ),
-        ],
-      );
+        ),
+      ],
+    );
 
-      var _RowEmail = Row (
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-            flex: 2,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                'Email: ',
-                style: Theme.of(context).textTheme.bodyText2,
-                softWrap: true,
-              ),
+    var _RowDepartment = Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Expanded(
+          flex: 2,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              'Department: ',
+              style: Theme.of(context).textTheme.bodyText2,
+              softWrap: true,
             ),
           ),
-          Expanded(
-            flex: 2,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: 
-              widget.supportticket.email != '' ?
-              Text(
-                widget.supportticket.email,
-                style: Theme.of(context).textTheme.bodyText2,
-                textAlign: TextAlign.right,
-                softWrap: true,
-              ) 
-              : const SizedBox(height:0),            
-            ),
+        ),
+        Expanded(
+          flex: 2,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: widget.supportticket.department != ''
+                ? Text(
+                    widget.supportticket.department,
+                    style: Theme.of(context).textTheme.bodyText2,
+                    textAlign: TextAlign.right,
+                    softWrap: true,
+                  )
+                : const SizedBox(height: 0),
           ),
-        ],
-      );
+        ),
+      ],
+    );
 
-      var _RowDepartment = Row (
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-            flex: 2,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                'Department: ',
-                style: Theme.of(context).textTheme.bodyText2,
-                softWrap: true,
-              ),
+    var _RowAddress = Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Expanded(
+          flex: 2,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              'Address: ',
+              style: Theme.of(context).textTheme.bodyText2,
+              softWrap: true,
             ),
           ),
-          Expanded(
-            flex: 2,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: 
-              widget.supportticket.department != '' ?
-              Text(
-                widget.supportticket.department,
-                style: Theme.of(context).textTheme.bodyText2,
-                textAlign: TextAlign.right,
-                softWrap: true,
-              ) 
-              : const SizedBox(height:0),            
-            ),
+        ),
+        Expanded(
+          flex: 2,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: widget.supportticket.address != ''
+                ? Text(
+                    widget.supportticket.address,
+                    style: Theme.of(context).textTheme.bodyText2,
+                    textAlign: TextAlign.right,
+                    softWrap: true,
+                  )
+                : const SizedBox(height: 0),
           ),
-        ],
-      );
+        ),
+      ],
+    );
 
-      var _RowAddress = Row (
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-            flex: 2,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                'Address: ',
-                style: Theme.of(context).textTheme.bodyText2,
-                softWrap: true,
-              ),
+    var _RowCategory = Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Expanded(
+          flex: 2,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              'Category: ',
+              style: Theme.of(context).textTheme.bodyText2,
+              softWrap: true,
             ),
           ),
-          Expanded(
-            flex: 2,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: 
-              widget.supportticket.address != '' ?
-              Text(
-                widget.supportticket.address,
-                style: Theme.of(context).textTheme.bodyText2,
-                textAlign: TextAlign.right,
-                softWrap: true,
-              ) 
-              : const SizedBox(height:0),            
-            ),
+        ),
+        Expanded(
+          flex: 2,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: widget.supportticket.category_name != ''
+                ? Text(
+                    widget.supportticket.category_name,
+                    style: Theme.of(context).textTheme.bodyText2,
+                    textAlign: TextAlign.right,
+                    softWrap: true,
+                  )
+                : const SizedBox(height: 0),
           ),
-        ],
-      );
+        ),
+      ],
+    );
 
-      var _RowCategory = Row (
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-            flex: 2,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                'Category: ',
-                style: Theme.of(context).textTheme.bodyText2,
-                softWrap: true,
-              ),
+    var _RowSubCategory = Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Expanded(
+          flex: 2,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              'Subcategory: ',
+              style: Theme.of(context).textTheme.bodyText2,
+              softWrap: true,
             ),
           ),
-          Expanded(
-            flex: 2,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: 
-              widget.supportticket.category_name != '' ?
-              Text(
-                widget.supportticket.category_name,
-                style: Theme.of(context).textTheme.bodyText2,
-                textAlign: TextAlign.right,
-                softWrap: true,
-              ) 
-              : const SizedBox(height:0),            
-            ),
+        ),
+        Expanded(
+          flex: 2,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: widget.supportticket.subcategory_name != ''
+                ? Text(
+                    widget.supportticket.subcategory_name,
+                    style: Theme.of(context).textTheme.bodyText2,
+                    textAlign: TextAlign.right,
+                    softWrap: true,
+                  )
+                : const SizedBox(height: 0),
           ),
-        ],
-      );
+        ),
+      ],
+    );
 
-      var _RowSubCategory = Row (
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-            flex: 2,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                'Subcategory: ',
-                style: Theme.of(context).textTheme.bodyText2,
-                softWrap: true,
-              ),
+    var _RowProblem = Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Expanded(
+          flex: 2,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              'Problem: ',
+              style: Theme.of(context).textTheme.bodyText2,
+              softWrap: true,
             ),
           ),
-          Expanded(
-            flex: 2,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: 
-              widget.supportticket.subcategory_name != '' ?
-              Text(
-                widget.supportticket.subcategory_name,
-                style: Theme.of(context).textTheme.bodyText2,
-                textAlign: TextAlign.right,
-                softWrap: true,
-              ) 
-              : const SizedBox(height:0),            
-            ),
+        ),
+        Expanded(
+          flex: 2,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: widget.supportticket.problem_name != ''
+                ? Text(
+                    widget.supportticket.problem_name,
+                    style: Theme.of(context).textTheme.bodyText2,
+                    textAlign: TextAlign.right,
+                    softWrap: true,
+                  )
+                : const SizedBox(height: 0),
           ),
-        ],
-      );
+        ),
+      ],
+    );
 
-      var _RowProblem = Row (
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-            flex: 2,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                'Problem: ',
-                style: Theme.of(context).textTheme.bodyText2,
-                softWrap: true,
-              ),
+    var _RowPriority = Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Expanded(
+          flex: 2,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              'Priorty: ',
+              style: Theme.of(context).textTheme.bodyText2,
+              softWrap: true,
             ),
           ),
-          Expanded(
-            flex: 2,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: 
-              widget.supportticket.problem_name != '' ?
-              Text(
-                widget.supportticket.problem_name,
-                style: Theme.of(context).textTheme.bodyText2,
-                textAlign: TextAlign.right,
-                softWrap: true,
-              ) 
-              : const SizedBox(height:0),            
-            ),
+        ),
+        Expanded(
+          flex: 2,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: widget.supportticket.problem_name != ''
+                ? Text(
+                    widget.supportticket.problem_name,
+                    style: Theme.of(context).textTheme.bodyText2,
+                    textAlign: TextAlign.right,
+                    softWrap: true,
+                  )
+                : const SizedBox(height: 0),
           ),
-        ],
-      );
+        ),
+      ],
+    );
 
-      var _RowPriority = Row (
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-            flex: 2,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                'Priorty: ',
-                style: Theme.of(context).textTheme.bodyText2,
-                softWrap: true,
-              ),
-            ),
-          ),
-          Expanded(
-            flex: 2,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: 
-              widget.supportticket.problem_name != '' ?
-              Text(
-                widget.supportticket.problem_name,
-                style: Theme.of(context).textTheme.bodyText2,
-                textAlign: TextAlign.right,
-                softWrap: true,
-              ) 
-              : const SizedBox(height:0),            
-            ),
-          ),
-        ],
-      );
-      
     return Padding(
       padding: EdgeInsets.symmetric(
         horizontal: getProportionateScreenWidth(14),
@@ -726,9 +578,10 @@ class _TicketDetailScreenState extends State<TicketDetailScreen> {
                   left: getProportionateScreenWidth(12)),
               child: Text(
                 detailsLabel,
-                style: Theme.of(context).textTheme.subtitle1?.copyWith(
-                  fontWeight: FontWeight.bold
-                ),
+                style: Theme.of(context)
+                    .textTheme
+                    .subtitle1
+                    ?.copyWith(fontWeight: FontWeight.bold),
               ),
             ),
             Divider(),
@@ -768,7 +621,4 @@ class _TicketDetailScreenState extends State<TicketDetailScreen> {
       ),
     );
   }
-
-
-             
 }
