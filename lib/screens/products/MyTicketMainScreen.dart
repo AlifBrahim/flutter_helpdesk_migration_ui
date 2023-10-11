@@ -80,7 +80,7 @@ class _MyTicketMainScreenState extends ConsumerState with SingleTickerProviderSt
               borderRadius: BorderRadius.circular(50), // Creates border
               color: Colors.greenAccent),
               tabs: [
-                Tab(text: 'All '),
+                // Tab(text: 'All '),
                 Tab(text: 'Check In'),
                 Tab(text: 'Check Out'),
                 Tab(text: 'Submit Job Details'),   
@@ -92,7 +92,7 @@ class _MyTicketMainScreenState extends ConsumerState with SingleTickerProviderSt
           body: TabBarView(
               controller: _controller,
               children: [
-                MyTicketScreen(),
+                // MyTicketScreen(),
                 CheckInTab(key: UniqueKey()),
                 CheckOutTab(key: UniqueKey(),),
                 SubmitFormTab(),

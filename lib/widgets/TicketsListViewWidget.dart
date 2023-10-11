@@ -8,7 +8,7 @@ import '/screens/products/MySubmitFormScreen.dart';
 import '/screens/products/TicketDetailScreen.dart';
 import '/util/Util.dart';
 import '/widgets/Styles.dart';
-
+import '/screens/products/CheckLocationPermission.dart';
 import '../util/size_config.dart';
 
 Widget buildTicketList(item, globalClient, context, index) {
@@ -271,6 +271,7 @@ Widget buildTicketList(item, globalClient, context, index) {
                       child: ElevatedButton(
                         onPressed: () {
                           if (_buttonValue != 'SUBMIT FORM') {
+                            checkLocationPermission(); // Add this line
                             Navigator.push(
                                     context,
                                     OpenUpwardsPageRoute(

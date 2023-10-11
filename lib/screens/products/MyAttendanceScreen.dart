@@ -24,6 +24,7 @@ import 'package:sliding_up_panel/sliding_up_panel.dart';
 import '../../OdooApiCall/AllTicketsApi.dart';
 import '../../util/size_config.dart';
 import '../../widgets/MapsWidget.dart';
+import '/screens/products/CheckLocationPermission.dart';
 
 
 
@@ -679,25 +680,6 @@ class _MyAttendanceScreenState extends State<MyAttendanceScreen> with SingleTick
     );
   }
 
-  void checkLocationPermission() async {
-    var status = await Permission.location.status;
-    if (status.isDenied) {
-      // We didn't ask for permission yet or the permission has been denied before but not permanently.
-      print('Location permission is denied');
-    } else if (status.isPermanentlyDenied) {
-      // The OS restricts access, for example because of parental controls.
-      print('Location permission is permanently denied');
-    } else if (status.isRestricted) {
-      // The OS restricts access, for example because of parental controls.
-      print('Location permission is restricted');
-    } else if (status.isGranted) {
-      // You can request the permission.
-      print('Location permission is granted');
-    } else if (status.isLimited) {
-      // On iOS this means that the permission is granted only once.
-      print('Location permission is limited');
-    }
-  }
 
   Widget attendanceWidget() {
     return Container(

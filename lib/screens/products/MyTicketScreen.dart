@@ -397,8 +397,12 @@ class _MyTicketScreenState extends State<MyTicketScreen> {
                       child:      
                       ElevatedButton(     
                         onPressed:(){
+                          print('onpress button pressed');
+                          print('check in value is '+supportticket.check_in);
+                          print('_buttonValue' + _buttonValue);
                           if (_buttonValue == 'CHECK IN' || _buttonValue == 'CHECK OUT')
                           {
+                            print('check in button pressed');
                             Navigator.push(
                               context,
                               OpenUpwardsPageRoute(child: MyAttendanceScreen(
