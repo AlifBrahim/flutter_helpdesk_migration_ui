@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:odoo_rpc/odoo_rpc.dart';
 import 'package:provider/provider.dart' as provider;
+import 'package:sigmahelpdesk/screens/products/MyTicketMainScreen.dart';
 import '/screens/order_process/AddedToCartScreen.dart';
 import '/screens/order_process/DeliveryAddressScreen.dart';
 import '/screens/launch/HomeScreen.dart';
@@ -19,19 +20,44 @@ import 'screens/launch/SplashScreen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
+final storage = new FlutterSecureStorage();
 
 void main() async {
-  //WidgetsFlutterBinding.ensureInitialized();
-  //await Hive.initFlutter(); //hive needs to be initialized before calling for boxes so it is better to initialize it in main
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(ProviderScope(child: MyApp())); //initiating flutter riverpod (wajib iniialize providerscope on the most top of app architecture,,)
-  
+
+  // Read value from secure storage
+  String? username = await storage.read(key: 'username');
+  String? password = await storage.read(key: 'password');
+
+  print('Username: $username');
+  print('Password: $password');
+
+  String initialRoute = '/LoginScreen';
+
+  if (username != null && password != null) {
+    try {
+      var client = OdooClient(URL);
+      globalSession = await client.authenticate('sigmarectrix-11', username, password);
+      globalUserId = globalSession.userId;  // Store the user ID
+      globalClient = client;  // Update the global client
+
+      print('Authentication successful');
+      initialRoute = '/MyTicketMainScreen';
+    } catch (e) {
+      print('Failed to authenticate: $e');
+    }
+  }
+
+  runApp(ProviderScope(child: MyApp(initialRoute: initialRoute)));
 }
 
 class MyApp extends StatefulWidget {
-  const MyApp({Key? key}) : super(key: key);
+  final String initialRoute;
+
+  const MyApp({Key? key, required this.initialRoute}) : super(key: key);
 
   @override
   _MyAppState createState() => _MyAppState();
@@ -62,33 +88,12 @@ class _MyAppState extends State<MyApp> {
           return MaterialApp(
             debugShowCheckedModeBanner: false,
             theme: themeData(themeChangeProvider.darkTheme, context),
-            initialRoute: '/LoginScreen',
+            initialRoute: widget.initialRoute,
             routes: <String, WidgetBuilder>{
               '/': (context) => SplashScreen(),
               '/LoginScreen': (BuildContext context) => LoginScreen(),
               '/SignUpScreen': (BuildContext context) => SignUpScreen(),
-              HomeScreen.routeName: (BuildContext context) => HomeScreen(
-                key: UniqueKey(), // replace with your key
-                client: OdooClient("http://42.1.60.211:8069"), // replace with your client
-                session: OdooSession(
-                  companyId: 1, // replace with your company id
-                  dbName: "sigmarectrix-11", // replace with your database name
-                  id: "your-id", // replace with your id
-                  isSystem: true, // replace with your boolean value
-                  partnerId: 1, // replace with your partner id
-                  serverVersion: "your-server-version", // replace with your server version
-                  userId: 1, // replace with your user id
-                  userLang: "your-user-language", // replace with your user language
-                  userLogin: "your-user-login", // replace with your user login
-                  userName: "your-user-name", // replace with your user name
-                  userTz: "your-user-timezone", // replace with your user timezone
-                  // database: "your-database", // replace with your database
-                  // sessionId: "your-session-id", // replace with your session id
-                  // uid: 1, // replace with your uid
-                )
-
-              ),
-              '/MyTicketScreen': (BuildContext context) => MyTicketScreen(),
+              '/MyTicketMainScreen': (BuildContext context) => MyTicketMainScreen(),
               '/AddedToCartScreen': (BuildContext context) =>
                   AddedToCartScreen(),
               '/MyCartScreen': (BuildContext context) => MyCartScreen(),

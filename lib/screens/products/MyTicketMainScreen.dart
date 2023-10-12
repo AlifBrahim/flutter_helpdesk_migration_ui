@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import '../authentication/LoginScreen.dart';
 import '/colors/Colors.dart';
 import '/screens/products/MyTicketScreen.dart';
 import '/screens/products/MyToCheckInScreen.dart';
@@ -30,7 +32,7 @@ class _MyTicketMainScreenState extends ConsumerState with SingleTickerProviderSt
   @override
   void initState() {
     super.initState();
-    _controller = TabController(length: 5, vsync: this );
+    _controller = TabController(length: 3, vsync: this );
   }
 
   @override
@@ -41,11 +43,25 @@ class _MyTicketMainScreenState extends ConsumerState with SingleTickerProviderSt
 
   @override
   Widget build(BuildContext context) {
-    
+    Future<void> logout() async {
+      final storage = new FlutterSecureStorage();
+
+      // Clear credentials from secure storage
+      await storage.delete(key: 'username');
+      await storage.delete(key: 'password');
+
+      // Close the Odoo client session
+      globalClient.close();
+
+      // Navigate to the login screen
+      Navigator.pushReplacementNamed(context, '/LoginScreen');
+    }
+
+
     return SafeArea(
       child: DefaultTabController(
 
-        length: 5,
+        length: 3,
         child: Scaffold(
           backgroundColor: isDarkMode(context)
           ? darkBackgroundColor
@@ -57,38 +73,53 @@ class _MyTicketMainScreenState extends ConsumerState with SingleTickerProviderSt
               style: Theme.of(context).textTheme.subtitle1?.copyWith(
                   fontWeight: Theme.of(context).textTheme.subtitle2?.fontWeight),
             ),
-            // leading:
-            // InkWell(
-            //   child: Icon(
-            //     Icons.keyboard_backspace,
-            //     color: isDarkMode(context)
-            //         ? Colors.white70
-            //         : Colors.black.withOpacity(0.8),
-            //     size: getProportionateScreenWidth(18),
-            //   ),
-            //   onTap: () {
-            //     final CurvedNavigationBarState? navState = getNavState();
-            //     navState?.setPage(0);
-            //   },
-            // ),
             centerTitle: true,
             elevation: 2,
             shadowColor: Colors.black.withOpacity(0.4),
-            bottom: TabBar(    
-              controller: _controller,     
+            actions: <Widget>[
+              Theme(
+                data: Theme.of(context).copyWith(
+                  cardColor: Colors.white, // This changes the background color of the menu
+                  textTheme: TextTheme(
+                    bodyText1: TextStyle(color: Colors.black), // This changes the text color
+                  ),
+                ),
+                child: PopupMenuButton<String>(
+                  icon: Icon(Icons.menu, color: Colors.black), // This makes the hamburger menu icon black
+                  onSelected: (String result) {
+                    if (result == 'Logout') {
+                      logout();
+                    }
+                  },
+                  itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+                    const PopupMenuItem<String>(
+                      value: 'Logout',
+                      child: Text(
+                          'Logout',
+                        style: TextStyle(color: Colors.black),
+                          ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+            bottom: TabBar(
+              controller: _controller,
               isScrollable: true,
               indicator: BoxDecoration(
-              borderRadius: BorderRadius.circular(50), // Creates border
-              color: Colors.greenAccent),
+                  borderRadius: BorderRadius.circular(50), // Creates border
+                  color: Colors.greenAccent),
               tabs: [
                 // Tab(text: 'All '),
                 Tab(text: 'Check In'),
                 Tab(text: 'Check Out'),
-                Tab(text: 'Submit Job Details'),   
+                Tab(text: 'Submit Job Details'),
                 // Tab(text: 'Submit Form'),
               ],
             ),
           ),
+
+
 
           body: TabBarView(
               controller: _controller,

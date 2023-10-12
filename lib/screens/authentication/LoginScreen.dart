@@ -9,6 +9,8 @@ import '/util/size_config.dart';
 import '/widgets/Styles.dart';
 import '/screens/authentication/ForgotPasswordScreen.dart';
 import '/util/Util.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
 
 //create a global variable because, sometimes we need a global variable.
 //using client and session will not cause security issues on global by the way, it is only used for calling data from API.
@@ -81,9 +83,9 @@ class _LoginScreenState extends State<LoginScreen> {
     focusNodePassword.addListener(onFocusChanged);
     
 
-    // INFO: dummy username and password
-    email.text = demoEmail;
-    password.text = demoPassword;
+    // // INFO: dummy username and password
+    // email.text = demoEmail;
+    // password.text = demoPassword;
     checkOdooSession();
   }
 
@@ -387,10 +389,16 @@ class _LoginScreenState extends State<LoginScreen> {
       });
 
       try{
+        final storage = new FlutterSecureStorage();
+
         var client = OdooClient(URL);
         globalSession = await client.authenticate('sigmarectrix-11', email.text, password.text);
         globalUserId = globalSession.userId;  // Store the user ID
         globalClient = client;  // Update the global client
+        // Save credentials in secure storage
+        await storage.write(key: 'username', value: email.text);
+        await storage.write(key: 'password', value: password.text);
+        print('Credentials saved');
         setState(() {
           showLoadingIndicator = false;
         });
