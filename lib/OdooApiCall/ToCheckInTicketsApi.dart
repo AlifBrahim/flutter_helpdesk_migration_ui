@@ -18,7 +18,7 @@ class ToCheckInTicketsApi {
         //'domain': [ ['check_in','=','']],
         'domain': [['check_in','=',null],['check_out','=',null], ['user_id', '=', globalUserId]],
         'fields': [],
-        'order':'check_in desc', //still testing
+        'order':'create_date desc', //still testing
         'offset':offset, //should change (increase/decrease one way) over time
          'limit':limit,
       },

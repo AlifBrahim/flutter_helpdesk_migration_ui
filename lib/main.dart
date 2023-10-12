@@ -62,7 +62,7 @@ class _MyAppState extends State<MyApp> {
           return MaterialApp(
             debugShowCheckedModeBanner: false,
             theme: themeData(themeChangeProvider.darkTheme, context),
-            initialRoute: '/',
+            initialRoute: '/LoginScreen',
             routes: <String, WidgetBuilder>{
               '/': (context) => SplashScreen(),
               '/LoginScreen': (BuildContext context) => LoginScreen(),

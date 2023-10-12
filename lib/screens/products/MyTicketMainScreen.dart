@@ -57,19 +57,20 @@ class _MyTicketMainScreenState extends ConsumerState with SingleTickerProviderSt
               style: Theme.of(context).textTheme.subtitle1?.copyWith(
                   fontWeight: Theme.of(context).textTheme.subtitle2?.fontWeight),
             ),
-            leading: InkWell(
-              child: Icon(
-                Icons.keyboard_backspace,
-                color: isDarkMode(context)
-                    ? Colors.white70
-                    : Colors.black.withOpacity(0.8),
-                size: getProportionateScreenWidth(18),
-              ),
-              onTap: () {
-                final CurvedNavigationBarState? navState = getNavState();
-                navState?.setPage(0);
-              },
-            ),
+            // leading:
+            // InkWell(
+            //   child: Icon(
+            //     Icons.keyboard_backspace,
+            //     color: isDarkMode(context)
+            //         ? Colors.white70
+            //         : Colors.black.withOpacity(0.8),
+            //     size: getProportionateScreenWidth(18),
+            //   ),
+            //   onTap: () {
+            //     final CurvedNavigationBarState? navState = getNavState();
+            //     navState?.setPage(0);
+            //   },
+            // ),
             centerTitle: true,
             elevation: 2,
             shadowColor: Colors.black.withOpacity(0.4),
@@ -84,7 +85,7 @@ class _MyTicketMainScreenState extends ConsumerState with SingleTickerProviderSt
                 Tab(text: 'Check In'),
                 Tab(text: 'Check Out'),
                 Tab(text: 'Submit Job Details'),   
-                Tab(text: 'Submit Form'),
+                // Tab(text: 'Submit Form'),
               ],
             ),
           ),
@@ -97,7 +98,7 @@ class _MyTicketMainScreenState extends ConsumerState with SingleTickerProviderSt
                 CheckOutTab(key: UniqueKey(),),
                 SubmitFormTab(),
                 // Add another widget here for the fifth tab
-                Icon(Icons.flight, size: 350), // This is just an example. Replace it with the actual widget you want to display for the fifth tab.
+                // Icon(Icons.flight, size: 350), // This is just an example. Replace it with the actual widget you want to display for the fifth tab.
               ]
           ),
 

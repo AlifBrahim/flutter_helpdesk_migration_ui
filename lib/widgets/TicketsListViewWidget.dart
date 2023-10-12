@@ -53,7 +53,7 @@ Widget buildTicketList(item, globalClient, context, index) {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Row(
+                Row( // RenderFlex overflow error
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -270,25 +270,24 @@ Widget buildTicketList(item, globalClient, context, index) {
                       ),
                       child: ElevatedButton(
                         onPressed: () {
-                          if (_buttonValue != 'SUBMIT FORM') {
+                          if (_buttonValue == 'CHECK IN' || _buttonValue == 'CHECK OUT') {
                             checkLocationPermission(); // Add this line
                             Navigator.push(
-                                    context,
-                                    OpenUpwardsPageRoute(
-                                        child: MyAttendanceScreen(
-                                            item, respartner_id),
-                                        direction: AxisDirection.up))
+                                context,
+                                OpenUpwardsPageRoute(
+                                    child: MyAttendanceScreen(item, respartner_id),
+                                    direction: AxisDirection.up))
                                 .then((value) {
                               //setState((){
                               //});
                             });
-                          } else if (_buttonValue == 'SUBMIT FORM') {
+                          } else if (_buttonValue == 'SUBMIT FORM' || _buttonValue == 'EDIT FORM') {
                             // TODO: This is supposed to execute instead of the one in MyToCheckInScreen file
                             Navigator.push(
-                                    context,
-                                    OpenUpwardsPageRoute(
-                                        child: MySubmitFormScreen(item),
-                                        direction: AxisDirection.up))
+                                context,
+                                OpenUpwardsPageRoute(
+                                    child: MySubmitFormScreen(item),
+                                    direction: AxisDirection.up))
                                 .then((value) {});
                           }
                         },
@@ -309,14 +308,14 @@ Widget buildTicketList(item, globalClient, context, index) {
                             children: [
                               TextSpan(
                                 text:
-                                    item.check_in == '' && item.check_out == ''
+                                    item.check_in == '' && item.check_out == '' && item.close_comment == ''
                                         ? _buttonValue = 'CHECK IN'
-                                        : item.check_in != '' &&
-                                                item.check_out == ''
+                                        : item.check_in != '' && item.check_out == '' && item.close_comment == ''
                                             ? _buttonValue = 'CHECK OUT'
-                                            : item.check_in != '' &&
-                                                    item.check_out != ''
+                                            : item.check_in != '' && item.check_out != '' && item.close_comment == ''
                                                 ? _buttonValue = 'SUBMIT FORM'
+                                              : item.check_in != '' && item.check_out != '' && item.close_comment != ''  ?
+                                        _buttonValue = 'EDIT FORM'
                                                 : null,
                                 style: Theme.of(context)
                                     .textTheme

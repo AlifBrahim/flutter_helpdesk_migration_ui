@@ -137,7 +137,13 @@ class _MyAttendanceScreenState extends State<MyAttendanceScreen> with SingleTick
                 maxHeight: panelHeightOpen,
                 parallaxEnabled: true,
                 parallaxOffset: 1.0, //maybe 0.5 is better
-                body: MapsWidget(widget.supporticket, currentLocation.latitude, currentLocation.longitude, key: UniqueKey(),),
+                body: MapsWidget(
+                  widget.supporticket,
+                  currentLocation.latitude,
+                  currentLocation.longitude,
+                  address: widget.supporticket.address,
+                  key: UniqueKey(),
+                ),
                 panelBuilder: (controller) => PanelWidget(
                   panelController : panelController,
                   controller: controller,

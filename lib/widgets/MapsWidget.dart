@@ -29,7 +29,8 @@ class MapsWidget extends StatefulWidget {
   final supportticket;
   final partner_lat;
   final partner_long;
-  MapsWidget(this.supportticket, this.partner_lat, this.partner_long, {required Key key}): super(key: key);
+  final String address;
+  MapsWidget(this.supportticket, this.partner_lat, this.partner_long, {required this.address, Key? key}): super(key: key);
 
   @override
   State<StatefulWidget> createState() {
@@ -108,9 +109,8 @@ class _MapsWidgetState extends State<MapsWidget> with AutomaticKeepAliveClientMi
   Future<void> _getCurrentUserLocation() async {
    final GoogleMapController controller = await _controller.future;
    Position?  currentLocation;
-
-  
    try {
+     print('getting current location');
      //getcurrentlocationb ased on last known
      currentLocation = await Geolocator.getLastKnownPosition();
      //getlocation ifprint("apakah ini anak muda"); last known is not get. this probably will tweak performance a little bit. because calling for position takes a lot of utilization.
@@ -130,49 +130,57 @@ class _MapsWidgetState extends State<MapsWidget> with AutomaticKeepAliveClientMi
     ));
   }
   Future<void> _getSiteLocation() async {
-   final GoogleMapController controller = await _controller.future;
-    controller.animateCamera(CameraUpdate.newCameraPosition(
-      CameraPosition(
-        bearing: 0,
-        target: LatLng(widget.partner_lat, widget.partner_long),
-        zoom: 17.0,
-      ),
-    ));
+    final GoogleMapController controller = await _controller.future;
+    List<Location> locations = await locationFromAddress(widget.address);
+    if (locations.isNotEmpty) {
+      print('pin pressed and location: ${locations.first}');
+      Location location = locations.first;
+      controller.animateCamera(CameraUpdate.newCameraPosition(
+        CameraPosition(
+          bearing: 0,
+          target: LatLng(location.latitude, location.longitude),
+          zoom: 17.0,
+        ),
+      ));
+    }
   }
+
   void _callCustomMarker()async{
     siteLocationIcon = await BitmapDescriptor.fromAssetImage(
       ImageConfiguration(devicePixelRatio: 0.5),'assets/maps_images/purplemarker-site-location.png');
   }
   //to be called inside onMapCreated
-  void _setMarkersAndCircles(GoogleMapController controller){
-    if(widget.partner_lat != null || widget.partner_long != null)
-    {
-      setState((){
-        _markers.add(
-          Marker(
-            markerId:MarkerId(widget.supportticket.partner_id),
-            position:LatLng(widget.partner_lat,widget.partner_long), //or can be LatLng(widget.lat,widget.long) 
-            //this is Site Lot Lang. should be set inside odoo. If failed to get Lat Lang from odoo, then no need to set circle, and just let the user check in from wherever theyare.  
-            infoWindow:InfoWindow(
-              title: widget.supportticket.partner_name,
-              snippet:'Our Customer',
-            ),
-            icon: siteLocationIcon,        
-          )
-        );
-        _circles.add(
-        Circle(
-          circleId: CircleId(widget.supportticket.partner_id),
-          center: LatLng(widget.partner_lat, widget.partner_long), //this is approx sigma location // Lat Lng should be called from _setmarkers.
-          radius: 500, // 1000 = 1km; radius is meters as in documentation
-          strokeWidth: 1,
-          strokeColor: primaryColor,
-          fillColor: primaryColorLight.withOpacity(0.10)
-          )    
-        );
-      });       
+  void _setMarkersAndCircles(GoogleMapController controller) async {
+    if(widget.address.isNotEmpty) {
+      List<Location> locations = await locationFromAddress(widget.address);
+      if (locations.isNotEmpty) {
+        Location location = locations.first;
+        setState(() {
+          _markers.add(
+              Marker(
+                markerId: MarkerId(widget.supportticket.partner_id),
+                position: LatLng(location.latitude, location.longitude),
+                infoWindow: InfoWindow(
+                  title: widget.supportticket.partner_name,
+                  snippet:'Our Customer',
+                ),
+                icon: siteLocationIcon,
+              )
+          );
+          _circles.add(
+              Circle(
+                  circleId: CircleId(widget.supportticket.partner_id),
+                  center: LatLng(location.latitude, location.longitude),
+                  radius: 500,
+                  strokeWidth: 1,
+                  strokeColor: primaryColor,
+                  fillColor: primaryColorLight.withOpacity(0.10)
+              )
+          );
+        });
+      }
     }
-}
+  }
 
 
   
@@ -238,64 +246,38 @@ class _MapsWidgetState extends State<MapsWidget> with AutomaticKeepAliveClientMi
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    //get current location on load widget,, this is different from getting current location by clicking on it as that fucntion is manual
-    //this location is auto start on load widget.
     return Scaffold(
-
-        // so our logic is that if latitude is null, maybe it is still getting location right, but if both partner_lat and partner_long is null, then obviously we have finished getting the loading and we still get null, which means that partner_location hasnt been assigned
-        body: widget.partner_lat == null
-          ? Container(            
-              child: Text('Getting Location ...',
-                style: Theme.of(context).textTheme.headline4,
-                textAlign: TextAlign.center,
-                maxLines: 2,
-                ),
-          ) 
-
-          : widget.partner_lat == null && widget.partner_long == null
-          ? Container(            
-              child: Text("Couldn't get customer's location, please contact your system admin.",
-                style: Theme.of(context).textTheme.headline4,
-                textAlign: TextAlign.center,
-                maxLines: 2,
-                ),
-          ) 
-          
-            : Container(
-              width: MediaQuery.of(context).size.width,  // or use fixed size like 200
-              height: MediaQuery.of(context).size.height*0.6, //set it to 0.8 for testing the slidinguppanel            
-              child: GoogleMap(           
-                circles: _circles,
-                myLocationEnabled: true,
-                myLocationButtonEnabled: false,
-                tiltGesturesEnabled: true,
-                compassEnabled: false,
-                markers: _markers,
-                mapType: MapType.normal,
-                zoomControlsEnabled: false,             
-                initialCameraPosition: _initialCameraPosition,   
-                onMapCreated:(GoogleMapController controller){
-                  isDarkMode(context) ? controller.setMapStyle(_mapStyle) : controller.setMapStyle("[]");
-                  _controller.complete(controller);
-                  _setMarkersAndCircles(controller);
-                },              
-              ),        
-            ),
-            floatingActionButton:_buildFAB(),          
+      body: Container(
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height*0.6,
+        child: GoogleMap(
+          circles: _circles,
+          myLocationEnabled: true,
+          myLocationButtonEnabled: false,
+          tiltGesturesEnabled: true,
+          compassEnabled: false,
+          markers: _markers,
+          mapType: MapType.normal,
+          zoomControlsEnabled: false,
+          initialCameraPosition: _initialCameraPosition,
+          onMapCreated:(GoogleMapController controller){
+            isDarkMode(context) ? controller.setMapStyle(_mapStyle) : controller.setMapStyle("[]");
+            _controller.complete(controller);
+            _setMarkersAndCircles(controller);
+          },
+        ),
+      ),
+      floatingActionButton:_buildFAB(),
     );
   }
-  Widget _buildFAB(){
 
-            if (widget.partner_lat == null || widget.partner_long == null )
-              return Container();
-            else          
+  Widget _buildFAB(){
               return Padding(
               padding: const EdgeInsets.symmetric(vertical: 320,horizontal: 2),
               //EdgeInsets.symmetric(vertical: SizeConfig.screenHeight*0.38,horizontal: 2), //need to find good height so that googlemapsapi direction button are shown too
               child: Column(
                 //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  
                   FloatingActionButton(
                   onPressed: _getCurrentUserLocation,
                   child: Icon(Icons.gps_fixed_outlined,

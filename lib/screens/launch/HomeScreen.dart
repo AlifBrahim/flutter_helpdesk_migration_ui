@@ -136,96 +136,102 @@ class _HomeScreenState extends State<HomeScreen>
           toolbarHeight: 0,
         ),
         body: selectScreenWidgetToShow(),
-        bottomNavigationBar: CurvedNavigationBar(
-          color: isDarkMode(context) ? Colors.grey[100]! : Colors.grey[300]!,
-          backgroundColor: isDarkMode(context)
-              ? darkBackgroundColor
-              : Theme.of(context).backgroundColor,
-          height: SizeConfig.screenHeight * 0.07,
-          buttonBackgroundColor:
-              isDarkMode(context) ? primaryColorDark : primaryColor,
-          animationDuration: Duration(milliseconds: 300),
-          key: NavbarKey.getKey(),
-          items: [
-            Icon(
-              Icons.home,
-              size: getProportionateScreenWidth(30),
-              color: currentBottomBarIndex == 0
-                  ? bottomBarIconSelectedLight
-                  : isDarkMode(context)
-                      ? bottomBarIconDark
-                      : Colors.black87,
-            ),
-            Icon(
-              Icons.format_list_bulleted_sharp,
-              size: getProportionateScreenWidth(30),
-              color: currentBottomBarIndex == 1
-                  ? bottomBarIconSelectedLight
-                  : isDarkMode(context)
-                      ? bottomBarIconDark
-                      : Colors.black87,
-            ),
-            Icon(
-              Icons.favorite_outlined,
-              size: getProportionateScreenWidth(30),
-              color: currentBottomBarIndex == 2
-                  ? bottomBarIconSelectedLight
-                  : isDarkMode(context)
-                      ? bottomBarIconDark
-                      : Colors.black87,
-            ),
-            Icon(
-              Icons.settings,
-              size: getProportionateScreenWidth(30),
-              color: currentBottomBarIndex == 3
-                  ? bottomBarIconSelectedLight
-                  : isDarkMode(context)
-                      ? bottomBarIconDark
-                      : Colors.black87,
-            ),
-            Icon(
-              Icons.account_circle_rounded,
-              size: getProportionateScreenWidth(30),
-              color: currentBottomBarIndex == 4
-                  ? bottomBarIconSelectedLight
-                  : isDarkMode(context)
-                      ? bottomBarIconDark
-                      : Colors.black87,
-            ),
-          ],
-          onTap: (index) {
-            setState(
-              () {
-                currentBottomBarIndex = index;
-              },
-            );
-          },
-        ),
+        // bottomNavigationBar: CurvedNavigationBar(
+        //   color: isDarkMode(context) ? Colors.grey[100]! : Colors.grey[300]!,
+        //   backgroundColor: isDarkMode(context)
+        //       ? darkBackgroundColor
+        //       : Theme.of(context).backgroundColor,
+        //   height: SizeConfig.screenHeight * 0.07,
+        //   buttonBackgroundColor:
+        //       isDarkMode(context) ? primaryColorDark : primaryColor,
+        //   animationDuration: Duration(milliseconds: 300),
+        //   key: NavbarKey.getKey(),
+        //   items: [
+        //     Icon(
+        //       Icons.home,
+        //       size: getProportionateScreenWidth(30),
+        //       color: currentBottomBarIndex == 0
+        //           ? bottomBarIconSelectedLight
+        //           : isDarkMode(context)
+        //               ? bottomBarIconDark
+        //               : Colors.black87,
+        //     ),
+        //     Icon(
+        //       Icons.format_list_bulleted_sharp,
+        //       size: getProportionateScreenWidth(30),
+        //       color: currentBottomBarIndex == 1
+        //           ? bottomBarIconSelectedLight
+        //           : isDarkMode(context)
+        //               ? bottomBarIconDark
+        //               : Colors.black87,
+        //     ),
+        //     Icon(
+        //       Icons.favorite_outlined,
+        //       size: getProportionateScreenWidth(30),
+        //       color: currentBottomBarIndex == 2
+        //           ? bottomBarIconSelectedLight
+        //           : isDarkMode(context)
+        //               ? bottomBarIconDark
+        //               : Colors.black87,
+        //     ),
+        //     Icon(
+        //       Icons.settings,
+        //       size: getProportionateScreenWidth(30),
+        //       color: currentBottomBarIndex == 3
+        //           ? bottomBarIconSelectedLight
+        //           : isDarkMode(context)
+        //               ? bottomBarIconDark
+        //               : Colors.black87,
+        //     ),
+        //     Icon(
+        //       Icons.account_circle_rounded,
+        //       size: getProportionateScreenWidth(30),
+        //       color: currentBottomBarIndex == 4
+        //           ? bottomBarIconSelectedLight
+        //           : isDarkMode(context)
+        //               ? bottomBarIconDark
+        //               : Colors.black87,
+        //     ),
+        //   ],
+        //   onTap: (index) {
+        //     setState(
+        //       () {
+        //         currentBottomBarIndex = index;
+        //       },
+        //     );
+        //   },
+        // ),
       ),
     );
   }
 
+  // Widget selectScreenWidgetToShow() {
+  //   switch (currentBottomBarIndex) {
+  //     case 0:
+  //       return buildHomeScreen();
+  //       break;
+  //     case 1:
+  //       return AllCategoriesScreen();
+  //       break;
+  //     case 2:
+  //       return MyTicketMainScreen();
+  //       break;
+  //     case 3:
+  //       return SettingsScreen(
+  //         isFromBottomNav: true, key: UniqueKey(),
+  //       );
+  //       break;
+  //     case 4:
+  //       return UserProfileScreen();
+  //       break;
+  //   }
+  //   return buildHomeScreen();
+  // }
+
+  // This is the new selectScreenWidgetToShow() method that removes the navbar
   Widget selectScreenWidgetToShow() {
-    switch (currentBottomBarIndex) {
-      case 0:
-        return buildHomeScreen();
-        break;
-      case 1:
-        return AllCategoriesScreen();
-        break;
-      case 2:
-        return MyTicketMainScreen();
-        break;
-      case 3:
-        return SettingsScreen(
-          isFromBottomNav: true, key: UniqueKey(),
-        );
-        break;
-      case 4:
-        return UserProfileScreen();
-        break;
-    }
-    return buildHomeScreen();
+    // Directly return MyTicketMainScreen()
+    return MyTicketMainScreen();
   }
 
   //INFO: home screen
