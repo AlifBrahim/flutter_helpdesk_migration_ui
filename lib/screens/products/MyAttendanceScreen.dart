@@ -721,7 +721,7 @@ class _MyAttendanceScreenState extends State<MyAttendanceScreen> with SingleTick
                         key: key,
 
                         onSubmit: () {
-                          checkLocationPermission(); // Add this line to check location permission
+                          checkLocationPermission(context); // Add this line to check location permission
 
                           Future.delayed(
                               Duration(milliseconds: 900),

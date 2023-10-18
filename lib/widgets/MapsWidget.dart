@@ -173,8 +173,8 @@ class _MapsWidgetState extends State<MapsWidget> with AutomaticKeepAliveClientMi
                   center: LatLng(location.latitude, location.longitude),
                   radius: 500,
                   strokeWidth: 1,
-                  strokeColor: primaryColor,
-                  fillColor: primaryColorLight.withOpacity(0.10)
+                  strokeColor: Colors.red.withOpacity(0.25), // Set the color and opacity here
+                  fillColor: Colors.red.withOpacity(0.25)
               )
           );
         });

@@ -303,14 +303,6 @@ class _MySubmitFormScreenState extends State<MySubmitFormScreen> {
                             height: MediaQuery.of(context).size.height / 5.5,
                           ),
                         ),
-
-                        // Container(
-                        //   alignment: Alignment.centerLeft,
-                        //   child: Text(
-                        //     "Problem",
-                        //     style: Theme.of(context).textTheme.subtitle2,
-                        //   ),
-                        // ),
                         SizedBox(
                           height: 10,
                         ),
@@ -352,127 +344,6 @@ class _MySubmitFormScreenState extends State<MySubmitFormScreen> {
                         SizedBox(
                           height: 10,
                         ),
-                        /*
-                        Row(
-                          children: [
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    validUntilLabel,
-                                    style:
-                                        Theme.of(context).textTheme.subtitle2,
-                                  ),
-                                  SizedBox(
-                                    height: 10,
-                                  ),
-                                  InkWell(
-                                    child: buildValidUntil(),
-                                    onTap: () {
-                                      buildDatePicker(context);
-                                    },
-                                  )
-                                ],
-                              ),
-                            ),
-                            SizedBox(
-                              width: 30,
-                            ),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    cvvLabel,
-                                    style:
-                                        Theme.of(context).textTheme.subtitle2,
-                                  ),
-                                  SizedBox(
-                                    height: 10,
-                                  ),
-                                  buildCvvNumber()
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                        */
-                        /*
-                        SizedBox(
-                          height: 20,
-                        ),
-                        */
-                        /*
-                        buildCheckBox(),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        */
-                        // ignore: missing_return
-
-                        /*
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Container(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            "Date of completion",
-                            style: Theme.of(context).textTheme.subtitle2,
-                          ),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        */
-
-                        
-
-                        /*
-                        DateTimeField(controller: resolutionTimer,format: _format, 
-                        textCapitalization: TextCapitalization.words,
-                        textInputAction: TextInputAction.done,
-                        obscureText: false,
-                        cursorColor: primaryColor,
-                        focusNode: focusNodeResolutionTimer,
-                        decoration: InputDecoration( 
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: const BorderRadius.all(Radius.circular(10.0)),
-                            borderSide: BorderSide(color: primaryColor, width:1.0),      
-                          ),
-
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: const BorderRadius.all(Radius.circular(10.0)),
-                            borderSide: BorderSide(color: primaryColor, width:1.0),      
-                            ),
-                          fillColor: focusNodeResolutionTimer.hasFocus
-                            ? primaryColor.withOpacity(0.15)
-                            : Colors.transparent,
-                          hintText: "Choose resolution date & time",
-                          
-                          prefixIcon: Icon(
-                            Icons.calendar_month,
-                            color: Colors.black,
-                          )
-                        ),
-                        onShowPicker: (context, currentValue) async {   
-                          final date = await showDatePicker (context:context, 
-                          initialDate: currentValue ?? DateTime.now(), 
-                          firstDate:DateTime(1900), 
-                          lastDate:DateTime(2100));
-                          
-                          if(date != null) {
-                            final time = await showTimePicker(context: context, initialTime: TimeOfDay.fromDateTime(currentValue ?? DateTime.now()));
-                            return DateTimeField.combine(date, time);
-                          }
-                          else
-                          {
-                            return currentValue;
-                          }
-                        }),
-
-                        */
                         SizedBox(height: 10),
                         Container(
                           alignment: Alignment.centerLeft,
@@ -501,21 +372,7 @@ class _MySubmitFormScreenState extends State<MySubmitFormScreen> {
                             onPressed: () {
                               showImagePickerDialog(context);
                             },
-                          ), 
-                          /*imageFile != null ? 
-                            Image.file(
-                              imageFile,
-                              width: 400,
-                              height: 400,
-                            )
-                          :
-                          Image.asset(
-                            '$baseImagePath/upload_image.png',
-                            height: 200,
-                            width: 200,
-                            //fit: BoxFit.cover,
-                          )
-                          */
+                          ),
                         ),  
                       ),
                     
@@ -528,53 +385,6 @@ class _MySubmitFormScreenState extends State<MySubmitFormScreen> {
                           ),
                         ),
                         SizedBox(height: 10),
-                    
-                        /*
-                        ConstrainedBox (        
-                          constraints: BoxConstraints(
-                            maxHeight: MediaQuery.of(context).size.height,
-                            maxWidth: MediaQuery.of(context).size.width,   
-                            minHeight: 200                        
-                            ),
-                          child: PhotoViewGallery.builder(        
-                            pageController: _imagecontroller,
-                            itemCount: imageFileList.length,
-                            scrollPhysics: BouncingScrollPhysics(),      
-                            builder: (BuildContext context, int index) {
-                              
-                              return PhotoViewGalleryPageOptions(
-                                
-                                minScale: PhotoViewComputedScale.contained * 0.8,
-                                maxScale: PhotoViewComputedScale.covered * 2,
-                                imageProvider:
-                                AssetImage(
-                                imageFileList != null ?
-                                  imageFileList[index].path
-                                  //Image.file(File(imageFileList[index].path), fit: BoxFit.cover,)
-                                  : '$productImagesPath/demo_image.png'
-                      )
-                              );
-                            },
-                            loadingBuilder: (context, event) => Center(
-                              child: Container(
-                                width: 20.0,
-                                height: 20.0,
-                                child: CircularProgressIndicator(
-                                value: event == null
-                                    ? 0
-                                    : event.cumulativeBytesLoaded /
-                                        event.expectedTotalBytes,
-                                ),
-                              ),
-                            ),
-                            backgroundDecoration: BoxDecoration(
-                              color: Colors.transparent,
-                            ),
-                          ),
-                        ),
-                        */
-                    
-                      
                       Padding(
                         padding: const EdgeInsets.all(8.0),                    
                         child: InkWell(
@@ -1074,15 +884,6 @@ Future<void> saveToDatabase(resolution,followup,imageFileList, ticket_id, contex
 }
 
     }
-
-    
-    /*
-      Navigator.push(
-        context,
-        OpenUpwardsPageRoute(child: VerifyCustomerScreen(), 
-        direction: AxisDirection.up)
-      );
-    */
 }
 
 

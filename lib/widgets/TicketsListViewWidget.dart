@@ -271,7 +271,7 @@ Widget buildTicketList(item, globalClient, context, index) {
                       child: ElevatedButton(
                         onPressed: () {
                           if (_buttonValue == 'CHECK IN' || _buttonValue == 'CHECK OUT') {
-                            checkLocationPermission(); // Add this line
+                            checkLocationPermission(context); // Add this line
                             Navigator.push(
                                 context,
                                 OpenUpwardsPageRoute(

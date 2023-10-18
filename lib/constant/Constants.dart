@@ -14,14 +14,14 @@ const String loremIpsum =
 
 const String emailLabel = 'Email';
 const String passwordLabel = 'Password';
-const String signInLabel = 'Sign In';
-const String toAccountLabel = 'To Account';
+const String signInLabel = 'Welcome To';
+const String toAccountLabel = "Sigma Rectrix's Technician Helpdesk App";
 const String signUpWithFB = 'Sign up with Facebook';
 const String doNotHaveAccountLabel = "Don’t have an account? - ";
 const String signUpLabel = "Sign Up";
 const String forgetPasswordLabel = 'Forget Password?';
 const String signInWithLabel =
-    'Sign with username or email and password to use your account.';
+    'Sign with email and password from sigmarectrix.com to use your account.';
 
 const String forgotLabel = 'Forgot';
 const String forgotPasswordLabel = 'Password?';

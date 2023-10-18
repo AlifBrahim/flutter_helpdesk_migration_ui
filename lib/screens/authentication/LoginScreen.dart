@@ -142,7 +142,6 @@ class _LoginScreenState extends State<LoginScreen> {
           ],
         ),
       ),
-      bottomNavigationBar: buildSignUp(),
     );
   }
 
@@ -178,12 +177,27 @@ class _LoginScreenState extends State<LoginScreen> {
           SizedBox(
             height: SizeConfig.screenHeight * 0.010,
           ),
-          Text(
-            signInLabel,
-            style: Theme.of(context).textTheme.headline6,
+          Center(
+            child: Text(
+              signInLabel,
+              style: Theme.of(context).textTheme.headline6,
+            ),
           ),
           SizedBox(
             height: SizeConfig.screenHeight * 0.010,
+          ),
+          Center(
+            child: Container(
+              width: 200,
+              height: 200,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(100),  // Half of width and height
+                child: Image.asset('assets/images/sigma_rectrix_logo.jpeg'),
+              ),
+            ),
+          )
+          ,          SizedBox(
+            height: SizeConfig.screenHeight * 0.015,
           ),
           Text(
             toAccountLabel,
@@ -289,7 +303,7 @@ class _LoginScreenState extends State<LoginScreen> {
             children: [
               //INFO: Sign in button
               buildButton(
-                signInLabel,
+                "Sign In",
                 true,
                 isDarkMode(context) ? primaryColorDark :primaryColor,
                 isDarkMode(context) ? Colors.white.withOpacity(0.8) :Colors.white,
@@ -304,30 +318,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 height: SizeConfig.screenHeight * 0.015,
               ),
               //INFO: Sign in with FB
-              buildButtonWithIcon(
-                context,
-                '$baseImagePath/fb.png',
-                signUpWithFB,
-                true,
-                isDarkMode(context) ? Colors.white24 : Colors.black.withOpacity(0.7),
-                Colors.white,
-                2,
-                2,
-                8,
-                onPressed: () {
-                  setState(
-                    () {
-                      showLoadingIndicator = true;
-                    },
-                  );
-                  Future.delayed(
-                    Duration(milliseconds: 500),
-                    () {
-                      navigateAndClearHistory(context, HomeScreen.routeName);
-                    },
-                  );
-                },
-              ),
+
               SizedBox(
                 height: SizeConfig.screenHeight * 0.018,
               ),
@@ -335,28 +326,6 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
         )
       ],
-    );
-  }
-
-  Container buildSignUp() {
-    return Container(
-      padding: EdgeInsets.symmetric(vertical: getProportionateScreenWidth(16)),
-      child: RichText(
-        textAlign: TextAlign.center,
-        text: TextSpan(
-          children: [
-            TextSpan(text: doNotHaveAccountLabel, style:  Theme.of(context).textTheme.bodyText2),
-            TextSpan(
-              text: signUpLabel,
-              style: authScreensClickableLabelStyle,
-              recognizer: TapGestureRecognizer()
-                ..onTap = () {
-                  navigateAndClearHistory(context, '/SignUpScreen');
-                },
-            )
-          ],
-        ),
-      ),
     );
   }
 
@@ -434,7 +403,6 @@ class _LoginScreenState extends State<LoginScreen> {
           actions: [
             // ignore: missing_required_param
             TextButton(
-            
                 onPressed: () {
                   ScaffoldMessenger.of(context).clearMaterialBanners();
                 },
